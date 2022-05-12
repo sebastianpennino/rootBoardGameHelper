@@ -1,2 +1,10 @@
-# rootBoardGameHelper
-Root board game (https://boardgamegeek.com/boardgame/237182/root) helper
+# Root Board Game Helper
+Root Boardgame Helper (PWA)
+```
+                         __  ____  ________  __     __               
+       _________  ____  / /_/ __ )/ ____/ / / /__  / /___  ___  _____
+      / ___/ __ \/ __ \/ __/ __  / / __/ /_/ / _ \/ / __ \/ _ \/ ___/
+     / /  / /_/ / /_/ / /_/ /_/ / /_/ / __  /  __/ / /_/ /  __/ /    
+    /_/   \____/\____/\__/_____/\____/_/ /_/\___/_/ .___/\___/_/     
+                                                 /_/                 
+```
