@@ -1,0 +1,6 @@
+.App {
+  padding: 40px;
+}
+.App * {
+  border: 1px solid black;
+}
