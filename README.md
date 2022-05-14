@@ -23,6 +23,10 @@ Root Boardgame Helper (PWA)
             /_/
 ```
 
+## Deployed version
+
+Project gets deployed with vercel [here](https://rbgh.vercel.app/)
+
 ## What is this?
 
 This is a PWA that helps players select factions when playing [Root](https://boardgamegeek.com/boardgame/237182/root)
