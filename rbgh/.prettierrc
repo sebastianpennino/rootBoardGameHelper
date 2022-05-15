@@ -1,0 +1,11 @@
+{
+  "trailingComma": "all",
+  "tabWidth": 2,
+  "semi": false,
+  "singleQuote": true,
+  "useTabs": false,
+  "printWidth": 100,
+  "options": {
+    "editorconfig": true
+  }
+}

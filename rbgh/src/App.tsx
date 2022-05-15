@@ -1,52 +1,55 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
-import {
-  PlayerSelection,
-  MethodSelection,
-  Results,
-  NoMatch,
-  Topics,
-  Users,
-  User,
-} from "./tabs";
+import React from 'react'
+import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom'
+import { PlayerSelection, MethodSelection, Results, NoMatch, Topics, Users, User } from './tabs'
+import './App.css'
 
 function App() {
-
   const users = [
-    { id: "1", fullName: "T'Challa" },
-    { id: "2", fullName: "Miles Morales" },
-    { id: "3", fullName: "James Howlett" },
-  ];
+    { id: '1', fullName: "T'Challa" },
+    { id: '2', fullName: 'Miles Morales' },
+    { id: '3', fullName: 'James Howlett' },
+  ]
 
   return (
     <div className="App">
       <Router>
-
-      <div className="list">
+        <nav className="navigation">
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <NavLink to="/" className={(n) => (n.isActive ? 'active' : '')}>
+                Home
+              </NavLink>
             </li>
             <li>
-              <Link to="step1">Page 1</Link>
+              <NavLink to="step1" className={(n) => (n.isActive ? 'active' : '')}>
+                page 1
+              </NavLink>
             </li>
             <li>
-              <Link to="step2">Page 2</Link>
+              <NavLink to="step2" className={(n) => (n.isActive ? 'active' : '')}>
+                page 2
+              </NavLink>
             </li>
             <li>
-              <Link to="step3">Page 3</Link>
+              <NavLink to="step3" className={(n) => (n.isActive ? 'active' : '')}>
+                page 3
+              </NavLink>
             </li>
             <li>
-              <Link to="topics">topics</Link>
+              <NavLink to="topics" className={(n) => (n.isActive ? 'active' : '')}>
+                topics
+              </NavLink>
             </li>
             <li>
-              <Link to="users">users</Link>
+              <NavLink to="users" className={(n) => (n.isActive ? 'active' : '')}>
+                users
+              </NavLink>
             </li>
           </ul>
-        </div>
+        </nav>
 
         <Routes>
-          <Route index element={<h1>Home Page</h1>} />
+          <Route index element={<PlayerSelection />} />
           <Route path="step1" element={<PlayerSelection />} />
           <Route path="step2" element={<MethodSelection />} />
           <Route path="step3" element={<Results />} />
@@ -60,10 +63,9 @@ function App() {
           </Route>
           <Route path="*" element={<NoMatch />} />
         </Routes>
-
       </Router>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

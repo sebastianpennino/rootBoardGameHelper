@@ -19,3 +19,8 @@ https://github.com/fullstackreact/food-lookup-demo
 
 rest basics
 https://www.freecodecamp.org/news/rest-api-design-best-practices-build-a-rest-api/
+
+husky hooks helpful
+https://scottsauber.com/2021/06/01/using-husky-git-hooks-and-lint-staged-with-nested-folders/
+https://typicode.github.io/husky/#/?id=custom-directory
+
