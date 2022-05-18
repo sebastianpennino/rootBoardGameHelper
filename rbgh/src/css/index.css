@@ -1,0 +1,53 @@
+@import-normalize; /* bring in normalize.css styles */
+
+body {
+  margin: 0;
+  font-family: "Libre Baskerville", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body * {
+  font-family: "Libre Baskerville", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('../assets/fonts/LibreBaskerville-Regular.eot');
+  src: url('../assets/fonts/LibreBaskerville-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/LibreBaskerville-Regular.woff2') format('woff2'),
+    url('../assets/fonts/LibreBaskerville-Regular.woff') format('woff'),
+    url('../assets/fonts/LibreBaskerville-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* italic */
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('../assets/fonts/LibreBaskerville-Italic.eot');
+  src: url('../assets/fonts/LibreBaskerville-Italic.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/LibreBaskerville-Italic.woff2') format('woff2'),
+    url('../assets/fonts/LibreBaskerville-Italic.woff') format('woff'),
+    url('../assets/fonts/LibreBaskerville-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* bold */
+@font-face {
+  font-family: 'Libre Baskerville';
+  src: url('../assets/fonts/LibreBaskerville-Bold.eot');
+  src: url('../assets/fonts/LibreBaskerville-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../assets/fonts/LibreBaskerville-Bold.woff2') format('woff2'),
+    url('../assets/fonts/LibreBaskerville-Bold.woff') format('woff'),
+    url('../assets/fonts/LibreBaskerville-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}

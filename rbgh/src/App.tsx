@@ -1,14 +1,11 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Routes, NavLink } from 'react-router-dom'
-import { PlayerSelection, MethodSelection, Results, NoMatch, Topics, Users, User } from './tabs'
-import './App.css'
+import { PlayerSelection, Results, NoMatch, Topics, Users, User, FactionSelection } from './pages'
+import { players as importedUsers } from './mock'
+import './css/App.css'
 
 function App() {
-  const users = [
-    { id: '1', fullName: "T'Challa" },
-    { id: '2', fullName: 'Miles Morales' },
-    { id: '3', fullName: 'James Howlett' },
-  ]
+  const users = importedUsers
 
   return (
     <div className="App">
@@ -51,7 +48,7 @@ function App() {
         <Routes>
           <Route index element={<PlayerSelection />} />
           <Route path="step1" element={<PlayerSelection />} />
-          <Route path="step2" element={<MethodSelection />} />
+          <Route path="step2" element={<FactionSelection />} />
           <Route path="step3" element={<Results />} />
           <Route path="topics" element={<Topics />}>
             <Route path="random1" element={<h3>topic: random1!</h3>} />
