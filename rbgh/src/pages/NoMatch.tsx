@@ -1,5 +1,8 @@
 import { useLocation } from 'react-router-dom'
 
+// Styles
+import '../css/no-match-page.css'
+
 export function NoMatch() {
   let location = useLocation()
 

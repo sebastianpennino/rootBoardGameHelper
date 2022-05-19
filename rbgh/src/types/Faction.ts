@@ -3,28 +3,28 @@ export interface Faction {
   id: number
   reach: number
   icon: string
-  state: string
+  state: ValidFactionStates
   frontColor: string
   backColor: string
 }
 
 export enum FactionNames {
-  MARQUISE_THE_CAT = 'CATS',
-  EERYE_DINASTY = 'BIRDS',
-  WOODLAND_ALLIANCE = 'ALLIANCE',
-  VAGABOND1 = 'VAGABOND',
-  RIVERFOLK_COMPANY = 'OTTERS',
-  LIZARD_CULT = 'LIZARDS',
-  VAGABOND2 = 'VAGABOND_2',
-  UNDERGROUND_DUCHY = 'MOLES',
-  CORVID_CONSPIRACY = 'CORVIDS',
-  KEEPERS_IN_IRON = 'BADGERS',
-  LORD_OF_THE_HUNDREDS = 'MICE',
+  MARQUISE_THE_CAT = 'Marquise The Cat',
+  EYRIE = 'Eyrie Dynasties',
+  WOODLAND_ALLIANCE = 'Woodland Alliance',
+  VAGABOND1 = 'Vagabond',
+  RIVERFOLK_COMPANY = 'Riverfolk Company',
+  LIZARD_CULT = 'Lizard Cult',
+  VAGABOND2 = 'Vagabond 2',
+  UNDERGROUND_DUCHY = 'Underground Duchy',
+  CORVID_CONSPIRACY = 'Corvid Conspiracy',
+  KEEPERS_IN_IRON = 'Kepeers In Iron',
+  LORD_OF_THE_HUNDREDS = 'Lord Of The Hundreds',
 }
 
 export type ValidFactions =
   | FactionNames.MARQUISE_THE_CAT
-  | FactionNames.EERYE_DINASTY
+  | FactionNames.EYRIE
   | FactionNames.WOODLAND_ALLIANCE
   | FactionNames.VAGABOND1
   | FactionNames.VAGABOND2
@@ -34,3 +34,11 @@ export type ValidFactions =
   | FactionNames.CORVID_CONSPIRACY
   | FactionNames.KEEPERS_IN_IRON
   | FactionNames.LORD_OF_THE_HUNDREDS
+
+export enum FactionStates {
+  INCLUDE = 'INCLUDE',
+  EXCLUDE = 'EXCLUDE',
+  MUST = 'MUST',
+}
+
+export type ValidFactionStates = FactionStates.EXCLUDE | FactionStates.MUST | FactionStates.INCLUDE

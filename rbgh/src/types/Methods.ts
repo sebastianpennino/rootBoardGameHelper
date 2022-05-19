@@ -1,14 +1,14 @@
 export enum Methods {
-  PICK = 'PICK',
-  RANDOM = 'RANDOM',
-  PRIORITY = 'PRIORITY',
+  PICK = 'pick',
+  RANDOM = 'random',
+  PRIORITY = 'priority',
 }
 
 export type ValidMethods = Methods.PICK | Methods.RANDOM | Methods.PRIORITY
 
 export enum SubRandomMethods {
-  TRULY_RANDOM = 'TRULY_RANDOM',
-  RECOMMENDED_LIST = 'RECOMMENDED_LIST',
+  SEED_RANDOM = 'seed_random',
+  RECOMMENDED_LIST = 'recommended_list',
 }
 
-export type ValidSubRandomMethods = SubRandomMethods.RECOMMENDED_LIST | SubRandomMethods.TRULY_RANDOM
+export type ValidSubRandomMethods = SubRandomMethods.RECOMMENDED_LIST | SubRandomMethods.SEED_RANDOM

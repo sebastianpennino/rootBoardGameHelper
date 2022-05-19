@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
-import { Faction as MyFaction } from '../types'
-import { factions as importedFactions } from '../mock'
-import '../css/FactionSelection.css'
+import { Faction as MyFaction, Methods, ValidFactionStates } from '../../types'
+import { allFactions as importedFactions } from '../../data'
+import { nextStateCycle } from '../../data'
+import { NavLink } from 'react-router-dom'
 
-type UpdateFaction = (id: number, newState: string) => void
+// Styles
+import '../../css/select-page.css'
+
+type UpdateFaction = (id: number, newState: ValidFactionStates) => void
 
 interface MyFactionButton {
   faction: MyFaction
@@ -13,14 +16,8 @@ interface MyFactionButton {
 }
 
 function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionButton) {
-  const nextState: Record<string, string> = {
-    include: 'must',
-    must: 'exclude',
-    exclude: 'include',
-  }
-
   const cycleIncludeStatus = () => {
-    const next = nextState[faction.state]
+    const next = nextStateCycle[faction.state]
     updateFaction(faction.id, next)
   }
 
@@ -39,7 +36,7 @@ export function FactionSelection() {
 
   const [factions, setFactions] = useState<MyFaction[]>([...initialState])
 
-  const updateFaction = (id: number, newState: string) => {
+  const updateFaction = (id: number, newState: ValidFactionStates) => {
     setFactions((prevState: MyFaction[]) => {
       const foundIdx = prevState.findIndex((faction: MyFaction) => faction.id === id)
       if (foundIdx !== -1) {
@@ -55,39 +52,12 @@ export function FactionSelection() {
   }
 
   const isValidSelection = () => {
-    /*
-      selectable factions >= players
-    */
-    return factions.length > 3
+    // at least one is available for each player
+    return true
   }
 
   return (
     <>
-      <div className="methodSelection">
-        <select
-          name="methodSelection"
-          onChange={(e) => {
-            const val = e.target.value
-            console.log(val)
-          }}
-        >
-          <option value="random">Random</option>
-          <option value="pick">Manual</option>
-          <option value="priority">Priority</option>
-        </select>
-      </div>
-      <div className="subMethodSelection">
-        <select
-          name="methodSelection"
-          onChange={(e) => {
-            const val = e.target.value
-            console.log(val)
-          }}
-        >
-          <option value="random">Truly Random</option>
-          <option value="pick">Recommended List</option>
-        </select>
-      </div>
       <div className="factionSelection">
         <ul>
           {factions.map((faction: MyFaction) => (
@@ -99,12 +69,12 @@ export function FactionSelection() {
             />
           ))}
         </ul>
+        {isValidSelection() && (
+          <NavLink to={`/results?type=${Methods.RANDOM}`} className={(n) => (n.isActive ? 'active' : '')}>
+            R: Random
+          </NavLink>
+        )}
       </div>
-      {isValidSelection() && (
-        <NavLink to="/step3" className={(n: any) => (n.isActive ? 'active' : '')}>
-          next step
-        </NavLink>
-      )}
     </>
   )
 }

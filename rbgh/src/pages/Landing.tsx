@@ -1,5 +1,22 @@
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { allFactions as factions } from '../data'
+import { Methods, SubRandomMethods, ValidMethods, ValidSubRandomMethods } from '../types'
+
+// Styles
+import '../css/landing-page.css'
+
+const nextButtonSwitch = {
+  [Methods.PRIORITY]: () => {
+    return <NavLink to="/priority-select">Next: Priority Selection</NavLink>
+  },
+  [Methods.PICK]: () => {
+    return <NavLink to="/manual-select">Next: Manual Selection</NavLink>
+  },
+  [Methods.RANDOM]: () => {
+    return <NavLink to="/faction-selection">Next: Faction Selection</NavLink>
+  },
+}
 
 function PlayerItem({ player, removeFn, updateFn, disableRemove }: any) {
   const [currentPlayer, setCurrentPlayer] = useState<any>(player)
@@ -69,6 +86,16 @@ export function PlayerSelection() {
     return playerList.length >= 3 && !playerList.some((player: any) => player.name.length < 2)
   }
 
+  const [method, setMethod] = useState<ValidMethods>(Methods.RANDOM)
+  const [subMethod, setSubMethod] = useState<ValidSubRandomMethods>(SubRandomMethods.RECOMMENDED_LIST)
+
+  const isValidMethodSelection = () => {
+    /*
+      selectable factions >= players
+    */
+    return factions.length > 3
+  }
+
   return (
     <>
       {playerList.map((player: any) => (
@@ -83,11 +110,38 @@ export function PlayerSelection() {
       <button onClick={addPlayer} disabled={isMax}>
         Add player
       </button>
-      {isValidSelection() && (
-        <NavLink to="/step2" className={(n: any) => (n.isActive ? 'active' : '')}>
-          next step
-        </NavLink>
+
+      <div className="methodSelection">
+        <select
+          name="methodSelection"
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+            const val = e.target.value as ValidMethods
+            setMethod(val)
+          }}
+          value={method}
+        >
+          <option value={Methods.RANDOM}>Random</option>
+          <option value={Methods.PICK}>Manual</option>
+          <option value={Methods.PRIORITY}>Priority</option>
+        </select>
+      </div>
+      {method === Methods.RANDOM && (
+        <div className="subMethodSelection">
+          <select
+            name="methodSelection"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const val = e.target.value as ValidSubRandomMethods
+              setSubMethod(val)
+            }}
+            value={subMethod}
+          >
+            <option value={SubRandomMethods.RECOMMENDED_LIST}>Recommended List</option>
+            <option value={SubRandomMethods.SEED_RANDOM}>Truly Random</option>
+          </select>
+        </div>
       )}
+
+      <div>{isValidSelection() && isValidMethodSelection() && nextButtonSwitch[method]()}</div>
     </>
   )
 }

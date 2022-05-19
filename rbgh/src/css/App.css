@@ -1,12 +1,13 @@
-.App {
+.rbgh {
   padding: 40px;
 }
-.App * {
+
+.navigation ul {
   border: 1px solid black;
 }
 
 .navigation {
-  border: 3px solid black;
+  font-size: 12px;
 }
 
 .navigation ul {
@@ -16,13 +17,13 @@
 
 .navigation li {
   float: left;
-  margin-left: 10px;
+  margin-left: 3px;
 }
 .navigation li a {
   display: block;
-  padding: 10px;
-  color: black;
+  padding: 3px;
   text-decoration: none;
+  background-color: bisque;
 }
 .navigation li a.active,
 .navigation li a:hover{
