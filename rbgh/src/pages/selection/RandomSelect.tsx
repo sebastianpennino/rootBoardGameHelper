@@ -58,6 +58,7 @@ export function FactionSelection() {
 
   return (
     <>
+      <h3>Filter Possible Factions</h3>
       <div className="factionSelection">
         <ul>
           {factions.map((faction: MyFaction) => (

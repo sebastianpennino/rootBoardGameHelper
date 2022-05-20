@@ -98,6 +98,8 @@ export function PlayerSelection() {
 
   return (
     <>
+      <h3>Players</h3>
+
       {playerList.map((player: any) => (
         <PlayerItem
           player={player}
@@ -110,36 +112,38 @@ export function PlayerSelection() {
       <button onClick={addPlayer} disabled={isMax}>
         Add player
       </button>
-
-      <div className="methodSelection">
-        <select
-          name="methodSelection"
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            const val = e.target.value as ValidMethods
-            setMethod(val)
-          }}
-          value={method}
-        >
-          <option value={Methods.RANDOM}>Random</option>
-          <option value={Methods.PICK}>Manual</option>
-          <option value={Methods.PRIORITY}>Priority</option>
-        </select>
-      </div>
-      {method === Methods.RANDOM && (
-        <div className="subMethodSelection">
+      <div>
+        <h3>Choose Method</h3>
+        <div className="methodSelection">
           <select
             name="methodSelection"
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              const val = e.target.value as ValidSubRandomMethods
-              setSubMethod(val)
+              const val = e.target.value as ValidMethods
+              setMethod(val)
             }}
-            value={subMethod}
+            value={method}
           >
-            <option value={SubRandomMethods.RECOMMENDED_LIST}>Recommended List</option>
-            <option value={SubRandomMethods.SEED_RANDOM}>Truly Random</option>
+            <option value={Methods.RANDOM}>Random</option>
+            <option value={Methods.PICK}>Manual</option>
+            <option value={Methods.PRIORITY}>Priority</option>
           </select>
         </div>
-      )}
+        {method === Methods.RANDOM && (
+          <div className="subMethodSelection">
+            <select
+              name="methodSelection"
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                const val = e.target.value as ValidSubRandomMethods
+                setSubMethod(val)
+              }}
+              value={subMethod}
+            >
+              <option value={SubRandomMethods.RECOMMENDED_LIST}>Recommended List</option>
+              <option value={SubRandomMethods.SEED_RANDOM}>Truly Random</option>
+            </select>
+          </div>
+        )}
+      </div>
 
       <div>{isValidSelection() && isValidMethodSelection() && nextButtonSwitch[method]()}</div>
     </>

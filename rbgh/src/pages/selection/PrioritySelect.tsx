@@ -8,12 +8,6 @@ import { players as importedPlayers } from '../../mock'
 import '../../css/select-page.css'
 
 interface PrioritizableFaction extends Faction {
-  priority: number | boolean
-}
-
-interface minFaction {
-  id: number
-  name: ValidFactions
   priority: number
 }
 
@@ -28,7 +22,7 @@ export function PrioritySelect() {
     })
     .map((faction: Faction) => ({
       ...faction,
-      priority: false,
+      priority: 99,
     }))
 
   const [players, setPlayers] = useState<Player[]>([...importedPlayers])
@@ -42,15 +36,13 @@ export function PrioritySelect() {
   const setUpNextLoop = () => {
     // Save current selection
     setSelection((previousSelected: any) => {
-      const found: minFaction[] = availablefactions
-        .filter((faction) => faction.priority !== false)
-        .map(({ name, id, priority }) => ({ name, id, priority: Number(priority) }))
+      const found: PrioritizableFaction[] = availablefactions.filter((faction) => faction.priority !== 99)
       if (found && found.length > 0) {
         return [
           ...previousSelected,
           {
             player: currentPlayer,
-            selection: found.sort((a: minFaction, b: minFaction) => a.priority - b.priority),
+            selection: found.sort((a: PrioritizableFaction, b: PrioritizableFaction) => a.priority - b.priority),
           },
         ]
       }
@@ -60,7 +52,7 @@ export function PrioritySelect() {
     setAvailableFactions((oldSelection: PrioritizableFaction[]) => {
       return oldSelection.map((faction: PrioritizableFaction) => ({
         ...faction,
-        priority: false,
+        priority: 99,
       }))
     })
     // Increase the loop, set currentPlayer for next cycle
@@ -78,7 +70,7 @@ export function PrioritySelect() {
   const selectFaction = (faction: PrioritizableFaction) => {
     setAvailableFactions((oldSelection: PrioritizableFaction[]) => {
       const foundIdx = oldSelection.findIndex((f: PrioritizableFaction) => f.id === faction.id)
-      if (oldSelection[foundIdx].priority === false) {
+      if (oldSelection[foundIdx].priority === 99) {
         oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: priority }
       }
       return [...oldSelection]
@@ -94,7 +86,7 @@ export function PrioritySelect() {
   const finalize = () => {
     // Save current selection
     setSelection((previousSelected: any) => {
-      const found = availablefactions.filter((faction) => faction.priority !== false)
+      const found = availablefactions.filter((faction) => faction.priority !== 99)
       if (found && found.length > 0) {
         return [
           ...previousSelected,
@@ -127,8 +119,9 @@ export function PrioritySelect() {
                     selectFaction(faction)
                   }
                 }}
+                disabled={faction.priority < 99}
               >
-                {faction.name} {faction.priority ? `(${faction.priority})` : ''}
+                {faction.name} {faction.priority < 99 ? `(${faction.priority})` : ''}
                 <figure className="faction-picture">
                   <img src={faction.icon} alt={faction.name} />
                 </figure>
@@ -137,12 +130,6 @@ export function PrioritySelect() {
           </ul>
         </div>
       </div>
-
-      {/* 
-      <small>
-        <pre>{JSON.stringify({ selection }, null, 2)}</pre>
-      </small> 
-      */}
 
       <div>
         {loop < players.length - 1 ? (
