@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Faction, Methods, ValidFactionStates } from '../../types'
+import { Faction, FactionStates, Methods, ValidFactionStates } from '../../types'
 import { allFactions as importedFactions } from '../../data'
 import { nextStateCycle } from '../../data'
 import { NavLink } from 'react-router-dom'
@@ -16,7 +16,7 @@ export interface RandomSelection {
 interface MyFactionButton {
   faction: Faction
   updateFaction: UpdateFaction
-  selectionStatus: string
+  selectionStatus: ValidFactionStates
 }
 
 function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionButton) {
@@ -25,10 +25,17 @@ function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionBut
     updateFaction(faction.id, next)
   }
 
+  const classNameByStatus: Record<ValidFactionStates, string> = {
+    [FactionStates.EXCLUDE]: 'cancelled',
+    [FactionStates.INCLUDE]: 'normal',
+    [FactionStates.MUST]: 'locked',
+  }
+
   return (
-    <button onClick={cycleIncludeStatus}>
-      {faction.name} - {selectionStatus}
-      <figure className="faction-picture">
+    <button className={`faction-card faction-card--${classNameByStatus[selectionStatus]}`} onClick={cycleIncludeStatus}>
+      <span className="faction-card__title">{faction.name}</span>
+      {/* - {selectionStatus} */}
+      <figure className="faction-card__image">
         <img src={faction.icon} alt={faction.name} />
       </figure>
     </button>
@@ -64,7 +71,7 @@ export function FactionSelection() {
     <>
       <h3>Filter Possible Factions</h3>
       <div className="factionSelection">
-        <ul>
+        <ul className="faction-grid">
           {factions.map((faction: Faction) => (
             <FactionButton
               key={faction.id}

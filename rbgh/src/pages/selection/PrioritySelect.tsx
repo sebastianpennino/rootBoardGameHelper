@@ -114,10 +114,11 @@ export function PrioritySelect() {
       <div>
         <h3>Prioritize Factions (1 to {PRIORITY_SELECTION}):</h3>
         <div>
-          <ul>
+          <ul className="faction-grid">
             {availablefactions.map((faction: PrioritizableFaction) => (
               <button
                 key={faction.id}
+                className="faction-card"
                 onClick={() => {
                   if (!lock) {
                     selectFaction(faction)

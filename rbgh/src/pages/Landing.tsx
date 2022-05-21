@@ -99,16 +99,17 @@ export function PlayerSelection() {
   return (
     <>
       <h3>Players</h3>
-
-      {playerList.map((player: any) => (
-        <PlayerItem
-          player={player}
-          key={player.id}
-          removeFn={removePlayer}
-          updateFn={updatePlayer}
-          disableRemove={isMin}
-        />
-      ))}
+      <ul className="player-grid">
+        {playerList.map((player: any) => (
+          <PlayerItem
+            player={player}
+            key={player.id}
+            removeFn={removePlayer}
+            updateFn={updatePlayer}
+            disableRemove={isMin}
+          />
+        ))}
+      </ul>
       <button onClick={addPlayer} disabled={isMax}>
         Add player
       </button>

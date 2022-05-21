@@ -76,9 +76,10 @@ export function ManualSelect() {
       <div>
         <h3>Available factions:</h3>
         <div>
-          <ul>
+          <ul className="faction-grid">
             {availablefactions.map((faction: SelectableFaction) => (
               <button
+                className="faction-card"
                 key={faction.id}
                 onClick={() => {
                   if (!lock) {
