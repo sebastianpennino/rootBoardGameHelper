@@ -4,7 +4,7 @@ import { AppRoutes } from './Routes'
 import { AppNavigation } from './Nav'
 
 // Styles
-import './css/app.css'
+import './css/App.css'
 
 function App() {
   return (
