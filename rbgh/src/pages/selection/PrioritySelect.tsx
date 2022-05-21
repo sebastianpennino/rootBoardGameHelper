@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Faction, FactionNames, Methods, Player, ValidFactions } from '../../types'
+import { Faction, FactionNames, Methods, Player } from '../../types'
 import { useState } from 'react'
 import { allFactions as importedFactions } from '../../data'
 import { players as importedPlayers } from '../../mock'
@@ -7,8 +7,12 @@ import { players as importedPlayers } from '../../mock'
 // Styles
 import '../../css/select-page.css'
 
-interface PrioritizableFaction extends Faction {
+export interface PrioritizableFaction extends Faction {
   priority: number
+}
+export interface PrioritySelection {
+  player: Player
+  selection: PrioritizableFaction[]
 }
 
 const PRIORITY_SELECTION: number = 6
@@ -30,12 +34,12 @@ export function PrioritySelect() {
   const [availablefactions, setAvailableFactions] = useState<PrioritizableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
   const [lock, setLock] = useState<boolean>(false)
-  const [selection, setSelection] = useState<any>([])
+  const [selection, setSelection] = useState<PrioritySelection[]>([])
   const [priority, setPriority] = useState<number>(1)
 
   const setUpNextLoop = () => {
     // Save current selection
-    setSelection((previousSelected: any) => {
+    setSelection((previousSelected: PrioritySelection[]) => {
       const found: PrioritizableFaction[] = availablefactions.filter((faction) => faction.priority !== 99)
       if (found && found.length > 0) {
         return [
@@ -130,6 +134,8 @@ export function PrioritySelect() {
           </ul>
         </div>
       </div>
+
+      {/* <small><pre>{JSON.stringify({selection}, null, 2)}</pre></small> */}
 
       <div>
         {loop < players.length - 1 ? (

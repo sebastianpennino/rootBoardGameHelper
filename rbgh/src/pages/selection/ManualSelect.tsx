@@ -1,6 +1,6 @@
 import { players as importedPlayers } from '../../mock'
 import { useEffect, useState } from 'react'
-import { Faction, Methods } from '../../types'
+import { Faction, Methods, ResultEntries } from '../../types'
 import { minReachByPlayers, allFactions as importedFactions } from '../../data'
 import { NavLink } from 'react-router-dom'
 
@@ -9,6 +9,9 @@ import '../../css/select-page.css'
 
 interface SelectableFaction extends Faction {
   selected: boolean
+}
+export interface PickSelection {
+  results: ResultEntries[]
 }
 
 export function ManualSelect() {

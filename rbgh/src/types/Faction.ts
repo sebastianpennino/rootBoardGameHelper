@@ -1,3 +1,5 @@
+import { ValidVagabonds } from './Vagabond'
+
 export interface Faction {
   name: ValidFactions
   id: number
@@ -6,6 +8,7 @@ export interface Faction {
   state: ValidFactionStates
   frontColor: string
   backColor: string
+  vagabondData?: ValidVagabonds
 }
 
 export enum FactionNames {

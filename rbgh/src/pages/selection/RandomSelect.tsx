@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Faction as MyFaction, Methods, ValidFactionStates } from '../../types'
+import { Faction, Methods, ValidFactionStates } from '../../types'
 import { allFactions as importedFactions } from '../../data'
 import { nextStateCycle } from '../../data'
 import { NavLink } from 'react-router-dom'
@@ -9,8 +9,12 @@ import '../../css/select-page.css'
 
 type UpdateFaction = (id: number, newState: ValidFactionStates) => void
 
+export interface RandomSelection {
+  factions: Faction[]
+}
+
 interface MyFactionButton {
-  faction: MyFaction
+  faction: Faction
   updateFaction: UpdateFaction
   selectionStatus: string
 }
@@ -34,11 +38,11 @@ function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionBut
 export function FactionSelection() {
   const initialState = importedFactions
 
-  const [factions, setFactions] = useState<MyFaction[]>([...initialState])
+  const [factions, setFactions] = useState<Faction[]>([...initialState])
 
   const updateFaction = (id: number, newState: ValidFactionStates) => {
-    setFactions((prevState: MyFaction[]) => {
-      const foundIdx = prevState.findIndex((faction: MyFaction) => faction.id === id)
+    setFactions((prevState: Faction[]) => {
+      const foundIdx = prevState.findIndex((faction: Faction) => faction.id === id)
       if (foundIdx !== -1) {
         const updatedFaction = {
           ...prevState[foundIdx],
@@ -61,7 +65,7 @@ export function FactionSelection() {
       <h3>Filter Possible Factions</h3>
       <div className="factionSelection">
         <ul>
-          {factions.map((faction: MyFaction) => (
+          {factions.map((faction: Faction) => (
             <FactionButton
               key={faction.id}
               faction={faction}

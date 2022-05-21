@@ -1,6 +1,8 @@
 import { useSearchParams, NavLink } from 'react-router-dom'
-import { Faction, Methods, Player, ValidMethods } from '../../types'
-import { fakeResults } from '../../mock'
+import { CalculationResults, Faction, Methods, ResultEntries, ValidMethods } from '../../types'
+import { calculateResultsF } from '../../utils/CalculateResults'
+import { allFactions } from '../../data'
+import { players } from '../../mock'
 
 // Styles
 import '../../css/result-page.css'
@@ -17,11 +19,14 @@ const backButtonSwitch = {
   },
 }
 
-function ResultRow({ player, selection }: { player: Player; selection: Faction }) {
+function ResultRow({ playerName, faction }: { playerName: string; faction: Faction }) {
   return (
     <div className="row">
-      <div className="column-1">{player.name}</div>
-      <div className="column-2">{selection.name}</div>
+      <div className="column-1">{playerName}</div>
+      <div className="column-2">
+        {faction.name}
+        {faction.vagabondData ? `- ${faction.vagabondData}` : ''} ({faction.reach}){' '}
+      </div>
     </div>
   )
 }
@@ -30,13 +35,18 @@ export function Results() {
   const [searchParams] = useSearchParams()
   const methodName = searchParams.get('type') as ValidMethods
 
+  let fakeResults: CalculationResults = { type: methodName, seed: 0, results: [] }
+
+  fakeResults = calculateResultsF({ factions: allFactions }, { players }).calculateRandomResults()
+
   return (
     <div className="results-page">
       <h3>Results ({methodName})</h3>
       <div className="container">
-        {fakeResults.results.map((entry: any) => (
-          <ResultRow key={entry.id} player={entry.player} selection={entry.selection} />
+        {fakeResults?.results.map((entry: ResultEntries) => (
+          <ResultRow key={entry.id} playerName={entry.name} faction={entry.faction} />
         ))}
+        {/* <small><pre>{JSON.stringify({fakeResults}, null, 2)}</pre></small> */}
       </div>
       <div>
         {methodName === Methods.RANDOM && <button>Re-roll!</button>}

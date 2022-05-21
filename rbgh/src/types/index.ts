@@ -1,4 +1,5 @@
 export * from './Faction'
-export * from './Methods'
+export * from './Method'
 export * from './Player'
+export * from './Result'
 export * from './Vagabond'
