@@ -57,6 +57,10 @@ npm ci
 npm start
 ```
 
+### Additional docs
+
+- [Coding Conventions](./docs/conventions.md)
+
 ### Useful commands
 
 `npm start`
