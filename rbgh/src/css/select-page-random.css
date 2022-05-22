@@ -1,0 +1,71 @@
+.random-page .faction-grid {
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(3, 120px);
+    gap: 0.5em;
+    align-content: start;
+  }
+  .random-page .faction-grid .faction-card {
+    overflow: hidden;
+    padding: 0;
+    border-radius: 0.5em;
+    align-self: stretch;
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    align-self: center;
+    position: relative;
+    background-color: #eaeaea;
+  }
+  .random-page .faction-grid .faction-card button {
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+  }
+  .random-page .faction-grid .faction-card--must {
+    border: 2px solid #cc2424;
+  }
+  .random-page .faction-grid .faction-card--exclude {
+    color: rgb(96, 96, 96);
+    background: repeating-linear-gradient(-55deg, #222, #222 10px, #333 10px, #333 20px);
+  }
+  .random-page .faction-grid .faction-card--exclude img {
+    filter: grayscale(1);
+  }
+  .random-page .faction-grid .faction-card::after {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .random-page .faction-grid .faction-card--must::after {
+    content: url('./../assets/icons/fav.svg');
+  }
+  .random-page .faction-grid .faction-card--exclude::after {
+    content: url('./../assets/icons/cancel.svg');
+  }
+  
+  .random-page .faction-grid .faction-card__title {
+    font-size: 0.75em;
+    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .random-page .faction-grid .faction-card__title h4 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: wrap;
+    width: 100%;
+  }
+  .random-page .faction-grid .faction-card__image {
+    padding: 0;
+    margin: 20px 0 0 0;
+  }
+  .random-page .faction-grid .faction-card img {
+    max-height: 50px;
+  }
+  /* .rbgh * {border: 1px solid darkblue} */
+  
