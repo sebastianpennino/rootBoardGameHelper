@@ -1,0 +1,66 @@
+* {
+  /* border: 1px solid; */
+}
+.manual-page .faction-grid {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.5em;
+  align-content: center;
+  justify-content: center;
+  list-style: none;
+}
+.manual-page .faction-grid .faction-card {
+  aspect-ratio: 1 / 1;
+}
+.manual-page .faction-grid .faction-card button,
+.manual-page .faction-grid .faction-card figure,
+.manual-page .faction-grid .faction-card img {
+  padding: 0;
+  margin: 0;
+}
+.manual-page .faction-grid .faction-card img {
+  max-width: 50%;
+}
+
+.manual-page .faction-grid .faction-card button {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.btn {
+  background: #000203; /* will be replaced */
+  border: 0.5em solid transparent; /* will be replaced */
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.btn::after {
+  content: '';
+  background: rgba(236, 240, 241, 0.9);
+  position: absolute;
+  z-index: -1;
+  display: block;
+}
+
+.btn.btn__grow-ellipse::after {
+  transition: all .33s ease;
+}
+.btn.btn__grow-ellipse:hover::after {
+  transition: all .33s ease-out;
+}
+
+.btn.btn__grow-ellipse::after {
+  border-radius: 50%;
+  left: -50%;
+  right: -50%;
+  top: -50%; /* for ellipse was 150 */
+  bottom: -50%;  /* for ellipse was 150 */
+  transform: scale(0, 0);
+}
+.btn.btn__grow-ellipse:hover::after {
+  transform: scale(1, 1);
+}

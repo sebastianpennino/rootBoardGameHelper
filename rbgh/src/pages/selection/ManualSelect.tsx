@@ -52,16 +52,21 @@ export function ManualSelect() {
       return nextLoop
     })
     // Unlock
-    setLock(false)
+    //setLock(false)
   }
 
   const selectFaction = (faction: SelectableFaction, flag: boolean) => {
     setAvailableFactions((oldSelection: SelectableFaction[]) => {
-      const foundIdx = oldSelection.findIndex((f: SelectableFaction) => f.id === faction.id)
-      oldSelection[foundIdx] = { ...oldSelection[foundIdx], selected: flag }
-      return [...oldSelection]
+      return oldSelection.map((f: SelectableFaction) => {
+        if (f.id === faction.id) {
+          f.selected = flag
+        } else {
+          f.selected = false
+        }
+        return f
+      })
     })
-    setLock(flag)
+    //setLock(flag)
   }
 
   const finalize = () => {
@@ -69,34 +74,40 @@ export function ManualSelect() {
   }
 
   return (
-    <>
+    <div className="manual-page">
       <div>
         {currentPlayer.name} - {loop + 1} of {players.length}
       </div>
       <div>
         <h3>Available factions:</h3>
         <div>
-          <ul className="faction-grid">
+          <ol className="faction-grid">
             {availablefactions.map((faction: SelectableFaction) => (
-              <button
-                className="faction-card"
-                key={faction.id}
-                onClick={() => {
-                  if (!lock) {
+              <li key={faction.id} className="faction-card">
+                <button
+                  className="btn btn__grow-ellipse"
+                  style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
+                  onClick={() => {
                     selectFaction(faction, true)
-                  } else if (lock && faction.selected) {
-                    selectFaction(faction, false)
-                  }
-                }}
-              >
-                {faction.name} {faction.selected ? '- selected!' : ''}
-                <figure className="faction-picture">
-                  <img src={faction.icon} alt={faction.name} />
-                </figure>
-              </button>
+                  }}
+                >
+                  <figure className="faction-picture">
+                    <img src={faction.icon} alt={faction.name} />
+                  </figure>
+                </button>
+              </li>
             ))}
-          </ul>
+          </ol>
         </div>
+      </div>
+
+      <div>
+        SELECTED:{' '}
+        {
+          availablefactions.find((faction: SelectableFaction) => {
+            return faction.selected
+          })?.name
+        }
       </div>
 
       <div>
@@ -115,6 +126,6 @@ export function ManualSelect() {
           </NavLink>
         )}
       </div>
-    </>
+    </div>
   )
 }

@@ -117,8 +117,6 @@ export function PrioritySelect() {
           <ul className="faction-grid">
             {availablefactions.map((faction: PrioritizableFaction) => (
               <button
-                key={faction.id}
-                className="faction-card"
                 onClick={() => {
                   if (!lock) {
                     selectFaction(faction)

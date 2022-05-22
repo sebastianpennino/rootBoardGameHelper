@@ -50,8 +50,8 @@ export const factionsColors: Record<ValidFactions, string> = {
   [FactionNames.LIZARD_CULT]: '#f1c40f',
   [FactionNames.UNDERGROUND_DUCHY]: '#A47290',
   [FactionNames.CORVID_CONSPIRACY]: '#673ab7',
-  [FactionNames.KEEPERS_IN_IRON]: '#8b8d90',
-  [FactionNames.LORD_OF_THE_HUNDREDS]: '#de1c3f',
+  [FactionNames.KEEPERS_IN_IRON]: '#6d6e71',
+  [FactionNames.LORD_OF_THE_HUNDREDS]: '#b51834',
 }
 
 export const nextStateCycle: Record<ValidFactionStates, ValidFactionStates> = {
