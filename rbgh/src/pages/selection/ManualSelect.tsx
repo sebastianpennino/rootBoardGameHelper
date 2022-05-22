@@ -69,34 +69,51 @@ export function ManualSelect() {
   }
 
   return (
-    <>
+    <div className="manual-page">
       <div>
         {currentPlayer.name} - {loop + 1} of {players.length}
       </div>
       <div>
         <h3>Available factions:</h3>
         <div>
-          <ul className="faction-grid">
+          <ol className="faction-grid">
             {availablefactions.map((faction: SelectableFaction) => (
-              <button
-                className="faction-card"
-                key={faction.id}
-                onClick={() => {
-                  if (!lock) {
-                    selectFaction(faction, true)
-                  } else if (lock && faction.selected) {
-                    selectFaction(faction, false)
-                  }
-                }}
-              >
-                {faction.name} {faction.selected ? '- selected!' : ''}
-                <figure className="faction-picture">
-                  <img src={faction.icon} alt={faction.name} />
-                </figure>
-              </button>
+              <li key={faction.id} className="faction-card">
+                <button
+                  className="btn btn__grow-ellipse"
+                  style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
+                  onClick={() => {
+                    if (!lock) {
+                      selectFaction(faction, true)
+                    } else if (lock && faction.selected) {
+                      selectFaction(faction, false)
+                    }
+                  }}
+                >
+                  {/* {faction.name} {faction.selected ? '- selected!' : ''} */}
+                  <figure className="faction-picture">
+                    <img src={faction.icon} alt={faction.name} />
+                  </figure>
+                </button>
+              </li>
             ))}
-          </ul>
+          </ol>
         </div>
+      </div>
+
+      <div className="wrapper">
+        <button className="btn btn__slide-from-left">SLIDE FROM LEFT</button>
+        <button className="btn btn__grow-box">GROW BOX</button>
+        <button className="btn btn__grow-ellipse">GROW ELLIPSE</button>
+      </div>
+
+      <div>
+        SELECTED:{' '}
+        {
+          availablefactions.find((faction: SelectableFaction) => {
+            return faction.selected
+          })?.name
+        }
       </div>
 
       <div>
@@ -115,6 +132,6 @@ export function ManualSelect() {
           </NavLink>
         )}
       </div>
-    </>
+    </div>
   )
 }

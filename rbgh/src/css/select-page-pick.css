@@ -1,0 +1,106 @@
+* {
+  /* border: 1px solid; */
+}
+
+.faction-grid {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  /* grid-template-rows: repeat(4, 6em); */
+  gap: 0.5em;
+  align-content: center;
+  justify-content: center;
+  list-style: none;
+}
+.faction-grid .faction-card {
+  aspect-ratio: 1 / 1;
+}
+/* .faction-grid .faction-card *, */
+.faction-grid .faction-card button,
+.faction-grid .faction-card figure,
+.faction-grid .faction-card img {
+  padding: 0;
+  margin: 0;
+}
+.faction-grid .faction-card img {
+  max-width: 50%;
+}
+
+.faction-grid .faction-card button {
+  height: 100%;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.btn {
+  background: #000203;
+  /* color: #fff; */
+  border: 8px solid transparent; /* will be replaced */
+  padding: 0;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.btn:hover {
+  color: #3498db;
+}
+.btn::after {
+  content: '';
+  background: #ecf0f1;
+  position: absolute;
+  z-index: -1;
+  /* padding: 0.85em 0.75em; was not commented out */
+  display: block;
+}
+/* 
+.btn.btn__slide-from-left::after {
+  transition: all 0.35s;
+}
+.btn.btn__slide-from-left:hover::after {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: all 0.35s;
+}
+.btn.btn__slide-from-left::after {
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  right: 100%;
+}
+*/
+
+.btn.btn__grow-ellipse::after,
+.btn.btn__grow-box::after {
+  transition: all .3s ease;
+}
+.btn.btn__grow-ellipse:hover::after,
+.btn.btn__grow-box:hover::after {
+  transition: all .3s ease-out;
+}
+/* 
+.btn.btn__grow-box::after {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transform: scale(0, 0);
+}
+.btn.btn__grow-box:hover::after {
+  transform: scale(1, 1);
+}
+*/
+.btn.btn__grow-ellipse::after {
+  border-radius: 50%;
+  left: -50%;
+  right: -50%;
+  top: -50%; /* was 150 */
+  bottom: -50%;  /* was 150 */
+  /* line-height: 8.34em; was not commente out */
+  transform: scale(0, 0);
+}
+.btn.btn__grow-ellipse:hover::after {
+  transform: scale(1, 1);
+}
