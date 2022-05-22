@@ -52,16 +52,21 @@ export function ManualSelect() {
       return nextLoop
     })
     // Unlock
-    setLock(false)
+    //setLock(false)
   }
 
   const selectFaction = (faction: SelectableFaction, flag: boolean) => {
     setAvailableFactions((oldSelection: SelectableFaction[]) => {
-      const foundIdx = oldSelection.findIndex((f: SelectableFaction) => f.id === faction.id)
-      oldSelection[foundIdx] = { ...oldSelection[foundIdx], selected: flag }
-      return [...oldSelection]
+      return oldSelection.map((f: SelectableFaction) => {
+        if (f.id === faction.id) {
+          f.selected = flag
+        } else {
+          f.selected = false
+        }
+        return f
+      })
     })
-    setLock(flag)
+    //setLock(flag)
   }
 
   const finalize = () => {
@@ -83,14 +88,9 @@ export function ManualSelect() {
                   className="btn btn__grow-ellipse"
                   style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
                   onClick={() => {
-                    if (!lock) {
-                      selectFaction(faction, true)
-                    } else if (lock && faction.selected) {
-                      selectFaction(faction, false)
-                    }
+                    selectFaction(faction, true)
                   }}
                 >
-                  {/* {faction.name} {faction.selected ? '- selected!' : ''} */}
                   <figure className="faction-picture">
                     <img src={faction.icon} alt={faction.name} />
                   </figure>
@@ -99,12 +99,6 @@ export function ManualSelect() {
             ))}
           </ol>
         </div>
-      </div>
-
-      <div className="wrapper">
-        <button className="btn btn__slide-from-left">SLIDE FROM LEFT</button>
-        <button className="btn btn__grow-box">GROW BOX</button>
-        <button className="btn btn__grow-ellipse">GROW ELLIPSE</button>
       </div>
 
       <div>
