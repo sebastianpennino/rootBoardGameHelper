@@ -11,7 +11,9 @@ function App() {
     <div className="rbgh">
       <Router>
         <AppNavigation />
-        <AppRoutes />
+        <main className="content">
+          <AppRoutes />
+        </main>
       </Router>
     </div>
   )

@@ -26,19 +26,23 @@ function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionBut
   }
 
   const classNameByStatus: Record<ValidFactionStates, string> = {
-    [FactionStates.EXCLUDE]: 'cancelled',
-    [FactionStates.INCLUDE]: 'normal',
-    [FactionStates.MUST]: 'locked',
+    [FactionStates.EXCLUDE]: 'exclude',
+    [FactionStates.INCLUDE]: 'include',
+    [FactionStates.MUST]: 'must',
   }
 
   return (
-    <button className={`faction-card faction-card--${classNameByStatus[selectionStatus]}`} onClick={cycleIncludeStatus}>
-      <span className="faction-card__title">{faction.name}</span>
-      {/* - {selectionStatus} */}
-      <figure className="faction-card__image">
-        <img src={faction.icon} alt={faction.name} />
-      </figure>
-    </button>
+    <li className={`faction-card faction-card--${classNameByStatus[selectionStatus]}`}>
+      <button onClick={cycleIncludeStatus}>
+        <figure className="faction-card__image">
+          <img src={faction.icon} alt={faction.name} />
+        </figure>
+        <div className="faction-card__title">
+          <h4>{faction.name}</h4>
+        </div>
+        {/* - {selectionStatus} */}
+      </button>
+    </li>
   )
 }
 
@@ -68,7 +72,7 @@ export function FactionSelection() {
   }
 
   return (
-    <>
+    <div className="random-page">
       <h3>Filter Possible Factions</h3>
       <div className="factionSelection">
         <ul className="faction-grid">
@@ -87,6 +91,6 @@ export function FactionSelection() {
           </NavLink>
         )}
       </div>
-    </>
+    </div>
   )
 }

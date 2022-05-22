@@ -107,7 +107,7 @@ export function PrioritySelect() {
   }
 
   return (
-    <>
+    <div className="priority-page">
       <div>
         {currentPlayer.name} - {loop + 1} of {players.length}
       </div>
@@ -149,6 +149,6 @@ export function PrioritySelect() {
           </button>
         )}
       </div>
-    </>
+    </div>
   )
 }

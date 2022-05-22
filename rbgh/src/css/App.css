@@ -2,7 +2,9 @@
   padding: 0;
   margin: 0;
 }
-
+.rbgh .content {
+  padding: 0 5px;
+}
 .navigation ul {
   border: 1px solid black;
 }
