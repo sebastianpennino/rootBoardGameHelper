@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import { allFactions as factions, methodsOptions } from '../data'
-import { Methods, SubRandomMethods, ValidMethods, ValidSubRandomMethods } from '../types'
+import { allFactions as factions } from '../data'
+import { Methods, ValidMethods } from '../types'
 import cancel from '../assets/icons/cancel-red.svg'
 import { IconContext } from 'react-icons'
 import { BsHandIndex } from 'react-icons/bs'
@@ -195,7 +195,6 @@ export function PlayerSelection() {
     <>
       <div>
         <h3>Choose Method</h3>
-
         <IconContext.Provider value={{ color: '#ff4a56', size: '3em' }}>
           <ol className="method-list">
             {methodList.map((method: MyMethod) => {
@@ -216,44 +215,6 @@ export function PlayerSelection() {
             })}
           </ol>
         </IconContext.Provider>
-
-        {/* <IconContext.Provider value={{ color: '#cc2424', size: '3em' }}>
-          <GiCardRandom title="Random From List" />
-          <GiPerspectiveDiceSixFacesRandom title="Truly Random" />
-          <BsHandIndex title="Manual Selection" />
-          <HiSortDescending title="Priority List" />
-        </IconContext.Provider> */}
-        {/* 
-        <div className="methodSelection">
-          <select
-            name="methodSelection"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              const val = e.target.value as ValidMethods
-              setMethod(val)
-            }}
-            value={method}
-          >
-            <option value={Methods.RANDOM}>Random</option>
-            <option value={Methods.PICK}>Manual</option>
-            <option value={Methods.PRIORITY}>Priority</option>
-          </select>
-        </div>
-        {method === Methods.RANDOM && (
-          <div className="subMethodSelection">
-            <select
-              name="methodSelection"
-              onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                const val = e.target.value as ValidSubRandomMethods
-                setSubMethod(val)
-              }}
-              value={subMethod}
-            >
-              <option value={SubRandomMethods.RECOMMENDED_LIST}>Recommended List</option>
-              <option value={SubRandomMethods.SEED_RANDOM}>Truly Random</option>
-            </select>
-          </div>
-        )} 
-*/}
       </div>
       <form noValidate onSubmit={handleSubmit}>
         <h3>Players</h3>
