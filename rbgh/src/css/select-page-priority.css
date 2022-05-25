@@ -1,1 +1,89 @@
+* {
+  /* border: 1px solid; */
+}
+.faction-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5em;
+  justify-items: stretch;
+}
+@media (min-width: 992px) {
+  .faction-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em;
+  }
+  .faction-list .faction-item-name h4 {
+    font-size: 2em;
+  }
+  .faction-list .faction-item .circle {
+    border: .8em solid black;
+    font-weight: 700;
+  }
+}
+.faction-list .faction-item {
+  display: block;
+}
+.faction-list .faction-item button {
+  padding: 5px;
+  border-radius: 15px;
+  border: 1px solid black;
+  background-blend-mode: hard-light;
+}
+.faction-item .circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 0.4em solid black;
+  background-color: #fff;
+}
+.faction-item .priority {
+  line-height: 50px;
+  font-size: 2em;
+}
+.faction-item-pic img {
+  background: #fff;
+}
+.faction-item-name h4 {
+  padding: 0;
+  margin: 0;
+  font-size: 1.375em;
+}
+.faction-item-row {
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 0.5em;
+  align-items: center;
+  transition-duration: .2s;
+  transform-origin: center bottom 0px;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+}
+.faction-item-row__hasPriority {
+  transform: matrix(0.98, 0, 0, 0.98, 0, 0);
+}
+.faction-item-row figure {
+  margin: 0;
+  padding: 0;
+}
+.faction-item-row img {
+  width: 75%;
+  border-radius: 50%;
+  padding: 5px;
+  border: 2px solid black;
+}
 
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}

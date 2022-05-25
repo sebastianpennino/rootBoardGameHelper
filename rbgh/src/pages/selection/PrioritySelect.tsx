@@ -33,9 +33,10 @@ export function PrioritySelect() {
   const [currentPlayer, setCurrentPlayer] = useState<Player>(players[0])
   const [availablefactions, setAvailableFactions] = useState<PrioritizableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
-  const [lock, setLock] = useState<boolean>(false)
   const [selection, setSelection] = useState<PrioritySelection[]>([])
-  const [priority, setPriority] = useState<number>(1)
+
+  const emptyPriority = [0, 0, 0, 0, 0, 0]
+  const [priorityArr, setPriorityArr] = useState<number[]>([...emptyPriority])
 
   const setUpNextLoop = () => {
     // Save current selection
@@ -66,25 +67,47 @@ export function PrioritySelect() {
       return nextLoop
     })
     // Reset priority
-    setPriority(1)
-    // Unlock
-    setLock(false)
+    setPriorityArr([...emptyPriority])
   }
 
   const selectFaction = (faction: PrioritizableFaction) => {
-    setAvailableFactions((oldSelection: PrioritizableFaction[]) => {
-      const foundIdx = oldSelection.findIndex((f: PrioritizableFaction) => f.id === faction.id)
-      if (oldSelection[foundIdx].priority === 99) {
-        oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: priority }
-      }
-      return [...oldSelection]
-    })
-    setPriority((priority) => {
-      if (priority >= PRIORITY_SELECTION) {
-        setLock(true)
-      }
-      return priority + 1
-    })
+    const savedPriority = faction.priority
+    const findNextemptySlotIdx = priorityArr.findIndex((slot) => slot === 0)
+
+    if (savedPriority !== 99) {
+      setPriorityArr((priorityArr) => {
+        let newPriorityArr = [...priorityArr]
+        newPriorityArr = priorityArr.map((slot) => {
+          if (slot === faction.id) {
+            return 0
+          }
+          return slot
+        })
+        return newPriorityArr
+      })
+      setAvailableFactions((oldSelection: PrioritizableFaction[]) => {
+        const foundIdx = oldSelection.findIndex((f: PrioritizableFaction) => f.id === faction.id)
+        if (oldSelection[foundIdx].priority !== 99) {
+          oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: 99 }
+        }
+        return [...oldSelection]
+      })
+    } else if (findNextemptySlotIdx !== -1) {
+      setPriorityArr((priorityArr) => {
+        let newPriorityArr = [...priorityArr]
+        newPriorityArr[findNextemptySlotIdx] = faction.id
+        return newPriorityArr
+      })
+      setAvailableFactions((oldSelection: PrioritizableFaction[]) => {
+        const foundIdx = oldSelection.findIndex((f: PrioritizableFaction) => f.id === faction.id)
+        if (oldSelection[foundIdx].priority === 99) {
+          oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: findNextemptySlotIdx }
+        }
+        return [...oldSelection]
+      })
+    } else {
+      // need to un-assing to have space!
+    }
   }
 
   const finalize = () => {
@@ -102,7 +125,6 @@ export function PrioritySelect() {
       }
       return previousSelected
     })
-    setLock(false)
     navigate(`/results?type=${Methods.PRIORITY}`, { replace: true })
   }
 
@@ -114,37 +136,53 @@ export function PrioritySelect() {
       <div>
         <h3>Prioritize Factions (1 to {PRIORITY_SELECTION}):</h3>
         <div>
-          <ul className="faction-grid">
+          <ul className="faction-list">
             {availablefactions.map((faction: PrioritizableFaction) => (
-              <button
-                onClick={() => {
-                  if (!lock) {
-                    selectFaction(faction)
-                  }
-                }}
-                disabled={faction.priority < 99}
+              <li
+                key={faction.id}
+                className={`faction-item faction-priority-${faction.priority < 99 ? 'on' : 'off'} 
+                  faction-color-${faction.backColor}`}
               >
-                {faction.name} {faction.priority < 99 ? `(${faction.priority})` : ''}
-                <figure className="faction-picture">
-                  <img src={faction.icon} alt={faction.name} />
-                </figure>
-              </button>
+                <button
+                  className={`faction-item-row ${faction.priority < 99 ? 'faction-item-row__hasPriority' : ''}`}
+                  onClick={() => {
+                    selectFaction(faction)
+                  }}
+                  disabled={faction.priority < 99 && false}
+                >
+                  <figure className="faction-item-column faction-item-pic">
+                    <img src={faction.icon} alt={faction.name} />
+                  </figure>
+                  <div className="faction-item-column faction-item-name">
+                    <h4>{faction.name}</h4>
+                    <span>(Reach: {faction.reach})</span>
+                  </div>
+                  <div className="faction-item-column faction-item-priority circle">
+                    <span className="priority">{faction.priority < 99 ? faction.priority + 1 : ''}</span>
+                  </div>
+                </button>
+              </li>
             ))}
           </ul>
         </div>
       </div>
 
-      {/* <small><pre>{JSON.stringify({selection}, null, 2)}</pre></small> */}
+      {/* <small><pre>{JSON.stringify({ selection }, null, 2)}</pre></small> */}
 
       <div>
         {loop < players.length - 1 ? (
-          <button onClick={setUpNextLoop} disabled={!lock}>
+          <button
+            onClick={setUpNextLoop}
+            disabled={
+              priorityArr.reduce((acc, curr) => {
+                return acc + (curr !== 0 ? 1 : 0)
+              }, 0) < 6
+            }
+          >
             Save & Continue
           </button>
         ) : (
-          <button onClick={finalize} disabled={!lock}>
-            Finalize
-          </button>
+          <button onClick={finalize}>Finalize</button>
         )}
       </div>
     </div>
