@@ -17,6 +17,9 @@ const backButtonSwitch = {
   [Methods.RANDOM]: () => {
     return <NavLink to="/faction-selection">Back to Faction Selection</NavLink>
   },
+  [Methods.LIST]: () => {
+    return <NavLink to="/faction-X">Next: X Selection</NavLink>
+  },
 }
 
 function ResultRow({ playerName, faction }: { playerName: string; faction: Faction }) {

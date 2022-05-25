@@ -1,6 +1,7 @@
 .rbgh {
   padding: 0;
   margin: 0;
+  /* background-color: #222222; */
 }
 .rbgh .content {
   padding: 0 5px;
@@ -29,7 +30,6 @@
   background-color: bisque;
 }
 .navigation li a.active,
-.navigation li a:hover{
+.navigation li a:hover {
   color: red;
 }
-

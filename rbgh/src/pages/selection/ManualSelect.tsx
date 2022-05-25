@@ -1,5 +1,5 @@
 import { players as importedPlayers } from '../../mock'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Faction, Methods, ResultEntries } from '../../types'
 import { minReachByPlayers, allFactions as importedFactions } from '../../data'
 import { NavLink } from 'react-router-dom'
@@ -23,12 +23,7 @@ export function ManualSelect() {
   const [currentPlayer, setCurrentPlayer] = useState<any>(players[0])
   const [availablefactions, setAvailableFactions] = useState<SelectableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
-  const [lock, setLock] = useState<boolean>(false)
   const [selection, setSelection] = useState<SelectableFaction[]>([])
-
-  useEffect(() => {
-    //setPlayers([...importedPlayers])
-  }, [])
 
   const setUpNextLoop = () => {
     // Save selection
@@ -51,8 +46,6 @@ export function ManualSelect() {
       setCurrentPlayer(players[nextLoop])
       return nextLoop
     })
-    // Unlock
-    //setLock(false)
   }
 
   const selectFaction = (faction: SelectableFaction, flag: boolean) => {
@@ -66,7 +59,6 @@ export function ManualSelect() {
         return f
       })
     })
-    //setLock(flag)
   }
 
   const finalize = () => {
@@ -85,7 +77,7 @@ export function ManualSelect() {
             {availablefactions.map((faction: SelectableFaction) => (
               <li key={faction.id} className="faction-card">
                 <button
-                  className="btn btn__grow-ellipse"
+                  className={`btn btn__grow-ellipse ${faction.selected ? 'selected' : ''}`}
                   style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
                   onClick={() => {
                     selectFaction(faction, true)

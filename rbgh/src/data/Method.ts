@@ -2,6 +2,7 @@ import { Methods, SubRandomMethods, ValidMethods, ValidSubRandomMethods } from '
 
 export const methodsOptions: Record<ValidMethods, string> = {
   [Methods.RANDOM]: 'Random',
+  [Methods.LIST]: 'Random Recommended List',
   [Methods.PICK]: 'Manual Selection',
   [Methods.PRIORITY]: 'Priority Selection',
 }
