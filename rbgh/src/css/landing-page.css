@@ -99,27 +99,6 @@ form .question input[type='text']:valid ~ label {
   transform: translate(5px, -30px) scale(0.6);
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    top: -60px;
-  }
-  100% {
-    opacity: 1;
-    top: 0px;
-  }
-}
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-    top: 0px;
-  }
-  100% {
-    opacity: 0;
-    top: -60px;
-  }
-}
 
 .method-list {
   display: grid;
@@ -154,21 +133,3 @@ form .question input[type='text']:valid ~ label {
 .method-list .method-item .btn.selected {
   border: 6px solid #ff4a56;
 }
-
-.btn.btn__slide-from-left::after {
-  transition: all 0.35s;
-}
-.btn.btn__slide-from-left.selected::after {
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  transition: all 0.35s;
-}
-.btn.btn__slide-from-left::after {
-  top: 0;
-  bottom: 0;
-  left: -100%;
-  right: 100%;
-}
-

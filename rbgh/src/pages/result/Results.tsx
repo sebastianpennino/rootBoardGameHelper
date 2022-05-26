@@ -18,7 +18,7 @@ const backButtonSwitch = {
     return <NavLink to="/faction-selection">Back to Faction Selection</NavLink>
   },
   [Methods.LIST]: () => {
-    return <NavLink to="/faction-X">Next: X Selection</NavLink>
+    return <NavLink to="/">Back to start</NavLink>
   },
 }
 
@@ -34,12 +34,26 @@ function ResultRow({ playerName, faction }: { playerName: string; faction: Facti
   )
 }
 
+interface IBackButton {
+  methodName: ValidMethods | string
+}
+const BackButton = ({ methodName }: IBackButton) => {
+  if (
+    methodName !== Methods.LIST &&
+    methodName !== Methods.RANDOM &&
+    methodName !== Methods.PICK &&
+    methodName !== Methods.PRIORITY
+  ) {
+    return <NavLink to="/">Back to start</NavLink>
+  }
+  return backButtonSwitch[methodName]()
+}
+
 export function Results() {
   const [searchParams] = useSearchParams()
   const methodName = searchParams.get('type') as ValidMethods
 
   let fakeResults: CalculationResults = { type: methodName, seed: 0, results: [] }
-
   fakeResults = calculateResultsF({ factions: allFactions }, { players }).calculateRandomResults()
 
   return (
@@ -53,7 +67,7 @@ export function Results() {
       </div>
       <div>
         {methodName === Methods.RANDOM && <button>Re-roll!</button>}
-        {backButtonSwitch[methodName]()}
+        <BackButton methodName={methodName} />
       </div>
     </div>
   )

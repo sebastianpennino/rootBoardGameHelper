@@ -46,7 +46,6 @@
 .random-page .faction-grid .faction-card--exclude::after {
   content: url('./../assets/icons/cancel.svg');
 }
-
 .random-page .faction-grid .faction-card__title {
   font-size: 0.75em;
   text-align: center;
@@ -68,4 +67,3 @@
 .random-page .faction-grid .faction-card img {
   max-height: 50px;
 }
-/* .rbgh * {border: 1px solid darkblue} */

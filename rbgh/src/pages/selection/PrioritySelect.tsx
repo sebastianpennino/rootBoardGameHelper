@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { Faction, FactionNames, Methods, Player } from '../../types'
 import { useState } from 'react'
 import { allFactions as importedFactions } from '../../data'
@@ -10,16 +10,15 @@ import '../../css/select-page.css'
 export interface PrioritizableFaction extends Faction {
   priority: number
 }
+export interface PrioritizableFactionWithId extends PrioritizableFaction {
+  playerOwnerId: number
+}
 export interface PrioritySelection {
   player: Player
   selection: PrioritizableFaction[]
 }
 
-const PRIORITY_SELECTION: number = 6
-
 export function PrioritySelect() {
-  let navigate = useNavigate()
-
   const cleanFactions: PrioritizableFaction[] = importedFactions
     .filter((faction: Faction) => {
       return faction.name !== FactionNames.VAGABOND2
@@ -35,7 +34,8 @@ export function PrioritySelect() {
   const [loop, setLoop] = useState<number>(0)
   const [selection, setSelection] = useState<PrioritySelection[]>([])
 
-  const emptyPriority = [0, 0, 0, 0, 0, 0]
+  const PRIORITY_SELECTION: number = 6
+  const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
   const [priorityArr, setPriorityArr] = useState<number[]>([...emptyPriority])
 
   const setUpNextLoop = () => {
@@ -60,6 +60,13 @@ export function PrioritySelect() {
         priority: 99,
       }))
     })
+    if (loop === players.length - 1) {
+      setLoop((loop) => {
+        const nextLoop = loop + 1
+        return nextLoop
+      })
+      return
+    }
     // Increase the loop, set currentPlayer for next cycle
     setLoop((loop) => {
       const nextLoop = loop + 1
@@ -110,28 +117,10 @@ export function PrioritySelect() {
     }
   }
 
-  const finalize = () => {
-    // Save current selection
-    setSelection((previousSelected: any) => {
-      const found = availablefactions.filter((faction) => faction.priority !== 99)
-      if (found && found.length > 0) {
-        return [
-          ...previousSelected,
-          {
-            player: currentPlayer,
-            selection: [...found],
-          },
-        ]
-      }
-      return previousSelected
-    })
-    navigate(`/results?type=${Methods.PRIORITY}`, { replace: true })
-  }
-
   return (
     <div className="priority-page">
       <div>
-        {currentPlayer.name} - {loop + 1} of {players.length}
+        {currentPlayer?.name} - {loop + 1} of {players.length}
       </div>
       <div>
         {/* <h3>(1 to {PRIORITY_SELECTION}):</h3> */}
@@ -170,23 +159,28 @@ export function PrioritySelect() {
       {/* <small><pre>{JSON.stringify({ selection }, null, 2)}</pre></small> */}
 
       <div>
-        {loop < players.length - 1 ? (
+        {loop <= players.length - 1 ? (
           <button
             className="fake-btn-next"
             onClick={setUpNextLoop}
             disabled={
               priorityArr.reduce((acc, curr) => {
                 return acc + (curr !== 0 ? 1 : 0)
-              }, 0) < 6
+              }, 0) < PRIORITY_SELECTION
             }
           >
             Save & Continue
           </button>
         ) : (
-          <button className="fake-btn-next" onClick={finalize}>
-            Finalize
-          </button>
+          <div className="fake-btn">
+            <NavLink to={`/results?type=${Methods.PRIORITY}`} className={(n) => (n.isActive ? 'active' : '')}>
+              Finalize: Results Priority
+            </NavLink>
+          </div>
         )}
+        <div className="fake-btn">
+          <NavLink to="/">Back to start</NavLink>
+        </div>
       </div>
     </div>
   )

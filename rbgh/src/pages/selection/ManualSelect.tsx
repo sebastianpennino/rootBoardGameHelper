@@ -61,10 +61,6 @@ export function ManualSelect() {
     })
   }
 
-  const finalize = () => {
-    console.log('FINALIZE!!!!')
-  }
-
   return (
     <div className="manual-page">
       <div>
@@ -116,11 +112,12 @@ export function ManualSelect() {
           </button>
         ) : (
           <div className="fake-btn">
-            <NavLink to={`/results?type=${Methods.PICK}`} className={(n) => (n.isActive ? 'active' : '')}>
-              Next: Results Pick
-            </NavLink>
+            <NavLink to={`/results?type=${Methods.PICK}`}>Finalize: Results Pick</NavLink>
           </div>
         )}
+        <div className="fake-btn">
+          <NavLink to="/">Back to start</NavLink>
+        </div>
       </div>
     </div>
   )

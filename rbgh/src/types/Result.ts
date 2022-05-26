@@ -1,6 +1,6 @@
 import { PickSelection, PrioritySelection, RandomSelection } from '../pages/selection'
 import { Faction } from './Faction'
-import { ValidMethods, ValidSubRandomMethods } from './Method'
+import { ValidMethods } from './Method'
 import { Player } from './Player'
 
 export interface ResultEntries {
@@ -11,7 +11,6 @@ export interface ResultEntries {
 
 export interface CalculationResults {
   type: ValidMethods
-  subType?: ValidSubRandomMethods
   seed: number
   results: ResultEntries[]
   error?: string
@@ -22,4 +21,4 @@ export interface CommonCalcResultsDependencies {
   seed?: number
 }
 
-export type ValidCalcResultOptions = RandomSelection | PickSelection | PrioritySelection
+export type ValidCalcResultOptions = RandomSelection | PickSelection | PrioritySelection[]
