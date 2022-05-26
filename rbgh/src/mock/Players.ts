@@ -1,12 +1,12 @@
 import { Methods, SubRandomMethods, FactionNames, FactionStates } from '../types'
 
 export const players = [
-  { name: 'pepe', id: 1 },
-  { name: 'juancho', id: 2 },
-  { name: 'pedro', id: 3 },
-  { name: 'tony', id: 4 },
-  { name: 'wilfred', id: 5 },
-  { name: 'walter', id: 6 },
+  { name: 'pepe', id: 1, show: true },
+  { name: 'juancho', id: 2, show: true },
+  { name: 'pedro', id: 3, show: true },
+  { name: 'tony', id: 4, show: true },
+  { name: 'wilfred', id: 5, show: true },
+  { name: 'walter', id: 6, show: true },
 ]
 
 export const fakeResults = {

@@ -73,7 +73,7 @@ export function FactionSelection() {
 
   return (
     <div className="random-page">
-      <h3>Filter Possible Factions</h3>
+      {/* <h3>Filter Possible Factions</h3> */}
       <div className="factionSelection">
         <ul className="faction-grid">
           {factions.map((faction: Faction) => (
@@ -86,9 +86,11 @@ export function FactionSelection() {
           ))}
         </ul>
         {isValidSelection() && (
-          <NavLink to={`/results?type=${Methods.RANDOM}`} className={(n) => (n.isActive ? 'active' : '')}>
-            R: Random
-          </NavLink>
+          <div className="fake-btn">
+            <NavLink to={`/results?type=${Methods.RANDOM}`} className={(n) => (n.isActive ? 'active' : '')}>
+              Next: Results Random
+            </NavLink>
+          </div>
         )}
       </div>
     </div>

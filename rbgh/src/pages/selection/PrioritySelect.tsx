@@ -134,7 +134,7 @@ export function PrioritySelect() {
         {currentPlayer.name} - {loop + 1} of {players.length}
       </div>
       <div>
-        <h3>Prioritize Factions (1 to {PRIORITY_SELECTION}):</h3>
+        {/* <h3>(1 to {PRIORITY_SELECTION}):</h3> */}
         <div>
           <ul className="faction-list">
             {availablefactions.map((faction: PrioritizableFaction) => (
@@ -172,6 +172,7 @@ export function PrioritySelect() {
       <div>
         {loop < players.length - 1 ? (
           <button
+            className="fake-btn-next"
             onClick={setUpNextLoop}
             disabled={
               priorityArr.reduce((acc, curr) => {
@@ -182,7 +183,9 @@ export function PrioritySelect() {
             Save & Continue
           </button>
         ) : (
-          <button onClick={finalize}>Finalize</button>
+          <button className="fake-btn-next" onClick={finalize}>
+            Finalize
+          </button>
         )}
       </div>
     </div>

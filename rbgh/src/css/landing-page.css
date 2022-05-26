@@ -13,7 +13,7 @@ form {
   border-radius: 10px;
   padding-bottom: 30px;
 }
-.add-player{
+.add-player {
   position: absolute;
   bottom: -20px;
   right: 10px;
@@ -121,7 +121,6 @@ form .question input[type='text']:valid ~ label {
   }
 }
 
-
 .method-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -146,7 +145,7 @@ form .question input[type='text']:valid ~ label {
   background-color: #fff;
 }
 .method-list .method-item .btn {
-  transition: border .5s ease-in;
+  transition: border 0.5s ease-in;
   border: 6px solid transparent;
   border-radius: 5px;
   color: #ff4a56;

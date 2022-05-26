@@ -1,10 +1,14 @@
+body {
+  background: url('../assets/images/texture-r.jpg');
+}
+
 .rbgh {
   padding: 0;
   margin: 0;
-  /* background-color: #222222; */
+  
 }
 .rbgh .content {
-  padding: 0 5px;
+  padding: 5px;
 }
 .navigation ul {
   border: 1px solid black;
@@ -32,4 +36,22 @@
 .navigation li a.active,
 .navigation li a:hover {
   color: red;
+}
+
+
+
+
+
+.fake-btn-next,
+.fake-btn a:active,
+.fake-btn a:visited,
+.fake-btn a {
+  color: bisque;
+  text-decoration: none;
+  font-style: normal;
+  padding: 8px;
+  margin: 10px 0;
+  display: inline-block;
+  border-radius: 5px;
+  background: grey;
 }
