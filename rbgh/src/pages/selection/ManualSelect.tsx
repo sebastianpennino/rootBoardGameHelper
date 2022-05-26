@@ -71,7 +71,7 @@ export function ManualSelect() {
         {currentPlayer.name} - {loop + 1} of {players.length}
       </div>
       <div>
-        <h3>Available factions:</h3>
+        {/* <h3>Available factions:</h3> */}
         <div>
           <ol className="faction-grid">
             {availablefactions.map((faction: SelectableFaction) => (
@@ -111,11 +111,15 @@ export function ManualSelect() {
       </div>
       <div>
         {loop < players.length - 1 ? (
-          <button onClick={setUpNextLoop}>Save & Continue</button>
+          <button className="fake-btn-next" onClick={setUpNextLoop}>
+            Save & Continue
+          </button>
         ) : (
-          <NavLink to={`/results?type=${Methods.PICK}`} className={(n) => (n.isActive ? 'active' : '')}>
-            R: Pick
-          </NavLink>
+          <div className="fake-btn">
+            <NavLink to={`/results?type=${Methods.PICK}`} className={(n) => (n.isActive ? 'active' : '')}>
+              Next: Results Pick
+            </NavLink>
+          </div>
         )}
       </div>
     </div>

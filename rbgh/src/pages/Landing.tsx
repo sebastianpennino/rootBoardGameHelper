@@ -23,7 +23,7 @@ const nextButtonSwitch = {
     return <NavLink to="/faction-selection">Next: Faction Selection</NavLink>
   },
   [Methods.LIST]: () => {
-    return <NavLink to="/faction-X">Next: X Selection</NavLink>
+    return <NavLink to={`/results?type=${Methods.LIST}`}>Next: Results List</NavLink>
   },
 }
 
@@ -191,10 +191,14 @@ export function PlayerSelection() {
     console.log('handleSubmit!')
   }
 
+  const currentSelectedMethod = (): ValidMethods => {
+    return methodList.find((method) => method.selected === true)?.name ?? methodList[0].name
+  }
+
   return (
     <>
       <div>
-        <h3>Choose Method</h3>
+        {/* <h3>Choose Method</h3> */}
         <IconContext.Provider value={{ color: '#ff4a56', size: '3em' }}>
           <ol className="method-list">
             {methodList.map((method: MyMethod) => {
@@ -217,7 +221,7 @@ export function PlayerSelection() {
         </IconContext.Provider>
       </div>
       <form noValidate onSubmit={handleSubmit}>
-        <h3>Players</h3>
+        {/* <h3>Players</h3> */}
         <ol className="player-grid">
           {playerList.map((player: any, idx: number) => (
             <PlayerItem
@@ -237,7 +241,7 @@ export function PlayerSelection() {
         </button>
       </form>
 
-      {/* <div>{isValidSelection() && isValidMethodSelection() && nextButtonSwitch[method]()}</div> */}
+      <div className="fake-btn">{nextButtonSwitch[currentSelectedMethod()]()}</div>
     </>
   )
 }

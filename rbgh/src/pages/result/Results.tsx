@@ -44,7 +44,7 @@ export function Results() {
 
   return (
     <div className="results-page">
-      <h3>Results ({methodName})</h3>
+      {/* <h3>({methodName})</h3> */}
       <div className="container">
         {fakeResults?.results.map((entry: ResultEntries) => (
           <ResultRow key={entry.id} playerName={entry.name} faction={entry.faction} />
