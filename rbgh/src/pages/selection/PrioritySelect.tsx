@@ -32,24 +32,30 @@ export function PrioritySelect() {
   const [currentPlayer, setCurrentPlayer] = useState<Player>(players[0])
   const [availablefactions, setAvailableFactions] = useState<PrioritizableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
-  const [selection, setSelection] = useState<PrioritySelection[]>([])
+  const [selection, setSelection] = useState<PrioritizableFactionWithId[]>([])
 
-  const PRIORITY_SELECTION: number = 6
+  const PRIORITY_SELECTION: number = 3
   const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
   const [priorityArr, setPriorityArr] = useState<number[]>([...emptyPriority])
 
   const setUpNextLoop = () => {
     // Save current selection
-    setSelection((previousSelected: PrioritySelection[]) => {
-      const found: PrioritizableFaction[] = availablefactions.filter((faction) => faction.priority !== 99)
+    setSelection((previousSelected: PrioritizableFactionWithId[]) => {
+      const found: PrioritizableFactionWithId[] = availablefactions
+        .filter((faction) => faction.priority !== 99)
+        .sort((a: PrioritizableFaction, b: PrioritizableFaction) => a.priority - b.priority)
+        .map((faction) => ({
+          ...faction,
+          playerOwnerId: currentPlayer.id,
+          priority: (loop + 1) * 10 + faction.priority,
+        }))
+
       if (found && found.length > 0) {
-        return [
-          ...previousSelected,
-          {
-            player: currentPlayer,
-            selection: found.sort((a: PrioritizableFaction, b: PrioritizableFaction) => a.priority - b.priority),
-          },
-        ]
+        console.log(previousSelected)
+        const rst = [...previousSelected].concat(found)
+        console.log(rst)
+        return rst
+        return [...previousSelected].concat(found)
       }
       return previousSelected
     })
@@ -155,8 +161,10 @@ export function PrioritySelect() {
           </ul>
         </div>
       </div>
-
-      {/* <small><pre>{JSON.stringify({ selection }, null, 2)}</pre></small> */}
+      {/* 
+      <small>
+        <pre>{JSON.stringify({ selection }, null, 2)}</pre>
+      </small> */}
 
       <div>
         {loop <= players.length - 1 ? (

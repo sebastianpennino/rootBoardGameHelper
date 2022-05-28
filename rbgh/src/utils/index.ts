@@ -1,1 +1,6 @@
 export * from './Shuffle'
+export * from './CalculateResults'
+export * from './CalculateList'
+export * from './CalculatePick'
+export * from './CalculatePriority'
+export * from './CalculateRandom'

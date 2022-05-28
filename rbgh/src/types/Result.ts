@@ -1,4 +1,4 @@
-import { PickSelection, PrioritySelection, RandomSelection } from '../pages/selection'
+import { PickSelection, PrioritizableFactionWithId, RandomSelection } from '../pages/selection'
 import { Faction } from './Faction'
 import { ValidMethods } from './Method'
 import { Player } from './Player'
@@ -6,7 +6,7 @@ import { Player } from './Player'
 export interface ResultEntries {
   id: number
   name: string
-  faction: Faction
+  faction?: Faction | PrioritizableFactionWithId
 }
 
 export interface CalculationResults {
@@ -21,4 +21,4 @@ export interface CommonCalcResultsDependencies {
   seed?: number
 }
 
-export type ValidCalcResultOptions = RandomSelection | PickSelection | PrioritySelection[]
+export type ValidCalcResultOptions = RandomSelection | PickSelection | PrioritizableFactionWithId[] | null

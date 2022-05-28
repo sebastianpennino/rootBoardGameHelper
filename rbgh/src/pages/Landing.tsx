@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { allFactions as factions } from '../data'
-import { Methods, ValidMethods } from '../types'
+import { Methods, Player, ValidMethods } from '../types'
 import cancel from '../assets/icons/cancel-red.svg'
 import { IconContext } from 'react-icons'
 import { BsHandIndex } from 'react-icons/bs'
@@ -75,12 +75,6 @@ function PlayerItem({ player, idx, removeFn, updateFn, disableRemove, hideFn, st
   )
 }
 
-const initial = [
-  { name: '', id: 1, show: true },
-  { name: '', id: 2, show: true },
-  { name: '', id: 3, show: true },
-]
-
 interface MyMethod {
   name: ValidMethods
   id: number
@@ -120,45 +114,17 @@ const allMethods: MyMethod[] = [
   },
 ]
 
-export function PlayerSelection() {
-  const [playerList, setPlayerList] = useState<any>([...initial])
+interface PlayerSelectionProps {
+  playerList: Player[]
+  addPlayer: (id: any) => void
+  removePlayer: (id: any) => void
+  hidePlayer: (id: any) => void
+  updatePlayer: (id: any, newName: string) => void
+}
 
-  const addPlayer = () => {
-    setPlayerList((prevList: any) => [...prevList, { name: '', id: new Date().getTime(), show: true }])
-  }
-
-  const removePlayer = (id: any) => {
-    console.log('REMOVE player:, ', id)
-    setPlayerList((prevList: any) => {
-      return prevList.filter((player: any) => player.id !== id)
-    })
-  }
-
-  const hidePlayer = (id: any) => {
-    console.log('HIDE player:, ', id)
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1 && prevList[foundIdx].show) {
-        prevList[foundIdx].show = false
-        return [...prevList]
-      }
-      return prevList
-    })
-  }
-
-  const updatePlayer = (id: any, newName: string) => {
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1) {
-        let player = {
-          ...prevList[foundIdx],
-          name: newName,
-        }
-        prevList[foundIdx] = player
-      }
-      return [...prevList]
-    })
-  }
+export function PlayerSelection(props: PlayerSelectionProps) {
+  //const [playerList, setPlayerList] = useState<any>([...initial])
+  const { playerList, addPlayer, removePlayer, hidePlayer, updatePlayer } = props
 
   const isMin = playerList.length === 1
   const isMax = playerList.length === 6
@@ -239,6 +205,8 @@ export function PlayerSelection() {
         <button onClick={addPlayer} disabled={isMax} className="add-player" title="add player">
           Add player
         </button>
+
+        {/* <small><pre>{JSON.stringify({playerList}, null, 2)}</pre></small> */}
       </form>
 
       <div className="fake-btn">{nextButtonSwitch[currentSelectedMethod()]()}</div>
