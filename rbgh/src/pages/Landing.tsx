@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { allFactions as factions } from '../data'
 import { Methods, Player, ValidMethods } from '../types'
@@ -11,6 +11,7 @@ import { HiSortDescending } from 'react-icons/hi'
 // Styles
 import '../css/landing-page.css'
 import Fade from '../components/Fade'
+import RBGHContext from '../RBGHContext'
 
 const nextButtonSwitch = {
   [Methods.PRIORITY]: () => {
@@ -122,9 +123,8 @@ interface PlayerSelectionProps {
   updatePlayer: (id: any, newName: string) => void
 }
 
-export function PlayerSelection(props: PlayerSelectionProps) {
-  //const [playerList, setPlayerList] = useState<any>([...initial])
-  const { playerList, addPlayer, removePlayer, hidePlayer, updatePlayer } = props
+export function PlayerSelection() {
+  const { playerList, addPlayer, removePlayer, hidePlayer, updatePlayer } = useContext<any>(RBGHContext)
 
   const isMin = playerList.length === 1
   const isMax = playerList.length === 6

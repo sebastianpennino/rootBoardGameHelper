@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { AppRoutes } from './Routes'
 import { Header } from './components/Header'
+import { Player } from './types'
+import RBGHContext from './RBGHContext'
 
 // Styles
 import './css/App.css'
-import { Player } from './types'
 
 const initialPlayerList = [
   {
@@ -55,17 +56,25 @@ function App() {
     })
   }
 
-  const passProps = { playerList, addPlayer, removePlayer, hidePlayer, updatePlayer }
+  const passProps = {
+    playerList,
+    addPlayer,
+    removePlayer,
+    hidePlayer,
+    updatePlayer,
+  }
 
   return (
-    <div className="rbgh">
-      <Router>
-        <Header />
-        <main className="content">
-          <AppRoutes {...passProps} />
-        </main>
-      </Router>
-    </div>
+    <RBGHContext.Provider value={passProps}>
+      <div className="rbgh">
+        <Router>
+          <Header />
+          <main className="content">
+            <AppRoutes />
+          </main>
+        </Router>
+      </div>
+    </RBGHContext.Provider>
   )
 }
 

@@ -2,21 +2,12 @@ import { Routes, Route } from 'react-router-dom'
 import { PlayerSelection, NoMatch } from './pages'
 import { Results } from './pages/result'
 import { FactionSelection, ManualSelect, PrioritySelect } from './pages/selection'
-import { Player } from './types'
 
-interface AppProps {
-  playerList: Player[]
-  addPlayer: (id: any) => void
-  removePlayer: (id: any) => void
-  hidePlayer: (id: any) => void
-  updatePlayer: (id: any, newName: string) => void
-}
-
-export const AppRoutes = (props: AppProps) => {
+export const AppRoutes = () => {
   return (
     <Routes>
-      <Route index element={<PlayerSelection {...props} />} />
-      <Route path="player-selection" element={<PlayerSelection {...props} />} />
+      <Route index element={<PlayerSelection />} />
+      <Route path="player-selection" element={<PlayerSelection />} />
       <Route path="faction-selection" element={<FactionSelection />} />
       <Route path="manual-select" element={<ManualSelect />} />
       <Route path="priority-select" element={<PrioritySelect />} />
