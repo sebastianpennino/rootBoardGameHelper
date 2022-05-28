@@ -1,67 +1,93 @@
-import React, { useState } from 'react'
+import React, { Reducer, useReducer } from 'react'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { AppRoutes } from './Routes'
 import { Header } from './components/Header'
 import { Player } from './types'
 import RBGHContext from './RBGHContext'
-
 // Styles
 import './css/App.css'
 
 const initialPlayerList = [
   {
-    name: 'StartingPlayer',
+    name: 'RenameMe',
     id: 1,
     show: true,
   },
 ]
 
-function App() {
-  const [playerList, setPlayerList] = useState<Player[]>([...initialPlayerList])
+export interface PlayerAction {
+  type: ValidPlayerReducerActionTypes
+  payload: { id: number; name: string }
+}
 
-  const addPlayer = () => {
-    setPlayerList((prevList: any) => [...prevList, { name: '', id: new Date().getTime(), show: true }])
-  }
+export enum PlayerReducerActionTypes {
+  ADD_PLAYER = 'ADD_PLAYER',
+  HIDE_PLAYER = 'HIDE_PLAYER',
+  UPDATE_PLAYER = 'UPDATE_PLAYER',
+  REMOVE_PLAYER = 'REMOVE_PLAYER',
+}
 
-  const removePlayer = (id: any) => {
-    console.log('REMOVE player:, ', id)
-    setPlayerList((prevList: any) => {
-      return prevList.filter((player: any) => player.id !== id)
-    })
-  }
+export type ValidPlayerReducerActionTypes =
+  | PlayerReducerActionTypes.ADD_PLAYER
+  | PlayerReducerActionTypes.HIDE_PLAYER
+  | PlayerReducerActionTypes.REMOVE_PLAYER
+  | PlayerReducerActionTypes.UPDATE_PLAYER
 
-  const hidePlayer = (id: any) => {
-    console.log('HIDE player:, ', id)
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1 && prevList[foundIdx].show) {
-        prevList[foundIdx].show = false
-        return [...prevList]
+const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
+  let id: number
+  let index: number
+  const MAX_PLAYERS = 6
+
+  switch (action.type) {
+    case PlayerReducerActionTypes.ADD_PLAYER:
+      if (state.length < MAX_PLAYERS) {
+        console.log(`Running playerReducer, final state is:`, { state, action })
+        return [...state, { name: '', id: new Date().getTime(), show: true }]
       }
-      return prevList
-    })
-  }
-
-  const updatePlayer = (id: any, newName: string) => {
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1) {
+      return state
+    case PlayerReducerActionTypes.HIDE_PLAYER:
+      id = action.payload?.id
+      index = state.findIndex((player: Player) => player.id === id)
+      if (id && index !== -1 && state[index].show) {
+        state[index].show = false
+        console.log(`Running playerReducer, final state is:`, { state, action })
+        return [...state]
+      }
+      return state
+    case PlayerReducerActionTypes.UPDATE_PLAYER:
+      const newName = action.payload?.name
+      id = action.payload.id
+      index = state.findIndex((player: Player) => player.id === id)
+      if (id && index !== -1) {
         let player = {
-          ...prevList[foundIdx],
+          ...state[index],
           name: newName,
         }
-        prevList[foundIdx] = player
+        state[index] = player
+        console.log(`Running playerReducer, final state is:`, { state, action })
+        return [...state]
       }
-      return [...prevList]
-    })
+      return state
+    case PlayerReducerActionTypes.REMOVE_PLAYER:
+      id = action.payload?.id
+      if (id) {
+        console.log(`Running playerReducer, final state is:`, { state, action })
+        return state.filter((player: Player) => player.id !== id)
+      }
+      return state
+    default:
+      throw new Error('unknown action!')
   }
+}
+
+function App() {
+  const [playerList, playerDispatch] = useReducer<Reducer<Player[], PlayerAction>>(playerReducer, [
+    ...initialPlayerList,
+  ])
 
   const passProps = {
     playerList,
-    addPlayer,
-    removePlayer,
-    hidePlayer,
-    updatePlayer,
+    playerDispatch,
   }
 
   return (
