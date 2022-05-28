@@ -60,9 +60,23 @@ export const nextStateCycle: Record<ValidFactionStates, ValidFactionStates> = {
   [FactionStates.EXCLUDE]: FactionStates.INCLUDE,
 }
 
-const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
-  return allFactions.map((factionName: ValidFactions, idx) => ({
-    id: idx + 1,
+export const factionsIndex: Record<ValidFactions, number> = {
+  [FactionNames.MARQUISE_THE_CAT]: 1,
+  [FactionNames.EYRIE]: 2,
+  [FactionNames.WOODLAND_ALLIANCE]: 3,
+  [FactionNames.VAGABOND1]: 4,
+  [FactionNames.VAGABOND2]: 5,
+  [FactionNames.RIVERFOLK_COMPANY]: 6,
+  [FactionNames.LIZARD_CULT]: 7,
+  [FactionNames.UNDERGROUND_DUCHY]: 8,
+  [FactionNames.CORVID_CONSPIRACY]: 9,
+  [FactionNames.KEEPERS_IN_IRON]: 10,
+  [FactionNames.LORD_OF_THE_HUNDREDS]: 11,
+}
+
+export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
+  return allFactions.map((factionName: ValidFactions) => ({
+    id: factionsIndex[factionName],
     name: factionName,
     icon: factionsButtonIcon[factionName],
     reach: factionsReach[factionName],

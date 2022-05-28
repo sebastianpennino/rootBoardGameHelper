@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { allFactions as factions } from '../data'
-import { Methods, ValidMethods } from '../types'
+import { Methods, Player, ValidMethods } from '../types'
 import cancel from '../assets/icons/cancel-red.svg'
 import { IconContext } from 'react-icons'
 import { BsHandIndex } from 'react-icons/bs'
@@ -11,6 +11,8 @@ import { HiSortDescending } from 'react-icons/hi'
 // Styles
 import '../css/landing-page.css'
 import Fade from '../components/Fade'
+import RBGHContext from '../RBGHContext'
+import { PlayerReducerActionTypes } from '../App'
 
 const nextButtonSwitch = {
   [Methods.PRIORITY]: () => {
@@ -27,21 +29,20 @@ const nextButtonSwitch = {
   },
 }
 
-function PlayerItem({ player, idx, removeFn, updateFn, disableRemove, hideFn, startHideAnimation }: any) {
+function PlayerItem({ player, idx, disableRemove }: any) {
+  // TODO: this might not be necesary anymore!
   const [currentPlayer, setCurrentPlayer] = useState<any>(player)
+  const { playerDispatch } = useContext<any>(RBGHContext)
+
   return (
     <Fade
       show={player.show}
       callback={() => {
-        removeFn(player.id)
+        playerDispatch({ type: PlayerReducerActionTypes.REMOVE_PLAYER, payload: { id: player.id } })
       }}
     >
       <li className="player-item">
-        <div
-          className="question"
-          style={{ animation: `${player.show ? 'fadeIn' : 'fadeOut'} 1s` }}
-          // onAnimationEnd={onAnimationEnd}
-        >
+        <div className="question" style={{ animation: `${player.show ? 'fadeIn' : 'fadeOut'} 1s` }}>
           <input
             type="text"
             required
@@ -52,16 +53,14 @@ function PlayerItem({ player, idx, removeFn, updateFn, disableRemove, hideFn, st
             }}
             onBlur={(e) => {
               const val = e.target.value
-              updateFn(player.id, val)
+              playerDispatch({ type: PlayerReducerActionTypes.UPDATE_PLAYER, payload: { name: val, id: player.id } })
             }}
             tabIndex={idx}
           />
           <label>Player {idx + 1}</label>
           <button
             onClick={() => {
-              hideFn(player.id) //when using hiding, the removeFn gets triggered onAnimationEnd instead of here
-              // startHideAnimation(player.id)
-              // removeFn(player.id)
+              playerDispatch({ type: PlayerReducerActionTypes.HIDE_PLAYER, payload: { id: player.id } })
             }}
             disabled={disableRemove}
             className="remove-player"
@@ -74,12 +73,6 @@ function PlayerItem({ player, idx, removeFn, updateFn, disableRemove, hideFn, st
     </Fade>
   )
 }
-
-const initial = [
-  { name: '', id: 1, show: true },
-  { name: '', id: 2, show: true },
-  { name: '', id: 3, show: true },
-]
 
 interface MyMethod {
   name: ValidMethods
@@ -121,47 +114,11 @@ const allMethods: MyMethod[] = [
 ]
 
 export function PlayerSelection() {
-  const [playerList, setPlayerList] = useState<any>([...initial])
-
-  const addPlayer = () => {
-    setPlayerList((prevList: any) => [...prevList, { name: '', id: new Date().getTime(), show: true }])
-  }
-
-  const removePlayer = (id: any) => {
-    console.log('REMOVE player:, ', id)
-    setPlayerList((prevList: any) => {
-      return prevList.filter((player: any) => player.id !== id)
-    })
-  }
-
-  const hidePlayer = (id: any) => {
-    console.log('HIDE player:, ', id)
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1 && prevList[foundIdx].show) {
-        prevList[foundIdx].show = false
-        return [...prevList]
-      }
-      return prevList
-    })
-  }
-
-  const updatePlayer = (id: any, newName: string) => {
-    setPlayerList((prevList: any) => {
-      const foundIdx = prevList.findIndex((player: any) => player.id === id)
-      if (foundIdx !== -1) {
-        let player = {
-          ...prevList[foundIdx],
-          name: newName,
-        }
-        prevList[foundIdx] = player
-      }
-      return [...prevList]
-    })
-  }
+  const { playerList, playerDispatch } = useContext<any>(RBGHContext)
 
   const isMin = playerList.length === 1
   const isMax = playerList.length === 6
+
   const isValidSelection = () => {
     return playerList.length >= 3 && !playerList.some((player: any) => player.name.length < 2)
   }
@@ -223,22 +180,22 @@ export function PlayerSelection() {
       <form noValidate onSubmit={handleSubmit}>
         {/* <h3>Players</h3> */}
         <ol className="player-grid">
-          {playerList.map((player: any, idx: number) => (
-            <PlayerItem
-              player={player}
-              key={player.id}
-              removeFn={removePlayer}
-              updateFn={updatePlayer}
-              disableRemove={isMin}
-              idx={idx}
-              hideFn={hidePlayer}
-              startHideAnimation={hidePlayer}
-            />
+          {playerList.map((player: Player, idx: number) => (
+            <PlayerItem player={player} key={idx} disableRemove={isMin} idx={idx} />
           ))}
         </ol>
-        <button onClick={addPlayer} disabled={isMax} className="add-player" title="add player">
+        <button
+          onClick={() => {
+            playerDispatch({ type: PlayerReducerActionTypes.ADD_PLAYER })
+          }}
+          disabled={isMax}
+          className="add-player"
+          title="add player"
+        >
           Add player
         </button>
+
+        {/* <small><pre>{JSON.stringify({playerList}, null, 2)}</pre></small> */}
       </form>
 
       <div className="fake-btn">{nextButtonSwitch[currentSelectedMethod()]()}</div>

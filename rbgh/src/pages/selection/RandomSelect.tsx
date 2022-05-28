@@ -88,10 +88,13 @@ export function FactionSelection() {
         {isValidSelection() && (
           <div className="fake-btn">
             <NavLink to={`/results?type=${Methods.RANDOM}`} className={(n) => (n.isActive ? 'active' : '')}>
-              Next: Results Random
+              Finalize: Results Random
             </NavLink>
           </div>
         )}
+        <div className="fake-btn">
+          <NavLink to="/">Back to start</NavLink>
+        </div>
       </div>
     </div>
   )

@@ -1,8 +1,8 @@
 import { useSearchParams, NavLink } from 'react-router-dom'
-import { CalculationResults, Faction, Methods, ResultEntries, ValidMethods } from '../../types'
+import { CalculationResults, Faction, Methods, Player, ResultEntries, ValidMethods } from '../../types'
 import { calculateResultsF } from '../../utils/CalculateResults'
 import { allFactions } from '../../data'
-import { players } from '../../mock'
+import { players, testData } from '../../mock'
 
 // Styles
 import '../../css/result-page.css'
@@ -18,20 +18,37 @@ const backButtonSwitch = {
     return <NavLink to="/faction-selection">Back to Faction Selection</NavLink>
   },
   [Methods.LIST]: () => {
-    return <NavLink to="/faction-X">Next: X Selection</NavLink>
+    return <NavLink to="/">Back to start</NavLink>
   },
 }
 
-function ResultRow({ playerName, faction }: { playerName: string; faction: Faction }) {
+function ResultRow({ playerName, faction, playerId }: { playerName: string; playerId: number; faction?: Faction }) {
   return (
     <div className="row">
-      <div className="column-1">{playerName}</div>
+      <div className="column-1">
+        {playerName} {playerId}
+      </div>
       <div className="column-2">
-        {faction.name}
-        {faction.vagabondData ? `- ${faction.vagabondData}` : ''} ({faction.reach}){' '}
+        {faction?.name}
+        {faction?.vagabondData ? `- ${faction?.vagabondData}` : ''} ({faction?.reach}){' '}
       </div>
     </div>
   )
+}
+
+interface IBackButton {
+  methodName: ValidMethods | string
+}
+const BackButton = ({ methodName }: IBackButton) => {
+  if (
+    methodName !== Methods.LIST &&
+    methodName !== Methods.RANDOM &&
+    methodName !== Methods.PICK &&
+    methodName !== Methods.PRIORITY
+  ) {
+    return <NavLink to="/">Back to start</NavLink>
+  }
+  return backButtonSwitch[methodName]()
 }
 
 export function Results() {
@@ -39,21 +56,32 @@ export function Results() {
   const methodName = searchParams.get('type') as ValidMethods
 
   let fakeResults: CalculationResults = { type: methodName, seed: 0, results: [] }
+  const r = players.map((player: Player, idx: number) => ({
+    id: player.id,
+    name: player.name,
+    faction: allFactions[idx],
+  }))
 
-  fakeResults = calculateResultsF({ factions: allFactions }, { players }).calculateRandomResults()
+  // fakeResults = calculateResultsF({
+  //   opts: { factions: allFactions },
+  //   deps: { players, seed: 55 },
+  // }).calculateRandomResults()
+  // fakeResults = calculateResultsF({ opts: testData, deps: { players, seed: 55 } }).calculatePriorityResults()
+  // fakeResults = calculateResultsF({ opts: null, deps: { players, seed: 55 } }).calculateRandomResultsList()
+  //fakeResults = calculateResultsF({ opts: { results: r }, deps: { players, seed: 55 } }).calculatePickResults()
 
   return (
     <div className="results-page">
       {/* <h3>({methodName})</h3> */}
       <div className="container">
         {fakeResults?.results.map((entry: ResultEntries) => (
-          <ResultRow key={entry.id} playerName={entry.name} faction={entry.faction} />
+          <ResultRow key={entry.id} playerName={entry.name} playerId={entry.id} faction={entry.faction} />
         ))}
         {/* <small><pre>{JSON.stringify({fakeResults}, null, 2)}</pre></small> */}
       </div>
       <div>
         {methodName === Methods.RANDOM && <button>Re-roll!</button>}
-        {backButtonSwitch[methodName]()}
+        <BackButton methodName={methodName} />
       </div>
     </div>
   )

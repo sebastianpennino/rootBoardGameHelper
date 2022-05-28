@@ -1,18 +1,19 @@
 import React from 'react'
-import { AppNavigation } from '../Nav'
 import ologo from '../assets/images/favicon-32x32.png'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { Location } from 'history'
 
 // Styles
 import '../css/header.css'
+import { ValidMethods } from '../types'
 
 interface Props {
   pathname: string
+  methodName: string
 }
 
-const DynamicSubheader = ({ pathname }: Props) => {
-  let rst = <h2>Unknown location</h2>
+const DynamicSubheader = ({ pathname, methodName = 'unknown' }: Props) => {
+  const unknown = <h2>Unknown location</h2>
 
   switch (pathname) {
     case '/':
@@ -24,17 +25,20 @@ const DynamicSubheader = ({ pathname }: Props) => {
     case '/priority-select':
       return <h2>Prioritize Factions</h2>
     case '/results':
-      return <h2>Results</h2>
+      const capitalizedMethod = methodName?.charAt(0).toUpperCase() + methodName?.slice(1)
+      return <h2>Results - {capitalizedMethod}</h2>
     default:
       break
   }
 
-  return rst
+  return unknown
 }
 
 export const Header = () => {
   const location: Location = useLocation()
   const pathname = location.pathname
+  const [searchParams] = useSearchParams()
+  const methodName = searchParams.get('type') as ValidMethods
 
   return (
     <header>
@@ -43,7 +47,7 @@ export const Header = () => {
         <img src={ologo} alt="root boardgame logo" />
         <h1>Root Board Game Helper</h1>
       </div>
-      <DynamicSubheader pathname={pathname} />
+      <DynamicSubheader pathname={pathname} methodName={methodName} />
     </header>
   )
 }
