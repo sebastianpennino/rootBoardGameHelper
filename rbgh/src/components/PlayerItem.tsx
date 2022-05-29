@@ -9,15 +9,17 @@ export const PlayerItem = ({ player, idx, disableRemove }: any) => {
 
   return (
     <Fade
+      as="li"
       show={player.show}
+      except={idx === 0}
       callback={() => {
         if (player.show === false) {
           dispatch({ type: PlayerReducerActionTypes.REMOVE_PLAYER, payload: { id: player.id } })
         }
       }}
     >
-      <li className="player-item">
-        <div className="question" style={{ animation: `${player.show ? 'fadeIn' : 'fadeOut'} 1s` }}>
+      <div className="player-item">
+        <div className="question">
           <input
             type="text"
             required
@@ -27,6 +29,11 @@ export const PlayerItem = ({ player, idx, disableRemove }: any) => {
                 payload: { name: e.target.value, id: player.id },
               })
             }}
+            onKeyPress={(e) => {
+              if (e.code === 'Enter') {
+                e.preventDefault()
+              }
+            }}
             value={player.name}
             className="player-item-input"
             tabIndex={idx + 5}
@@ -34,7 +41,7 @@ export const PlayerItem = ({ player, idx, disableRemove }: any) => {
           <label>Player {idx + 1}</label>
           {!disableRemove && <RemovePlayerButton player={player} tabIndex={idx + 11} />}
         </div>
-      </li>
+      </div>
     </Fade>
   )
 }
