@@ -1,4 +1,9 @@
+import React from 'react'
 import { Player, PlayerAction, PlayerReducerActionTypes } from './types'
+
+const initialValue = {}
+
+export const RBGHContext = React.createContext({ ...initialValue })
 
 export const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
   let id: number

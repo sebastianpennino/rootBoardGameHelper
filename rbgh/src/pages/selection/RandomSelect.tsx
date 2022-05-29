@@ -72,7 +72,7 @@ export function FactionSelection() {
   }
 
   return (
-    <div className="random-page">
+    <article className="filter-page">
       {/* <h3>Filter Possible Factions</h3> */}
       <div className="factionSelection">
         <ul className="faction-grid">
@@ -96,6 +96,6 @@ export function FactionSelection() {
           <NavLink to="/">Back to start</NavLink>
         </div>
       </div>
-    </div>
+    </article>
   )
 }

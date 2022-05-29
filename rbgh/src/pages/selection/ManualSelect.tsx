@@ -1,13 +1,11 @@
-import { players as importedPlayers } from '../../mock'
-import { useState } from 'react'
-import { Faction, Methods, ResultEntries } from '../../types'
+import '../../css/select-page.css'
+import { Faction, Methods, Player, ResultEntries } from '../../types'
 import { minReachByPlayers, allFactions as importedFactions } from '../../data'
 import { NavLink } from 'react-router-dom'
+import { RBGHContext } from '../../Store'
+import { useContext, useEffect, useState } from 'react'
 
-// Styles
-import '../../css/select-page.css'
-
-interface SelectableFaction extends Faction {
+export interface SelectableFaction extends Faction {
   selected: boolean
 }
 export interface PickSelection {
@@ -19,11 +17,20 @@ export function ManualSelect() {
     ...faction,
     selected: false,
   }))
-  const [players, setPlayers] = useState<any>([...importedPlayers])
-  const [currentPlayer, setCurrentPlayer] = useState<any>(players[0])
+  // const [players, setPlayers] = useState<Player[]>([])
   const [availablefactions, setAvailableFactions] = useState<SelectableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
+
+  const { playerList: players } = useContext<any>(RBGHContext)
+  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
+
   const [selection, setSelection] = useState<SelectableFaction[]>([])
+
+  useEffect(() => {
+    if (players.length > 0) {
+      setCurrentPlayer(players[0])
+    }
+  }, [players])
 
   const setUpNextLoop = () => {
     // Save selection
@@ -61,64 +68,81 @@ export function ManualSelect() {
     })
   }
 
+  const calculateSelectedReach = () => {
+    const totalbeforeSelection =
+      selection.reduce((totalReach: number, faction: SelectableFaction) => {
+        return totalReach + faction.reach
+      }, 0) || 0
+    const currentSelection =
+      availablefactions.find((faction: SelectableFaction) => {
+        return faction.selected
+      })?.reach || 0
+    return totalbeforeSelection + currentSelection
+  }
+
   return (
-    <div className="manual-page">
-      <div>
-        {currentPlayer.name} - {loop + 1} of {players.length}
-      </div>
-      <div>
-        {/* <h3>Available factions:</h3> */}
-        <div>
-          <ol className="faction-grid">
-            {availablefactions.map((faction: SelectableFaction) => (
-              <li key={faction.id} className="faction-card">
-                <button
-                  className={`btn btn__grow-ellipse ${faction.selected ? 'selected' : ''}`}
-                  style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
-                  onClick={() => {
-                    selectFaction(faction, true)
-                  }}
-                >
-                  <figure className="faction-picture">
-                    <img src={faction.icon} alt={faction.name} />
-                  </figure>
-                </button>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </div>
-
-      <div>
-        SELECTED:{' '}
-        {
-          availablefactions.find((faction: SelectableFaction) => {
-            return faction.selected
-          })?.name
-        }
-      </div>
-
-      <div>
-        Total Reach:{' '}
-        {selection.reduce((totalReach, faction) => {
-          return totalReach + faction.reach
-        }, 0)}{' '}
-        of {minReachByPlayers[players.length]}
-      </div>
-      <div>
-        {loop < players.length - 1 ? (
-          <button className="fake-btn-next" onClick={setUpNextLoop}>
-            Save & Continue
-          </button>
-        ) : (
-          <div className="fake-btn">
-            <NavLink to={`/results?type=${Methods.PICK}`}>Finalize: Results Pick</NavLink>
+    <article className="manual-page">
+      {players.length > 0 && currentPlayer && (
+        <>
+          <hgroup>
+            <h3>
+              <em title="player name">{currentPlayer.name}</em>, select your faction:
+            </h3>
+            <h4>
+              (Selection {loop + 1} of {players.length})
+            </h4>
+          </hgroup>
+          <div>
+            <ol className="faction-grid">
+              {availablefactions.map((faction: SelectableFaction) => (
+                <li key={faction.id} className="faction-card">
+                  <button
+                    className={`btn btn__grow-ellipse ${faction.selected ? 'selected' : ''}`}
+                    style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
+                    onClick={() => {
+                      selectFaction(faction, true)
+                    }}
+                  >
+                    <figure className="faction-picture">
+                      <img src={faction.icon} alt={faction.name} />
+                    </figure>
+                  </button>
+                </li>
+              ))}
+            </ol>
           </div>
-        )}
-        <div className="fake-btn">
-          <NavLink to="/">Back to start</NavLink>
-        </div>
-      </div>
-    </div>
+
+          <div>
+            Selected:{' '}
+            {availablefactions.find((faction: SelectableFaction) => {
+              return faction.selected
+            })?.name || 'None'}{' '}
+            (Reach:{' '}
+            {availablefactions.find((faction: SelectableFaction) => {
+              return faction.selected
+            })?.reach || 0}
+            )
+          </div>
+
+          <div>
+            Total Reach: {calculateSelectedReach()} of a recommended {minReachByPlayers[players.length]}
+          </div>
+          <div>
+            {loop < players.length - 1 ? (
+              <button className="fake-btn-next" onClick={setUpNextLoop}>
+                Save & Continue
+              </button>
+            ) : (
+              <div className="fake-btn">
+                <NavLink to={`/results?type=${Methods.PICK}`}>Finalize: Results Pick</NavLink>
+              </div>
+            )}
+            <div className="fake-btn">
+              <NavLink to="/">Back to start</NavLink>
+            </div>
+          </div>
+        </>
+      )}
+    </article>
   )
 }

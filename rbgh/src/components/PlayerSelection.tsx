@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { MAX_PLAYERS } from '../App'
-import RBGHContext from '../RBGHContext'
+import { RBGHContext } from '../Store'
 import { Player, PlayerReducerActionTypes } from '../types'
 import { PlayerItem } from './PlayerItem'
 

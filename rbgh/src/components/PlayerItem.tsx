@@ -2,7 +2,7 @@ import { PlayerReducerActionTypes } from '../types'
 import { RemovePlayerButton } from './RemovePlayerButton'
 import { useContext } from 'react'
 import Fade from './Fade'
-import RBGHContext from '../RBGHContext'
+import { RBGHContext } from '../Store'
 
 export const PlayerItem = ({ player, idx, disableRemove }: any) => {
   const { playerDispatch: dispatch } = useContext<any>(RBGHContext)

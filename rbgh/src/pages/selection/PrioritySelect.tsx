@@ -124,72 +124,80 @@ export function PrioritySelect() {
   }
 
   return (
-    <div className="priority-page">
-      <div>
-        {currentPlayer?.name} - {loop + 1} of {players.length}
-      </div>
-      <div>
-        {/* <h3>(1 to {PRIORITY_SELECTION}):</h3> */}
-        <div>
-          <ul className="faction-list">
-            {availablefactions.map((faction: PrioritizableFaction) => (
-              <li
-                key={faction.id}
-                className={`faction-item faction-priority-${faction.priority < 99 ? 'on' : 'off'} 
+    <article className="priority-page">
+      {players.length > 0 && currentPlayer && (
+        <>
+          <hgroup>
+            <h3>
+              <em title="player name">{currentPlayer.name}</em>, select your priorities:
+            </h3>
+            <h4>
+              (Selection {loop + 1} of {players.length})
+            </h4>
+          </hgroup>
+          <div>
+            <div>
+              <ul className="faction-list">
+                {availablefactions.map((faction: PrioritizableFaction) => (
+                  <li
+                    key={faction.id}
+                    className={`faction-item faction-priority-${faction.priority < 99 ? 'on' : 'off'} 
                   faction-color-${faction.backColor}`}
-              >
-                <button
-                  className={`faction-item-row ${faction.priority < 99 ? 'faction-item-row__hasPriority' : ''}`}
-                  onClick={() => {
-                    selectFaction(faction)
-                  }}
-                  disabled={faction.priority < 99 && false}
-                >
-                  <figure className="faction-item-column faction-item-pic">
-                    <img src={faction.icon} alt={faction.name} />
-                  </figure>
-                  <div className="faction-item-column faction-item-name">
-                    <h4>{faction.name}</h4>
-                    <span>(Reach: {faction.reach})</span>
-                  </div>
-                  <div className="faction-item-column faction-item-priority circle">
-                    <span className="priority">{faction.priority < 99 ? faction.priority + 1 : ''}</span>
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-      {/* 
+                  >
+                    <button
+                      className={`faction-item-row ${faction.priority < 99 ? 'faction-item-row__hasPriority' : ''}`}
+                      onClick={() => {
+                        selectFaction(faction)
+                      }}
+                      disabled={faction.priority < 99 && false}
+                    >
+                      <figure className="faction-item-column faction-item-pic">
+                        <img src={faction.icon} alt={faction.name} />
+                      </figure>
+                      <div className="faction-item-column faction-item-name">
+                        <h4>{faction.name}</h4>
+                        <span>(Reach: {faction.reach})</span>
+                      </div>
+                      <div className="faction-item-column faction-item-priority circle">
+                        <span className="priority">{faction.priority < 99 ? faction.priority + 1 : ''}</span>
+                      </div>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          {/* 
       <small>
         <pre>{JSON.stringify({ selection }, null, 2)}</pre>
       </small> */}
 
-      <div>
-        {loop <= players.length - 1 ? (
-          <button
-            className="fake-btn-next"
-            onClick={setUpNextLoop}
-            disabled={
-              priorityArr.reduce((acc, curr) => {
-                return acc + (curr !== 0 ? 1 : 0)
-              }, 0) < PRIORITY_SELECTION
-            }
-          >
-            Save & Continue
-          </button>
-        ) : (
-          <div className="fake-btn">
-            <NavLink to={`/results?type=${Methods.PRIORITY}`} className={(n) => (n.isActive ? 'active' : '')}>
-              Finalize: Results Priority
-            </NavLink>
+          <div>
+            {loop <= players.length - 1 ? (
+              <button
+                className="fake-btn-next"
+                onClick={setUpNextLoop}
+                disabled={
+                  priorityArr.reduce((acc, curr) => {
+                    return acc + (curr !== 0 ? 1 : 0)
+                  }, 0) < PRIORITY_SELECTION
+                }
+              >
+                Save & Continue
+              </button>
+            ) : (
+              <div className="fake-btn">
+                <NavLink to={`/results?type=${Methods.PRIORITY}`} className={(n) => (n.isActive ? 'active' : '')}>
+                  Finalize: Results Priority
+                </NavLink>
+              </div>
+            )}
+            <div className="fake-btn">
+              <NavLink to="/">Back to start</NavLink>
+            </div>
           </div>
-        )}
-        <div className="fake-btn">
-          <NavLink to="/">Back to start</NavLink>
-        </div>
-      </div>
-    </div>
+        </>
+      )}
+    </article>
   )
 }

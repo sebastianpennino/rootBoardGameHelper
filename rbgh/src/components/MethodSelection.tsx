@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import RBGHContext from '../RBGHContext'
+import { RBGHContext } from '../Store'
 import { MethodOption } from '../types'
 import { MethodItem } from './MethodItem'
 

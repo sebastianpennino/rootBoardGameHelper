@@ -4,7 +4,7 @@ import { MethodSelection } from '../components/MethodSelection'
 import { MIN_PLAYABLE_PLAYERS } from '../App'
 import { NextButtonSwitch } from '../data'
 import { PlayerSelection } from '../components/PlayerSelection'
-import RBGHContext from '../RBGHContext'
+import { RBGHContext } from '../Store'
 import React, { useContext } from 'react'
 
 export function Landing() {
