@@ -1,5 +1,6 @@
 export * from './Faction'
 export * from './Method'
 export * from './Player'
+export * from './Reducer'
 export * from './Result'
 export * from './Vagabond'

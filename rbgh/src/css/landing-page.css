@@ -111,25 +111,25 @@ form .question input[type='text']:valid ~ label {
   justify-content: stretch;
   margin-bottom: 4px;
 }
-.method-list .method-item figure {
+.method-list .method-list-item figure {
   margin: 0;
   padding: 0;
 }
-.method-list .method-item .btn {
+.method-list .method-list-item .btn {
   height: 100%;
   width: 100%;
   background-color: bisque;
 }
-.method-list .method-item .btn::after {
+.method-list .method-list-item .btn::after {
   background-color: #fff;
 }
-.method-list .method-item .btn {
+.method-list .method-list-item .btn {
   transition: border 0.5s ease-in;
   border: 6px solid transparent;
   border-radius: 5px;
   color: #ff4a56;
   padding: 2px;
 }
-.method-list .method-item .btn.selected {
+.method-list .method-list-item .btn.selected {
   border: 6px solid #ff4a56;
 }
