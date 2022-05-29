@@ -7,9 +7,10 @@ export enum Methods {
 
 export type ValidMethods = Methods.PICK | Methods.RANDOM | Methods.PRIORITY | Methods.LIST
 
-export enum SubRandomMethods {
-  SEED_RANDOM = 'seed_random',
-  RECOMMENDED_LIST = 'recommended_list',
+export interface MethodOption {
+  name: ValidMethods
+  id: number
+  icon?: () => React.ReactNode
+  desc?: string
+  selected: boolean
 }
-
-export type ValidSubRandomMethods = SubRandomMethods.RECOMMENDED_LIST | SubRandomMethods.SEED_RANDOM

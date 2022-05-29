@@ -1,11 +1,9 @@
+import './css/index.css' // Styles
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import App from './App'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
-
-// Styles
-import './css/index.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
