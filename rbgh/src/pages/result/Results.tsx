@@ -1,8 +1,10 @@
 import '../../css/result-page.css'
 import { allFactions } from '../../data'
-import { CalculationResults, Faction, Methods, Player, ResultEntries, ValidMethods } from '../../types'
-import { players } from '../../mock'
+import { CalculationResults, Faction, FactionNames, Methods, Player, ResultEntries, ValidMethods } from '../../types'
+import { RBGHContext } from '../../Store'
+import { useContext } from 'react'
 import { useSearchParams, NavLink } from 'react-router-dom'
+import { seededShuffle, shuffle } from '../../utils'
 
 const backButtonSwitch = {
   [Methods.PRIORITY]: () => {
@@ -23,7 +25,7 @@ function ResultRow({ playerName, faction, playerId }: { playerName: string; play
   return (
     <div className="row">
       <div className="column-1">
-        {playerName} {playerId}
+        {playerName} (ID: {playerId})
       </div>
       <div className="column-2">
         {faction?.name}
@@ -49,14 +51,18 @@ const BackButton = ({ methodName }: IBackButton) => {
 }
 
 export function Results() {
+  const { playerList } = useContext<any>(RBGHContext)
+
   const [searchParams] = useSearchParams()
   const methodName = searchParams.get('type') as ValidMethods
 
-  let fakeResults: CalculationResults = { type: methodName, seed: 0, results: [] }
-  const r = players.map((player: Player, idx: number) => ({
+  const shuffledPlayers: Player[] = shuffle(playerList)
+  const shuffledFactions: Faction[] = shuffle(allFactions.filter((faction) => faction.name !== FactionNames.VAGABOND2))
+
+  const fakeResults = shuffledPlayers.map((player: Player, idx: number) => ({
     id: player.id,
     name: player.name,
-    faction: allFactions[idx],
+    faction: shuffledFactions[idx],
   }))
 
   /**
@@ -81,7 +87,7 @@ export function Results() {
     <article className="results-page">
       <h3>Faction and player:</h3>
       <div className="container">
-        {fakeResults?.results.map((entry: ResultEntries) => (
+        {fakeResults?.map((entry: ResultEntries) => (
           <ResultRow key={entry.id} playerName={entry.name} playerId={entry.id} faction={entry.faction} />
         ))}
       </div>
@@ -89,6 +95,7 @@ export function Results() {
         {(methodName === Methods.RANDOM || methodName === Methods.LIST) && <button>Re-roll results</button>}
         <BackButton methodName={methodName} />
       </div>
+      <pre>{JSON.stringify({ fakeResults }, null, 2)}</pre>
     </article>
   )
 }

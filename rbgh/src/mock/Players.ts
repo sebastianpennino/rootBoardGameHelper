@@ -1,5 +1,4 @@
-import { PrioritizableFactionWithId } from '../pages/selection'
-import { Methods, FactionNames, FactionStates } from '../types'
+import { FactionNames, FactionStates, Faction } from '../types'
 
 export const players = [
   { name: 'pepe', id: 1, show: true },
@@ -10,7 +9,7 @@ export const players = [
   { name: 'walter', id: 6, show: true },
 ]
 
-export const testData: PrioritizableFactionWithId[] = [
+export const testData: Faction[] = [
   {
     id: 7,
     name: FactionNames.UNDERGROUND_DUCHY,

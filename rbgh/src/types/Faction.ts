@@ -9,6 +9,8 @@ export interface Faction {
   frontColor: string
   backColor: string
   vagabondData?: ValidVagabonds
+  priority: number
+  playerOwnerId: number
 }
 
 export enum FactionNames {

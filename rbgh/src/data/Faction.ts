@@ -81,6 +81,8 @@ export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
     icon: factionsButtonIcon[factionName],
     reach: factionsReach[factionName],
     state: factionName === FactionNames.VAGABOND2 ? FactionStates.EXCLUDE : FactionStates.INCLUDE,
+    priority: 99,
+    playerOwnerId: -1,
     frontColor: '#ffffff',
     backColor: factionsColors[factionName],
   }))

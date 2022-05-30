@@ -1,9 +1,11 @@
 import '../../css/select-page.css'
-import { Faction, Methods, Player, ResultEntries } from '../../types'
-import { minReachByPlayers, allFactions as importedFactions } from '../../data'
-import { NavLink } from 'react-router-dom'
+import { Faction, Player, ResultEntries } from '../../types'
+import { allFactions as importedFactions } from '../../data'
 import { RBGHContext } from '../../Store'
 import { useContext, useEffect, useState } from 'react'
+import { SelectionHeading } from '../../components/SelectionHeading'
+import { SelectionFooter } from '../../components/SelectionFooter'
+import { FactionManualItem } from '../../components/FactionManualItem'
 
 export interface SelectableFaction extends Faction {
   selected: boolean
@@ -84,63 +86,18 @@ export function ManualSelect() {
     <article className="manual-page">
       {players.length > 0 && currentPlayer && (
         <>
-          <hgroup>
-            <h3>
-              <em title="player name">{currentPlayer.name}</em>, select your faction:
-            </h3>
-            <h4>
-              (Selection {loop + 1} of {players.length})
-            </h4>
-          </hgroup>
-          <div>
-            <ol className="faction-grid">
-              {availablefactions.map((faction: SelectableFaction) => (
-                <li key={faction.id} className="faction-card">
-                  <button
-                    className={`btn btn__grow-ellipse ${faction.selected ? 'selected' : ''}`}
-                    style={{ borderColor: `${faction.backColor}`, backgroundColor: `${faction.backColor}` }}
-                    onClick={() => {
-                      selectFaction(faction, true)
-                    }}
-                  >
-                    <figure className="faction-picture">
-                      <img src={faction.icon} alt={faction.name} />
-                    </figure>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div>
-            Selected:{' '}
-            {availablefactions.find((faction: SelectableFaction) => {
-              return faction.selected
-            })?.name || 'None'}{' '}
-            (Reach:{' '}
-            {availablefactions.find((faction: SelectableFaction) => {
-              return faction.selected
-            })?.reach || 0}
-            )
-          </div>
-
-          <div>
-            Total Reach: {calculateSelectedReach()} of a recommended {minReachByPlayers[players.length]}
-          </div>
-          <div>
-            {loop < players.length - 1 ? (
-              <button className="fake-btn-next" onClick={setUpNextLoop}>
-                Save & Continue
-              </button>
-            ) : (
-              <div className="fake-btn">
-                <NavLink to={`/results?type=${Methods.PICK}`}>Finalize: Results Pick</NavLink>
-              </div>
-            )}
-            <div className="fake-btn">
-              <NavLink to="/">Back to start</NavLink>
-            </div>
-          </div>
+          <SelectionHeading
+            desc="select your faction"
+            loop={loop}
+            playerName={currentPlayer.name}
+            totalLoops={players.length}
+          />
+          <ol className="faction-grid">
+            {availablefactions.map((faction: SelectableFaction) => (
+              <FactionManualItem key={faction.id} faction={faction} selectFaction={selectFaction} />
+            ))}
+          </ol>
+          <SelectionFooter />
         </>
       )}
     </article>

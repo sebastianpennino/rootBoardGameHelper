@@ -1,3 +1,7 @@
+/**
+ * Player reducer
+ */
+
 export enum PlayerReducerActionTypes {
   ADD_PLAYER = 'ADD_PLAYER',
   HIDE_PLAYER = 'HIDE_PLAYER',
@@ -15,3 +19,7 @@ export interface PlayerAction {
   type: ValidPlayerReducerActionTypes
   payload: { id: number; name: string }
 }
+
+/**
+ * Priority Selection reducer
+ */
