@@ -6,7 +6,7 @@ import { Player } from './Player'
 export interface ResultEntries {
   id: number
   name: string
-  faction?: Faction | Faction
+  faction?: Faction
 }
 
 export interface CalculationResults {

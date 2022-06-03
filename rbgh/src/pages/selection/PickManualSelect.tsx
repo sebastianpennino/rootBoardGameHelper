@@ -1,11 +1,9 @@
 import '../../css/select-page.css'
-import { Faction, Player, ResultEntries } from '../../types'
+import { Faction, Methods, Player, ResultEntries } from '../../types'
 import { allFactions as importedFactions } from '../../data'
-import { RBGHContext } from '../../Store'
+import { RBGHContext, RBGHStoreContent } from '../../Store'
 import { useContext, useEffect, useState } from 'react'
-import { SelectionHeading } from '../../components/SelectionHeading'
-import { SelectionFooter } from '../../components/SelectionFooter'
-import { FactionManualItem } from '../../components/FactionManualItem'
+import { BackButton, FactionManualItem, ReachCalculator, SelectionFooter, SelectionHeading } from '../../components'
 
 export interface SelectableFaction extends Faction {
   selected: boolean
@@ -14,34 +12,48 @@ export interface PickSelection {
   results: ResultEntries[]
 }
 
-export function ManualSelect() {
+export function PickManualSelect() {
+  const {
+    playerList: players,
+    result,
+    setResult,
+    resetFilter,
+    resetResults,
+  } = useContext<RBGHStoreContent>(RBGHContext)
+
   const cleanFactions: SelectableFaction[] = importedFactions.map((faction: Faction) => ({
     ...faction,
     selected: false,
   }))
-  // const [players, setPlayers] = useState<Player[]>([])
+
   const [availablefactions, setAvailableFactions] = useState<SelectableFaction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
-
-  const { playerList: players } = useContext<any>(RBGHContext)
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
 
-  const [selection, setSelection] = useState<SelectableFaction[]>([])
-
   useEffect(() => {
+    // on the first run reset everything
     if (players.length > 0) {
       setCurrentPlayer(players[0])
     }
-  }, [players])
+    resetFilter()
+    resetResults()
+  }, [])
 
-  const setUpNextLoop = () => {
-    // Save selection
-    setSelection((selection: SelectableFaction[]) => {
+  const setupNextLoop = () => {
+    // Save selection directly to restuls
+    setResult((previousResults: ResultEntries[]) => {
       const found = availablefactions.find((faction) => faction.selected)
       if (found) {
-        return [...selection, found]
+        return [
+          ...previousResults,
+          {
+            id: currentPlayer?.id ?? -99,
+            name: currentPlayer?.name ?? '',
+            faction: found,
+          },
+        ]
       }
-      return selection
+      return previousResults
     })
     // Remove faction from availablefactions
     setAvailableFactions((oldSelection: SelectableFaction[]) => {
@@ -52,11 +64,14 @@ export function ManualSelect() {
     // Increase the loop, set currentPlayer for next cycle
     setLoop((loop) => {
       const nextLoop = loop + 1
-      setCurrentPlayer(players[nextLoop])
+      if (players[nextLoop]) {
+        setCurrentPlayer(players[nextLoop])
+      }
       return nextLoop
     })
   }
 
+  // Select current faction and de-select the rest
   const selectFaction = (faction: SelectableFaction, flag: boolean) => {
     setAvailableFactions((oldSelection: SelectableFaction[]) => {
       return oldSelection.map((f: SelectableFaction) => {
@@ -68,18 +83,6 @@ export function ManualSelect() {
         return f
       })
     })
-  }
-
-  const calculateSelectedReach = () => {
-    const totalbeforeSelection =
-      selection.reduce((totalReach: number, faction: SelectableFaction) => {
-        return totalReach + faction.reach
-      }, 0) || 0
-    const currentSelection =
-      availablefactions.find((faction: SelectableFaction) => {
-        return faction.selected
-      })?.reach || 0
-    return totalbeforeSelection + currentSelection
   }
 
   return (
@@ -97,7 +100,15 @@ export function ManualSelect() {
               <FactionManualItem key={faction.id} faction={faction} selectFaction={selectFaction} />
             ))}
           </ol>
-          <SelectionFooter />
+          <ReachCalculator availablefactions={availablefactions} selection={result} players={players} />
+          <SelectionFooter
+            loop={loop}
+            players={players}
+            setupNextLoop={setupNextLoop}
+            finalize={setupNextLoop}
+            method={Methods.PICK}
+          />
+          <BackButton />
         </>
       )}
     </article>

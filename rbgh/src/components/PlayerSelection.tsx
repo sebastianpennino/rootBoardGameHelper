@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import { MAX_PLAYERS } from '../App'
-import { RBGHContext } from '../Store'
+import { RBGHContext, RBGHStoreContent } from '../Store'
 import { Player, PlayerReducerActionTypes } from '../types'
 import { PlayerItem } from './PlayerItem'
 
 export const PlayerSelection = () => {
-  const { playerList, playerDispatch } = useContext<any>(RBGHContext)
+  const { playerList, playerDispatch } = useContext<RBGHStoreContent>(RBGHContext)
 
   return (
     <form

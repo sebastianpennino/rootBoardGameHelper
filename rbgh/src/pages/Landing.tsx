@@ -4,11 +4,11 @@ import { MethodSelection } from '../components/MethodSelection'
 import { MIN_PLAYABLE_PLAYERS } from '../App'
 import { NextButtonSwitch } from '../data'
 import { PlayerSelection } from '../components/PlayerSelection'
-import { RBGHContext } from '../Store'
+import { RBGHContext, RBGHStoreContent } from '../Store'
 import React, { useContext } from 'react'
 
 export function Landing() {
-  const { playerList, methodList } = useContext<any>(RBGHContext)
+  const { playerList, methodList } = useContext<RBGHStoreContent>(RBGHContext)
 
   const currentSelectedMethod = (): ValidMethods => {
     return methodList.find((method: MethodOption) => method.selected === true)?.name ?? methodList[0].name
@@ -18,7 +18,7 @@ export function Landing() {
     <>
       <MethodSelection />
       <PlayerSelection />
-      <div className="fake-btn">
+      <div className="btn-next-container">
         {playerList.length >= MIN_PLAYABLE_PLAYERS && NextButtonSwitch[currentSelectedMethod()]()}
       </div>
     </>

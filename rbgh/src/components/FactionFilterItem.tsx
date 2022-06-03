@@ -30,7 +30,9 @@ export const FactionFilterItem = (props: Props) => {
           <img src={faction.icon} alt={faction.name} />
         </figure>
         <div className="faction-card__title">
-          <h4>{faction.name}</h4>
+          <h4>
+            {faction.name} ({faction.reach})
+          </h4>
         </div>
       </button>
     </li>

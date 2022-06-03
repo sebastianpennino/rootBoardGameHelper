@@ -1,3 +1,3 @@
-export * from './ManualSelect'
+export * from './PickManualSelect'
 export * from './PrioritySelect'
 export * from './RandomSelect'

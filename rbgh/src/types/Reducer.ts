@@ -17,7 +17,7 @@ export type ValidPlayerReducerActionTypes =
 
 export interface PlayerAction {
   type: ValidPlayerReducerActionTypes
-  payload: { id: number; name: string }
+  payload?: { id: number; name: string }
 }
 
 /**

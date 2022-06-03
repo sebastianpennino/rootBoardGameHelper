@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { RBGHContext } from '../Store'
+import { RBGHContext, RBGHStoreContent } from '../Store'
 import { MethodOption } from '../types'
 import { MethodItem } from './MethodItem'
 
 export const MethodSelection = () => {
-  const { methodList, setMethodList } = useContext<any>(RBGHContext)
+  const { methodList, setMethodList } = useContext<RBGHStoreContent>(RBGHContext)
 
   const selectMethod = (id: number) => {
     setMethodList((oldState: MethodOption[]) => {

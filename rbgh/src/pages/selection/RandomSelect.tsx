@@ -1,22 +1,32 @@
 import '../../css/select-page.css'
 import { useContext, useEffect } from 'react'
-import { Faction, FactionStates, ValidFactionStates } from '../../types'
+import { Faction, FactionStates, Methods, ValidFactionStates } from '../../types'
 import { allFactions as importedFactions, minReachByPlayers } from '../../data'
-import { RBGHContext } from '../../Store'
+import { RBGHContext, RBGHStoreContent } from '../../Store'
 import { SelectionFooter } from '../../components/SelectionFooter'
 import { FactionFilterItem } from '../../components/FactionFilterItem'
+import { BackButton } from '../../components/BackButton'
 
 export interface RandomSelection {
   factions: Faction[]
 }
 
-export function FactionSelection() {
-  const { playerList, filter: factions, setFilter: setFactions } = useContext<any>(RBGHContext)
+export function RandomFilterSelect() {
+  const {
+    playerList,
+    filter: factions,
+    setFilter: setFactions,
+    resetFilter,
+    resetResults,
+    deriveRandomResults,
+  } = useContext<RBGHStoreContent>(RBGHContext)
 
   useEffect(() => {
     // on the first run reset everything
+    resetFilter()
+    resetResults()
     setFactions([...importedFactions])
-  }, [setFactions])
+  }, [])
 
   const updateFaction = (id: number, newState: ValidFactionStates) => {
     setFactions((prevState: Faction[]) => {
@@ -34,8 +44,8 @@ export function FactionSelection() {
   }
 
   const isValidSelection = () => {
-    const playersNum = playerList.length
-    const { selectedFactions, selectedReach } = factions.reduce(
+    const targetReach = minReachByPlayers[playerList.length]
+    const { selectedFactions, selectedReach } = (factions as Faction[]).reduce(
       (acc: { selectedFactions: number; selectedReach: number }, faction: Faction) => {
         const add = faction.state === FactionStates.MUST || faction.state === FactionStates.INCLUDE ? 1 : 0
         const reach = add > 0 ? faction.reach : 0
@@ -46,23 +56,13 @@ export function FactionSelection() {
       },
       { selectedFactions: 0, selectedReach: 0 },
     )
-    const targetReach = minReachByPlayers[playersNum]
-
-    if (playersNum > selectedFactions) {
-      return {
-        success: false,
-        msg: `Error: Not enough available (non-blocked) factions for ${playersNum} players`,
-      }
+    if (playerList.length > selectedFactions) {
+      return `Not enough available (non-blocked) factions for ${playerList.length} players`
     }
     if (selectedReach < targetReach) {
-      return {
-        success: false,
-        msg: `Error: Not enough available reach (${selectedReach}) in non-blocked factions for ${playersNum} players`,
-      }
+      return `Not enough available reach (${selectedReach} of ${targetReach}) in non-blocked factions for ${playerList.length} players`
     }
-    return {
-      success: true,
-    }
+    return true
   }
 
   return (
@@ -70,7 +70,7 @@ export function FactionSelection() {
       <div className="factionSelection">
         {factions && factions.length > 0 && (
           <ul className="faction-grid">
-            {factions.map((faction: Faction) => (
+            {(factions as Faction[]).map((faction: Faction) => (
               <FactionFilterItem
                 faction={faction}
                 key={faction.id}
@@ -80,7 +80,8 @@ export function FactionSelection() {
             ))}
           </ul>
         )}
-        <SelectionFooter />
+        <SelectionFooter isValidSelection={isValidSelection} method={Methods.RANDOM} finalize={deriveRandomResults} />
+        <BackButton />
       </div>
     </article>
   )

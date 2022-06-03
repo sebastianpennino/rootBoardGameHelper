@@ -59,6 +59,7 @@
   overflow: hidden;
   white-space: wrap;
   width: 100%;
+  padding: 0 5px;
 }
 .filter-page .faction-grid .faction-card__image {
   padding: 0;
