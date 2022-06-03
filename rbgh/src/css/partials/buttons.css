@@ -53,10 +53,10 @@
   right: 100%;
 }
 
-.fake-btn-next,
-.fake-btn a:active,
-.fake-btn a:visited,
-.fake-btn a {
+.btn-next,
+.btn-next-container a:active,
+.btn-next-container a:visited,
+.btn-next-container a {
   color: #fff;
   text-decoration: none;
   font-style: normal;

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
 
-interface Props {
+interface Props<C extends React.ElementType = React.ElementType> {
   show: boolean
   children: React.ReactNode
   callback?: (args?: any) => void
+  except?: boolean
+  as?: C
 }
 
-const Fade = ({ show, children, callback }: Props) => {
+const Fade = ({ show, children, callback, except = false, as }: Props) => {
   const [render, setRender] = useState(show)
+  const Component = as || 'div' // Defaults as <div>
 
   useEffect(() => {
     if (show) {
@@ -27,18 +30,24 @@ const Fade = ({ show, children, callback }: Props) => {
     }
   }
 
+  let animationText = `${show ? 'fadeIn' : 'fadeOut'} 0.5s`
+
+  if (except) {
+    animationText = 'auto'
+  }
+
   return (
     <>
       {render && (
-        <div
+        <Component
           style={{
-            animation: `${show ? 'fadeIn' : 'fadeOut'} 0.5s`,
+            animation: animationText,
             position: 'relative',
           }}
           onAnimationEnd={onAnimationEnd}
         >
           {children}
-        </div>
+        </Component>
       )}
     </>
   )

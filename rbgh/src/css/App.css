@@ -1,42 +1,11 @@
+@import url('./partials/structural.css');
 @import url('./partials/buttons.css');
 @import url('./partials/fx.css');
 
-.rbgh {
+.app {
   padding: 0;
   margin: 0;
 }
-.rbgh .content {
+.app .content {
   padding: 5px;
 }
-
-/* 
-.navigation ul {
-  border: 1px solid black;
-}
-
-.navigation {
-  font-size: 12px;
-}
-
-.navigation ul {
-  list-style-type: none;
-  overflow: hidden;
-}
-
-.navigation li {
-  float: left;
-  margin-left: 3px;
-}
-.navigation li a {
-  display: block;
-  padding: 3px;
-  text-decoration: none;
-  background-color: bisque;
-}
-.navigation li a.active,
-.navigation li a:hover {
-  color: red;
-} 
-*/
-
-

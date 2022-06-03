@@ -6,11 +6,12 @@ import {
   calculateRandomResults,
   seededShuffle,
 } from './'
-import { RandomSelection, PickSelection, PrioritizableFactionWithId } from '../pages/selection'
+import { RandomSelection, PickSelection } from '../pages/selection'
 import {
   CalculationResults,
   CommonCalcResultsDependencies,
   Methods,
+  Faction,
   ValidCalcResultOptions,
   ValidMethods,
 } from '../types'
@@ -33,13 +34,7 @@ const calcResultsF = (opts: ValidCalcResultOptions, deps: CommonCalcResultsDepen
       return calculatePickResults(opts as PickSelection, seed, response, randomizedVagabond)
 
     case Methods.PRIORITY:
-      return calculatePriorityResults(
-        opts as PrioritizableFactionWithId[],
-        seed,
-        response,
-        randomizedPlayers,
-        randomizedVagabond,
-      )
+      return calculatePriorityResults(opts as Faction[], seed, response, randomizedPlayers, randomizedVagabond)
 
     case Methods.RANDOM:
       return calculateRandomResults(opts as RandomSelection, seed, response, randomizedPlayers, randomizedVagabond)

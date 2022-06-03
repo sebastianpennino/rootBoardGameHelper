@@ -1,0 +1,116 @@
+import '../../css/select-page.css'
+import { Faction, Methods, Player, ResultEntries } from '../../types'
+import { allFactions as importedFactions } from '../../data'
+import { RBGHContext, RBGHStoreContent } from '../../Store'
+import { useContext, useEffect, useState } from 'react'
+import { BackButton, FactionManualItem, ReachCalculator, SelectionFooter, SelectionHeading } from '../../components'
+
+export interface SelectableFaction extends Faction {
+  selected: boolean
+}
+export interface PickSelection {
+  results: ResultEntries[]
+}
+
+export function PickManualSelect() {
+  const {
+    playerList: players,
+    result,
+    setResult,
+    resetFilter,
+    resetResults,
+  } = useContext<RBGHStoreContent>(RBGHContext)
+
+  const cleanFactions: SelectableFaction[] = importedFactions.map((faction: Faction) => ({
+    ...faction,
+    selected: false,
+  }))
+
+  const [availablefactions, setAvailableFactions] = useState<SelectableFaction[]>(cleanFactions)
+  const [loop, setLoop] = useState<number>(0)
+  const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
+
+  useEffect(() => {
+    // on the first run reset everything
+    if (players.length > 0) {
+      setCurrentPlayer(players[0])
+    }
+    resetFilter()
+    resetResults()
+  }, [])
+
+  const setupNextLoop = () => {
+    // Save selection directly to restuls
+    setResult((previousResults: ResultEntries[]) => {
+      const found = availablefactions.find((faction) => faction.selected)
+      if (found) {
+        return [
+          ...previousResults,
+          {
+            id: currentPlayer?.id ?? -99,
+            name: currentPlayer?.name ?? '',
+            faction: found,
+          },
+        ]
+      }
+      return previousResults
+    })
+    // Remove faction from availablefactions
+    setAvailableFactions((oldSelection: SelectableFaction[]) => {
+      return oldSelection.filter((f: SelectableFaction) => {
+        return !f.selected
+      })
+    })
+    // Increase the loop, set currentPlayer for next cycle
+    setLoop((loop) => {
+      const nextLoop = loop + 1
+      if (players[nextLoop]) {
+        setCurrentPlayer(players[nextLoop])
+      }
+      return nextLoop
+    })
+  }
+
+  // Select current faction and de-select the rest
+  const selectFaction = (faction: SelectableFaction, flag: boolean) => {
+    setAvailableFactions((oldSelection: SelectableFaction[]) => {
+      return oldSelection.map((f: SelectableFaction) => {
+        if (f.id === faction.id) {
+          f.selected = flag
+        } else {
+          f.selected = false
+        }
+        return f
+      })
+    })
+  }
+
+  return (
+    <article className="manual-page">
+      {players.length > 0 && currentPlayer && (
+        <>
+          <SelectionHeading
+            desc="select your faction"
+            loop={loop}
+            playerName={currentPlayer.name}
+            totalLoops={players.length}
+          />
+          <ol className="faction-grid">
+            {availablefactions.map((faction: SelectableFaction) => (
+              <FactionManualItem key={faction.id} faction={faction} selectFaction={selectFaction} />
+            ))}
+          </ol>
+          <ReachCalculator availablefactions={availablefactions} selection={result} players={players} />
+          <SelectionFooter
+            loop={loop}
+            players={players}
+            setupNextLoop={setupNextLoop}
+            finalize={setupNextLoop}
+            method={Methods.PICK}
+          />
+          <BackButton />
+        </>
+      )}
+    </article>
+  )
+}

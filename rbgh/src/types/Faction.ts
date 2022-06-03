@@ -1,5 +1,15 @@
+import { Methods } from './Method'
+import { PrioritySelection } from './Result'
 import { ValidVagabonds } from './Vagabond'
 
+export interface PriorityFilter {
+  narrow: Methods.PRIORITY
+  content: PrioritySelection[]
+}
+export interface RandomFilter {
+  narrow: Methods.RANDOM
+  content: Faction[]
+}
 export interface Faction {
   name: ValidFactions
   id: number
@@ -9,6 +19,8 @@ export interface Faction {
   frontColor: string
   backColor: string
   vagabondData?: ValidVagabonds
+  priority: number
+  playerOwnerId: number
 }
 
 export enum FactionNames {

@@ -1,55 +1,32 @@
-import { useState } from 'react'
-import { Faction, FactionStates, Methods, ValidFactionStates } from '../../types'
-import { allFactions as importedFactions } from '../../data'
-import { nextStateCycle } from '../../data'
-import { NavLink } from 'react-router-dom'
-
-// Styles
 import '../../css/select-page.css'
-
-type UpdateFaction = (id: number, newState: ValidFactionStates) => void
+import { useContext, useEffect } from 'react'
+import { Faction, FactionStates, Methods, ValidFactionStates } from '../../types'
+import { allFactions as importedFactions, minReachByPlayers } from '../../data'
+import { RBGHContext, RBGHStoreContent } from '../../Store'
+import { SelectionFooter } from '../../components/SelectionFooter'
+import { FactionFilterItem } from '../../components/FactionFilterItem'
+import { BackButton } from '../../components/BackButton'
 
 export interface RandomSelection {
   factions: Faction[]
 }
 
-interface MyFactionButton {
-  faction: Faction
-  updateFaction: UpdateFaction
-  selectionStatus: ValidFactionStates
-}
+export function RandomFilterSelect() {
+  const {
+    playerList,
+    filter: factions,
+    setFilter: setFactions,
+    resetFilter,
+    resetResults,
+    deriveRandomResults,
+  } = useContext<RBGHStoreContent>(RBGHContext)
 
-function FactionButton({ faction, updateFaction, selectionStatus }: MyFactionButton) {
-  const cycleIncludeStatus = () => {
-    const next = nextStateCycle[faction.state]
-    updateFaction(faction.id, next)
-  }
-
-  const classNameByStatus: Record<ValidFactionStates, string> = {
-    [FactionStates.EXCLUDE]: 'exclude',
-    [FactionStates.INCLUDE]: 'include',
-    [FactionStates.MUST]: 'must',
-  }
-
-  return (
-    <li className={`faction-card faction-card--${classNameByStatus[selectionStatus]}`}>
-      <button onClick={cycleIncludeStatus}>
-        <figure className="faction-card__image">
-          <img src={faction.icon} alt={faction.name} />
-        </figure>
-        <div className="faction-card__title">
-          <h4>{faction.name}</h4>
-        </div>
-        {/* - {selectionStatus} */}
-      </button>
-    </li>
-  )
-}
-
-export function FactionSelection() {
-  const initialState = importedFactions
-
-  const [factions, setFactions] = useState<Faction[]>([...initialState])
+  useEffect(() => {
+    // on the first run reset everything
+    resetFilter()
+    resetResults()
+    setFactions([...importedFactions])
+  }, [])
 
   const updateFaction = (id: number, newState: ValidFactionStates) => {
     setFactions((prevState: Faction[]) => {
@@ -67,35 +44,45 @@ export function FactionSelection() {
   }
 
   const isValidSelection = () => {
-    // at least one is available for each player
+    const targetReach = minReachByPlayers[playerList.length]
+    const { selectedFactions, selectedReach } = (factions as Faction[]).reduce(
+      (acc: { selectedFactions: number; selectedReach: number }, faction: Faction) => {
+        const add = faction.state === FactionStates.MUST || faction.state === FactionStates.INCLUDE ? 1 : 0
+        const reach = add > 0 ? faction.reach : 0
+        return {
+          selectedFactions: acc.selectedFactions + add,
+          selectedReach: acc.selectedReach + reach,
+        }
+      },
+      { selectedFactions: 0, selectedReach: 0 },
+    )
+    if (playerList.length > selectedFactions) {
+      return `Not enough available (non-blocked) factions for ${playerList.length} players`
+    }
+    if (selectedReach < targetReach) {
+      return `Not enough available reach (${selectedReach} of ${targetReach}) in non-blocked factions for ${playerList.length} players`
+    }
     return true
   }
 
   return (
-    <div className="random-page">
-      {/* <h3>Filter Possible Factions</h3> */}
+    <article className="filter-page">
       <div className="factionSelection">
-        <ul className="faction-grid">
-          {factions.map((faction: Faction) => (
-            <FactionButton
-              key={faction.id}
-              faction={faction}
-              updateFaction={updateFaction}
-              selectionStatus={faction.state}
-            />
-          ))}
-        </ul>
-        {isValidSelection() && (
-          <div className="fake-btn">
-            <NavLink to={`/results?type=${Methods.RANDOM}`} className={(n) => (n.isActive ? 'active' : '')}>
-              Finalize: Results Random
-            </NavLink>
-          </div>
+        {factions && factions.length > 0 && (
+          <ul className="faction-grid">
+            {(factions as Faction[]).map((faction: Faction) => (
+              <FactionFilterItem
+                faction={faction}
+                key={faction.id}
+                selectionStatus={faction.state}
+                updateFaction={updateFaction}
+              />
+            ))}
+          </ul>
         )}
-        <div className="fake-btn">
-          <NavLink to="/">Back to start</NavLink>
-        </div>
+        <SelectionFooter isValidSelection={isValidSelection} method={Methods.RANDOM} finalize={deriveRandomResults} />
+        <BackButton />
       </div>
-    </div>
+    </article>
   )
 }

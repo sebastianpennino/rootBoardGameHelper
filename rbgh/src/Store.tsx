@@ -1,4 +1,37 @@
-import { Player, PlayerAction, PlayerReducerActionTypes } from './types'
+import React, { Dispatch, SetStateAction } from 'react'
+import {
+  Faction,
+  MethodOption,
+  Player,
+  PlayerAction,
+  PlayerReducerActionTypes,
+  PrioritySelection,
+  ResultEntries,
+} from './types'
+
+const initialValue = {
+  playerList: [],
+  methodList: [],
+  filter: [],
+  result: [],
+}
+
+export type RBGHStoreContent = {
+  playerList: Player[]
+  playerDispatch: Dispatch<PlayerAction>
+  methodList: MethodOption[]
+  setMethodList: Dispatch<SetStateAction<MethodOption[]>>
+  filter: PrioritySelection[] | Faction[]
+  setFilter: Dispatch<SetStateAction<Faction[]>>
+  result: ResultEntries[]
+  setResult: Dispatch<SetStateAction<ResultEntries[]>>
+  resetFilter: () => void
+  resetResults: () => void
+  deriveRandomResults: () => void
+  derivePriorityResults: () => void
+}
+
+export const RBGHContext = React.createContext<RBGHStoreContent>({ ...initialValue } as unknown as RBGHStoreContent)
 
 export const playerReducer = (state: Player[], action: PlayerAction): Player[] => {
   let id: number
@@ -12,7 +45,7 @@ export const playerReducer = (state: Player[], action: PlayerAction): Player[] =
       }
       return state
     case PlayerReducerActionTypes.HIDE_PLAYER:
-      id = action.payload?.id
+      id = action.payload?.id ?? 0
       index = state.findIndex((player: Player) => player.id === id)
       if (id && index !== -1 && state[index].show) {
         state[index].show = false
@@ -20,8 +53,8 @@ export const playerReducer = (state: Player[], action: PlayerAction): Player[] =
       }
       return state
     case PlayerReducerActionTypes.UPDATE_PLAYER:
-      const newName = action.payload?.name
-      id = action.payload?.id
+      const newName = action.payload?.name ?? ''
+      id = action.payload?.id ?? 0
       index = state.findIndex((player: Player) => player.id === id)
       if (id && index !== -1) {
         let player = {
@@ -33,7 +66,7 @@ export const playerReducer = (state: Player[], action: PlayerAction): Player[] =
       }
       return state
     case PlayerReducerActionTypes.REMOVE_PLAYER:
-      id = action.payload?.id
+      id = action.payload?.id ?? 0
       if (id) {
         return state.filter((player: Player) => player.id !== id)
       }
