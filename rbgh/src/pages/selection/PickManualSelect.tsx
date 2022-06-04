@@ -4,15 +4,12 @@ import { allFactions as importedFactions } from '../../data'
 import { RBGHContext, RBGHStoreContent } from '../../Store'
 import { useContext, useEffect, useState } from 'react'
 import { BackButton, FactionManualItem, ReachCalculator, SelectionFooter, SelectionHeading } from '../../components'
+import { useNavigate } from 'react-router-dom'
 
-export interface SelectableFaction extends Faction {
-  selected: boolean
-}
-export interface PickSelection {
-  results: ResultEntries[]
-}
-
+// Loop selection, passing the control to each player
+// Each player selects a faction and that faction is no longer available to the next player
 export function PickManualSelect() {
+  const navigate = useNavigate()
   const {
     playerList: players,
     result,
@@ -21,12 +18,12 @@ export function PickManualSelect() {
     resetResults,
   } = useContext<RBGHStoreContent>(RBGHContext)
 
-  const cleanFactions: SelectableFaction[] = importedFactions.map((faction: Faction) => ({
+  const cleanFactions: Faction[] = importedFactions.map((faction: Faction) => ({
     ...faction,
     selected: false,
   }))
 
-  const [availablefactions, setAvailableFactions] = useState<SelectableFaction[]>(cleanFactions)
+  const [availablefactions, setAvailableFactions] = useState<Faction[]>(cleanFactions)
   const [loop, setLoop] = useState<number>(0)
   const [currentPlayer, setCurrentPlayer] = useState<Player | null>(null)
 
@@ -38,6 +35,12 @@ export function PickManualSelect() {
     resetFilter()
     resetResults()
   }, [])
+
+  useEffect(() => {
+    if (result.length >= players.length) {
+      navigate(`/results?type=${Methods.PICK}`, { replace: false })
+    }
+  }, [result.length, players.length])
 
   const setupNextLoop = () => {
     // Save selection directly to restuls
@@ -56,8 +59,8 @@ export function PickManualSelect() {
       return previousResults
     })
     // Remove faction from availablefactions
-    setAvailableFactions((oldSelection: SelectableFaction[]) => {
-      return oldSelection.filter((f: SelectableFaction) => {
+    setAvailableFactions((oldSelection: Faction[]) => {
+      return oldSelection.filter((f: Faction) => {
         return !f.selected
       })
     })
@@ -72,9 +75,9 @@ export function PickManualSelect() {
   }
 
   // Select current faction and de-select the rest
-  const selectFaction = (faction: SelectableFaction, flag: boolean) => {
-    setAvailableFactions((oldSelection: SelectableFaction[]) => {
-      return oldSelection.map((f: SelectableFaction) => {
+  const selectFaction = (faction: Faction, flag: boolean) => {
+    setAvailableFactions((oldSelection: Faction[]) => {
+      return oldSelection.map((f: Faction) => {
         if (f.id === faction.id) {
           f.selected = flag
         } else {
@@ -96,18 +99,12 @@ export function PickManualSelect() {
             totalLoops={players.length}
           />
           <ol className="faction-grid">
-            {availablefactions.map((faction: SelectableFaction) => (
+            {availablefactions.map((faction: Faction) => (
               <FactionManualItem key={faction.id} faction={faction} selectFaction={selectFaction} />
             ))}
           </ol>
           <ReachCalculator availablefactions={availablefactions} selection={result} players={players} />
-          <SelectionFooter
-            loop={loop}
-            players={players}
-            setupNextLoop={setupNextLoop}
-            finalize={setupNextLoop}
-            method={Methods.PICK}
-          />
+          <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PICK} />
           <BackButton />
         </>
       )}

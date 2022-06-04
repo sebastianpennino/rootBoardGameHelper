@@ -1,5 +1,5 @@
-import { PickSelection, RandomSelection } from '../pages/selection'
-import { Faction } from './Faction'
+import { RandomSelection } from '../pages/selection'
+import { Faction, PickSelection } from './Faction'
 import { ValidMethods } from './Method'
 import { Player } from './Player'
 

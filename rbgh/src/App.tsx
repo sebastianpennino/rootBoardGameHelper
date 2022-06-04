@@ -3,24 +3,15 @@ import { allMethods, allVagabonds, initialPlayerList } from './data'
 import { AppRoutes } from './Routes'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Header } from './components/Header'
-import {
-  Faction,
-  MethodOption,
-  Methods,
-  Player,
-  PlayerAction,
-  PriorityFilter,
-  PrioritySelection,
-  ResultEntries,
-} from './types'
+import { Faction, MethodOption, Methods, Player, PlayerAction, ResultEntries } from './types'
 import { playerReducer, RBGHContext } from './Store'
-import React, { Reducer, useReducer, useState } from 'react'
-import { calculatePriorityResults, calculateRandomResults, seededShuffle } from './utils'
-import { useLocalStorage } from './hooks'
+import React, { Reducer, useEffect, useReducer, useState } from 'react'
+import { calculateListResults, calculatePriorityResults, calculateRandomResults, seededShuffle } from './utils'
 
 export const DEV_MODE = process.env.NODE_ENV === 'development'
 export const MIN_PLAYABLE_PLAYERS = 3
 export const MAX_PLAYERS = 6
+export const PRIORITY_SELECTION = 5
 
 function App() {
   // Player list selection
@@ -80,11 +71,6 @@ function App() {
     const randomizedPlayers = seededShuffle(playerList, seed)
     const randomizedVagabond = seededShuffle(allVagabonds, seed)
 
-    if (filter.length === playerList.length * 3) {
-      console.log('ok')
-    } else {
-      console.log('not ok, you have a bug')
-    }
     setResult((previousResults: ResultEntries[]) => {
       const { results } = calculatePriorityResults(
         filter as Faction[],
@@ -104,6 +90,40 @@ function App() {
     })
   }
 
+  const deriveListResults = () => {
+    resetSeed()
+    const randomizedPlayers = seededShuffle(playerList, seed)
+    const randomizedVagabond = seededShuffle(allVagabonds, seed)
+
+    setResult((previousResults: ResultEntries[]) => {
+      const { results } = calculateListResults(
+        null,
+        seed,
+        {
+          type: Methods.PRIORITY,
+          seed,
+          results: [],
+        },
+        randomizedPlayers,
+        randomizedVagabond,
+      )
+      if (results.length > 0) {
+        return results
+      }
+      return previousResults
+    })
+  }
+
+  const [priorityCompleted, setPriorityCompleted] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (filter.length === playerList.length * PRIORITY_SELECTION) {
+      setPriorityCompleted(true)
+    } else if (priorityCompleted) {
+      setPriorityCompleted(false)
+    }
+  }, [filter.length, playerList.length, priorityCompleted])
+
   const shareProps = {
     playerList,
     playerDispatch,
@@ -117,6 +137,8 @@ function App() {
     resetResults,
     deriveRandomResults,
     derivePriorityResults,
+    deriveListResults,
+    priorityCompleted,
   }
 
   return (
@@ -127,7 +149,7 @@ function App() {
           <main className="content">
             <AppRoutes />
 
-            {DEV_MODE && (
+            {DEV_MODE && false && (
               <small>
                 <pre>
                   {JSON.stringify(

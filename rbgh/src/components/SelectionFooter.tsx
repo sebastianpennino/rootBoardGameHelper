@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Methods, Player, ValidMethods } from '../types'
+import { Methods, Player } from '../types'
 
 interface PropsPickPriority {
   method: Methods.PICK | Methods.PRIORITY
@@ -14,31 +14,24 @@ interface PropsPickPriority {
 interface PropsRandomFilter {
   method: Methods.RANDOM
   isValidSelection: () => true | string
-  finalize?: () => void
+  finalize: () => void
 }
 
 export const SelectionFooter = (props: PropsPickPriority | PropsRandomFilter) => {
-  let navigate = useNavigate()
   const { method, finalize } = props
-
-  const goToResults = (method: ValidMethods) => {
-    return navigate(`/results?type=${method}`, { replace: false })
-  }
-
-  const finalLoop = async () => {
-    if (typeof finalize === 'function') {
-      await finalize()
-    }
-    goToResults(method)
-  }
+  const navigate = useNavigate()
 
   switch (method) {
     case Methods.RANDOM:
       const { isValidSelection } = props
+      const handleFinalize = () => {
+        finalize()
+        navigate(`/results?type=${method}`, { replace: false })
+      }
       return (
         <>
           {isValidSelection() === true ? (
-            <button className="btn-next" onClick={finalLoop}>
+            <button className="btn-next" onClick={handleFinalize}>
               Finalize
             </button>
           ) : (
@@ -55,7 +48,7 @@ export const SelectionFooter = (props: PropsPickPriority | PropsRandomFilter) =>
               Save & Continue
             </button>
           ) : (
-            <button className="btn-next" onClick={finalLoop}>
+            <button className="btn-next" onClick={setupNextLoop}>
               Save & Finalize
             </button>
           )}

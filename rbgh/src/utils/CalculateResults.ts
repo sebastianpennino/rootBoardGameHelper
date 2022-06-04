@@ -6,7 +6,7 @@ import {
   calculateRandomResults,
   seededShuffle,
 } from './'
-import { RandomSelection, PickSelection } from '../pages/selection'
+import { RandomSelection } from '../pages/selection'
 import {
   CalculationResults,
   CommonCalcResultsDependencies,
@@ -14,6 +14,7 @@ import {
   Faction,
   ValidCalcResultOptions,
   ValidMethods,
+  PickSelection,
 } from '../types'
 
 const calcResultsF = (opts: ValidCalcResultOptions, deps: CommonCalcResultsDependencies, type: ValidMethods): any => {
