@@ -1,8 +1,8 @@
-import { SelectableFaction } from '../pages/selection'
+import { Faction } from '../types'
 
 interface Props {
-  faction: SelectableFaction
-  selectFaction: (faction: SelectableFaction, flag: boolean) => void
+  faction: Faction
+  selectFaction: (faction: Faction, flag: boolean) => void
 }
 
 export const FactionManualItem = (props: Props) => {

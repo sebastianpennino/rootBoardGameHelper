@@ -11,6 +11,8 @@ export interface RandomSelection {
   factions: Faction[]
 }
 
+// Single selection. Filter factions to be selected randomly
+// A faction can either be in "MUST", "INCLUDED" or "EXCLUDED" state
 export function RandomFilterSelect() {
   const {
     playerList,

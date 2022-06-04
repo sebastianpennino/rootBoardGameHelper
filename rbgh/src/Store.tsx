@@ -14,6 +14,7 @@ const initialValue = {
   methodList: [],
   filter: [],
   result: [],
+  priorityCompleted: false,
 }
 
 export type RBGHStoreContent = {
@@ -29,6 +30,8 @@ export type RBGHStoreContent = {
   resetResults: () => void
   deriveRandomResults: () => void
   derivePriorityResults: () => void
+  deriveListResults: () => void
+  priorityCompleted: boolean
 }
 
 export const RBGHContext = React.createContext<RBGHStoreContent>({ ...initialValue } as unknown as RBGHStoreContent)

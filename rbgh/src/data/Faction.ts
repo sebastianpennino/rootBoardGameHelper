@@ -74,6 +74,22 @@ export const factionsIndex: Record<ValidFactions, number> = {
   [FactionNames.LORD_OF_THE_HUNDREDS]: 11,
 }
 
+const unit = 100
+
+export const factionPicPosition: Record<ValidFactions, number> = {
+  [FactionNames.MARQUISE_THE_CAT]: 0,
+  [FactionNames.EYRIE]: 1,
+  [FactionNames.WOODLAND_ALLIANCE]: 2,
+  [FactionNames.VAGABOND1]: 3,
+  [FactionNames.VAGABOND2]: 3,
+  [FactionNames.RIVERFOLK_COMPANY]: 4,
+  [FactionNames.LIZARD_CULT]: 5,
+  [FactionNames.UNDERGROUND_DUCHY]: 6,
+  [FactionNames.CORVID_CONSPIRACY]: 7,
+  [FactionNames.KEEPERS_IN_IRON]: 8,
+  [FactionNames.LORD_OF_THE_HUNDREDS]: 9,
+}
+
 export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
   return allFactions.map((factionName: ValidFactions) => ({
     id: factionsIndex[factionName],
@@ -83,8 +99,10 @@ export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
     state: factionName === FactionNames.VAGABOND2 ? FactionStates.EXCLUDE : FactionStates.INCLUDE,
     priority: 99,
     playerOwnerId: -1,
-    frontColor: '#ffffff',
+    frontColor: factionName === FactionNames.LIZARD_CULT ? '#000000' : '#ffffff',
     backColor: factionsColors[factionName],
+    selected: false,
+    picPos: factionPicPosition[factionName] * unit * -1,
   }))
 }
 

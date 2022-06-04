@@ -1,7 +1,10 @@
 import { Methods } from './Method'
-import { PrioritySelection } from './Result'
+import { PrioritySelection, ResultEntries } from './Result'
 import { ValidVagabonds } from './Vagabond'
 
+export interface PickSelection {
+  results: ResultEntries[]
+}
 export interface PriorityFilter {
   narrow: Methods.PRIORITY
   content: PrioritySelection[]
@@ -21,6 +24,8 @@ export interface Faction {
   vagabondData?: ValidVagabonds
   priority: number
   playerOwnerId: number
+  selected: boolean
+  picPos: number
 }
 
 export enum FactionNames {

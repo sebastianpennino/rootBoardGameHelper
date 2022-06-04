@@ -1,9 +1,8 @@
 import { minReachByPlayers } from '../data'
-import { SelectableFaction } from '../pages/selection'
-import { Player, ResultEntries } from '../types'
+import { Faction, Player, ResultEntries } from '../types'
 
 interface Props {
-  availablefactions: SelectableFaction[]
+  availablefactions: Faction[]
   selection: ResultEntries[]
   players: Player[]
 }
@@ -17,7 +16,7 @@ export const ReachCalculator = (props: Props) => {
         return totalReach + (entry.faction?.reach ?? 0)
       }, 0) || 0
     const currentSelection =
-      availablefactions.find((faction: SelectableFaction) => {
+      availablefactions.find((faction: Faction) => {
         return faction.selected
       })?.reach || 0
     return totalbeforeSelection + currentSelection
@@ -27,11 +26,11 @@ export const ReachCalculator = (props: Props) => {
     <>
       <div>
         Selected:{' '}
-        {availablefactions.find((faction: SelectableFaction) => {
+        {availablefactions.find((faction: Faction) => {
           return faction.selected
         })?.name || 'None'}{' '}
         (Reach:{' '}
-        {availablefactions.find((faction: SelectableFaction) => {
+        {availablefactions.find((faction: Faction) => {
           return faction.selected
         })?.reach || 0}
         )

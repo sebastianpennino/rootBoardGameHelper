@@ -96,6 +96,8 @@ To code on this project I recommend the following tunes:
 
 8. Intro - The XX (2009) [youtube](https://www.youtube.com/watch?v=X31t_cnTcS4)
 
-9. TASH SULTANA - JUNGLE (2016) [youtube](https://www.youtube.com/watch?v=Vn8phH0k5HI)
+9. Klangkarussell - Time (2017) [youtube](https://www.youtube.com/watch?v=iu3Wfx-mgjE&list=RD9RMHHwJ9Eqk)
 
 10. Flume & Chet Faker - Drop the Game (2013) [youtube](https://www.youtube.com/watch?v=6vopR3ys8Kw&list=RDnxg4C365LbQ)
+
+11. TASH SULTANA - JUNGLE (2016) [youtube](https://www.youtube.com/watch?v=Vn8phH0k5HI)

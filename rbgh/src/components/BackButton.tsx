@@ -1,4 +1,6 @@
-import { NavLink } from 'react-router-dom'
+import { useContext } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { RBGHStoreContent, RBGHContext } from '../Store'
 import { ValidMethods, Methods } from '../types'
 
 interface Props {
@@ -6,7 +8,9 @@ interface Props {
 }
 
 export const BackButton = (props: Props) => {
+  const { resetFilter, resetResults } = useContext<RBGHStoreContent>(RBGHContext)
   const { methodName } = props
+  let navigate = useNavigate()
 
   const backButtonSwitch = {
     [Methods.PRIORITY]: () => {
@@ -23,17 +27,23 @@ export const BackButton = (props: Props) => {
     },
   }
 
+  const backToStart = () => {
+    resetFilter()
+    resetResults()
+    navigate('/', { replace: false })
+  }
+
   if (
     methodName === Methods.LIST ||
     methodName === Methods.RANDOM ||
     methodName === Methods.PICK ||
     methodName === Methods.PRIORITY
   ) {
-    return <div className="btn-next-container">{backButtonSwitch[methodName]()}</div>
+    return <></> //<div className="btn-next-container">{backButtonSwitch[methodName]()}</div>
   }
   return (
-    <div className="btn-next-container">
-      <NavLink to="/">Back to start</NavLink>
-    </div>
+    <button className="btn-next" onClick={backToStart}>
+      Back to start
+    </button>
   )
 }

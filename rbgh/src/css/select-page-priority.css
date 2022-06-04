@@ -46,7 +46,9 @@
   transform: matrix(1, 0, 0, 1, 0, 0);
 }
 .faction-item-row__hasPriority {
-  transform: matrix(0.98, 0, 0, 0.98, 0, 0);
+  transform: matrix(0.95, 0, 0, 0.95, 0, 0);
+  background: rgba(255,255,255,0.5);
+  backdrop-filter: sepia(90%);
 }
 .faction-item-row figure {
   margin: 0;

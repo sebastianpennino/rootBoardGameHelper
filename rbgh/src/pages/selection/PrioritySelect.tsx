@@ -7,18 +7,22 @@ import { SelectionHeading } from '../../components/SelectionHeading'
 import { SelectionFooter } from '../../components/SelectionFooter'
 import { FactionPriorityItem } from '../../components/FactionPriorityItem'
 import { BackButton } from '../../components/BackButton'
+import { PRIORITY_SELECTION } from '../../App'
+import { useNavigate } from 'react-router-dom'
 
-const PRIORITY_SELECTION: number = 3
-const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
-
+// Loop selection, passing the control to each player
+// Each player assign a priority number to each faction
 export function PrioritySelect() {
+  const navigate = useNavigate()
   const {
     playerList: players,
+    priorityCompleted,
     setFilter: setSelection,
     resetFilter,
     resetResults,
     derivePriorityResults,
   } = useContext<RBGHStoreContent>(RBGHContext)
+  const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
 
   useEffect(() => {
     // on the first run reset everything
@@ -36,7 +40,14 @@ export function PrioritySelect() {
   const [priorityArr, setPriorityArr] = useState<number[]>([...emptyPriority])
   const [loop, setLoop] = useState<number>(0)
 
-  const setupNextLoop = async () => {
+  useEffect(() => {
+    if (priorityCompleted === true) {
+      derivePriorityResults()
+      navigate(`/results?type=${Methods.PRIORITY}`, { replace: false })
+    }
+  }, [priorityCompleted])
+
+  const setupNextLoop = () => {
     // Save current selection
     setSelection((previousSelected: Faction[]) => {
       if (availablefactions && availablefactions.length > 0 && currentPlayer) {
@@ -66,7 +77,7 @@ export function PrioritySelect() {
         const nextLoop = loop + 1
         return nextLoop
       })
-      return await derivePriorityResults()
+      return
     }
     // Increase the loop, set currentPlayer for next cycle
     setLoop((loop) => {
@@ -135,13 +146,7 @@ export function PrioritySelect() {
           </ul>
         </>
       )}
-      <SelectionFooter
-        loop={loop}
-        players={players}
-        setupNextLoop={setupNextLoop}
-        method={Methods.PRIORITY}
-        finalize={setupNextLoop}
-      />
+      <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PRIORITY} />
       <BackButton />
     </article>
   )

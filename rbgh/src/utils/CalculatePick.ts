@@ -1,5 +1,4 @@
-import { PickSelection } from '../pages/selection'
-import { CalculationResults, ValidVagabonds, ResultEntries, FactionNames } from '../types'
+import { CalculationResults, ValidVagabonds, ResultEntries, FactionNames, PickSelection } from '../types'
 import { seededShuffle } from './Shuffle'
 
 export const calculatePickResults = (
