@@ -129,6 +129,21 @@ export function PrioritySelect() {
     }
   }
 
+  const isValidPrioritySelection = (): true | React.ReactNode => {
+    const hasInvalidSelection = priorityArr.filter((val: number) => {
+      return val === 0
+    })
+    if (hasInvalidSelection.length > 0) {
+      return (
+        <p className="error-msg">
+          To continue, you must select {hasInvalidSelection.length} additional faction(s) (for a total of{' '}
+          {PRIORITY_SELECTION} factions)
+        </p>
+      )
+    }
+    return true
+  }
+
   return (
     <article className="priority-page">
       {players.length > 0 && currentPlayer && (
@@ -146,7 +161,11 @@ export function PrioritySelect() {
           </ul>
         </>
       )}
-      <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PRIORITY} />
+      {isValidPrioritySelection() === true ? (
+        <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PRIORITY} />
+      ) : (
+        isValidPrioritySelection()
+      )}
       <BackButton />
     </article>
   )

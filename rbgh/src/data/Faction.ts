@@ -74,7 +74,7 @@ export const factionsIndex: Record<ValidFactions, number> = {
   [FactionNames.LORD_OF_THE_HUNDREDS]: 11,
 }
 
-const unit = 100
+const unit = 80
 
 export const factionPicPosition: Record<ValidFactions, number> = {
   [FactionNames.MARQUISE_THE_CAT]: 0,

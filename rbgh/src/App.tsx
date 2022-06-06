@@ -11,7 +11,7 @@ import { calculateListResults, calculatePriorityResults, calculateRandomResults,
 export const DEV_MODE = process.env.NODE_ENV === 'development'
 export const MIN_PLAYABLE_PLAYERS = 3
 export const MAX_PLAYERS = 6
-export const PRIORITY_SELECTION = 5
+export const PRIORITY_SELECTION = 2
 
 function App() {
   // Player list selection

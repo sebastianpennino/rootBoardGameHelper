@@ -6,8 +6,9 @@
   align-content: center;
   justify-content: center;
   list-style: none;
+  margin-top: 0;
 }
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .manual-page .faction-grid {
     grid-template-columns: repeat(6, 1fr);
     gap: 1em;

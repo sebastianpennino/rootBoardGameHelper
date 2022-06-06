@@ -42,7 +42,6 @@ export function Results() {
 
   return (
     <article className="results-page">
-      <h3>Faction and player:</h3>
       <ul className="container">
         {shuffledResults?.map((entry: ResultEntries) => (
           <ResultRow key={entry.id} playerName={entry.name} playerId={entry.id} faction={entry.faction} />

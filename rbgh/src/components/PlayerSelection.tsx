@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { MAX_PLAYERS } from '../App'
+import { MAX_PLAYERS, MIN_PLAYABLE_PLAYERS } from '../App'
 import { RBGHContext, RBGHStoreContent } from '../Store'
 import { Player, PlayerReducerActionTypes } from '../types'
 import { PlayerItem } from './PlayerItem'
@@ -16,7 +16,12 @@ export const PlayerSelection = () => {
     >
       <ol className="player-grid">
         {playerList.map((player: Player, idx: number) => (
-          <PlayerItem disableRemove={playerList.length === 1 || idx === 0} idx={idx} key={player.id} player={player} />
+          <PlayerItem
+            disableRemove={playerList.length <= MIN_PLAYABLE_PLAYERS || idx < 3}
+            idx={idx}
+            key={player.id}
+            player={player}
+          />
         ))}
       </ol>
       <button

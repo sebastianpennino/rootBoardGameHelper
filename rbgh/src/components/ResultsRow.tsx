@@ -18,7 +18,7 @@ export const ResultRow = (props: Props) => {
       <div className="column">
         <p>
           {faction?.name}
-          {faction?.vagabondData ? `- ${faction?.vagabondData}` : ''} (Reach: {faction?.reach}){' '}
+          {faction?.vagabondData ? ` - ${faction?.vagabondData}` : ''} (Reach: {faction?.reach}){' '}
         </p>
       </div>
       <div className="column">
