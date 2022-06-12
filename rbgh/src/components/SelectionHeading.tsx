@@ -8,7 +8,7 @@ interface Props {
 export const SelectionHeading = (props: Props) => {
   const { loop, totalLoops, playerName, desc } = props
   return (
-    <hgroup>
+    <hgroup className="section-heading">
       <h3>
         <em title="player name">{playerName}</em>
         {desc ? ', ' : ''}

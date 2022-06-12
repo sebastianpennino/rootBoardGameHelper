@@ -1,3 +1,12 @@
 @import url('./select-page-random.css');
 @import url('./select-page-pick.css');
 @import url('./select-page-priority.css');
+
+.section-heading h3 {
+  text-align: center;
+  margin: 0.5em 0 0.25em 0;
+}
+.section-heading h4 {
+  text-align: center;
+  margin: 0.25em 0 0.5em 0;
+}

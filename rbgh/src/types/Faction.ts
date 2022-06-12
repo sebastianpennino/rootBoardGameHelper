@@ -16,6 +16,7 @@ export interface RandomFilter {
 export interface Faction {
   name: ValidFactions
   id: number
+  superId?: string
   reach: number
   icon: string
   state: ValidFactionStates

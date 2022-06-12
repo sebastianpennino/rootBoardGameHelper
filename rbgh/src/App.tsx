@@ -11,7 +11,7 @@ import { calculateListResults, calculatePriorityResults, calculateRandomResults,
 export const DEV_MODE = process.env.NODE_ENV === 'development'
 export const MIN_PLAYABLE_PLAYERS = 3
 export const MAX_PLAYERS = 6
-export const PRIORITY_SELECTION = 5
+export const PRIORITY_SELECTION = 7
 
 function App() {
   // Player list selection
@@ -148,8 +148,8 @@ function App() {
           <Header />
           <main className="content">
             <AppRoutes />
-
-            {DEV_MODE && false && (
+            {/* 
+            {DEV_MODE && (
               <small>
                 <pre>
                   {JSON.stringify(
@@ -164,7 +164,8 @@ function App() {
                   )}
                 </pre>
               </small>
-            )}
+            )} 
+*/}
           </main>
         </Router>
       </div>

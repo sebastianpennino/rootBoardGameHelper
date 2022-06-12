@@ -2,11 +2,11 @@ import { Faction } from '../types'
 
 interface Props {
   faction: Faction
-  selectFaction: (faction: Faction) => void
+  handleClick: (faction: Faction) => void
 }
 
 export const FactionPriorityItem = (props: Props) => {
-  const { faction, selectFaction } = props
+  const { faction, handleClick } = props
   return (
     <li
       className={`faction-item faction-priority-${faction.priority < 99 ? 'on' : 'off'} 
@@ -14,8 +14,9 @@ export const FactionPriorityItem = (props: Props) => {
     >
       <button
         className={`faction-item-row ${faction.priority < 99 ? 'faction-item-row__hasPriority' : ''}`}
-        onClick={() => {
-          selectFaction(faction)
+        onClick={(e) => {
+          e.preventDefault()
+          handleClick(faction)
         }}
         disabled={faction.priority < 99 && false}
       >
