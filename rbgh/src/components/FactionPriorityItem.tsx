@@ -15,7 +15,6 @@ export const FactionPriorityItem = (props: Props) => {
       <button
         className={`faction-item-row ${faction.priority < 99 ? 'faction-item-row__hasPriority' : ''}`}
         onClick={(e) => {
-          console.log('click!')
           e.preventDefault()
           handleClick(faction)
         }}
@@ -25,9 +24,7 @@ export const FactionPriorityItem = (props: Props) => {
           <img src={faction.icon} alt={faction.name} />
         </figure>
         <div className="faction-item-column faction-item-name">
-          <h4>
-            {faction.name} {faction.superId}
-          </h4>
+          <h4>{faction.name}</h4>
           <span>(Reach: {faction.reach})</span>
         </div>
         <div className="faction-item-column faction-item-priority circle">
