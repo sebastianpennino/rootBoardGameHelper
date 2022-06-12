@@ -91,19 +91,25 @@ export const factionPicPosition: Record<ValidFactions, number> = {
 }
 
 export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
-  return allFactions.map((factionName: ValidFactions) => ({
-    id: factionsIndex[factionName],
-    name: factionName,
-    icon: factionsButtonIcon[factionName],
-    reach: factionsReach[factionName],
-    state: factionName === FactionNames.VAGABOND2 ? FactionStates.EXCLUDE : FactionStates.INCLUDE,
-    priority: 99,
-    playerOwnerId: -1,
-    frontColor: factionName === FactionNames.LIZARD_CULT ? '#000000' : '#ffffff',
-    backColor: factionsColors[factionName],
-    selected: false,
-    picPos: factionPicPosition[factionName] * unit * -1,
-  }))
+  return allFactions.map((factionName: ValidFactions) => {
+    // Preloading image
+    const preloadedBBBimg = new Image()
+    preloadedBBBimg.src = factionsButtonIcon[factionName]
+
+    return {
+      id: factionsIndex[factionName],
+      name: factionName,
+      icon: factionsButtonIcon[factionName],
+      reach: factionsReach[factionName],
+      state: factionName === FactionNames.VAGABOND2 ? FactionStates.EXCLUDE : FactionStates.INCLUDE,
+      priority: 99,
+      playerOwnerId: -1,
+      frontColor: factionName === FactionNames.LIZARD_CULT ? '#000000' : '#ffffff',
+      backColor: factionsColors[factionName],
+      selected: false,
+      picPos: factionPicPosition[factionName] * unit * -1,
+    }
+  })
 }
 
 export const allFactions = generateFactions([

@@ -88,6 +88,8 @@ export function PickManualSelect() {
     })
   }
 
+  const selected = availablefactions.find((faction: Faction) => faction.selected)
+
   return (
     <article className="manual-page">
       {players.length > 0 && currentPlayer && (
@@ -104,7 +106,13 @@ export function PickManualSelect() {
             ))}
           </ol>
           <ReachCalculator availablefactions={availablefactions} selection={result} players={players} />
-          <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PICK} />
+          <SelectionFooter
+            loop={loop}
+            players={players}
+            setupNextLoop={setupNextLoop}
+            method={Methods.PICK}
+            disabled={!selected}
+          />
           <BackButton />
         </>
       )}
