@@ -1,136 +1,169 @@
 import '../../css/select-page.css'
 import { Faction, FactionNames, Methods, Player } from '../../types'
-import { useContext, useEffect, useState } from 'react'
-import { allFactions as importedFactions } from '../../data'
+import { Reducer, useContext, useReducer } from 'react'
+import { allFactions } from '../../data'
 import { RBGHContext, RBGHStoreContent } from '../../Store'
-import { SelectionHeading } from '../../components/SelectionHeading'
-import { SelectionFooter } from '../../components/SelectionFooter'
-import { FactionPriorityItem } from '../../components/FactionPriorityItem'
-import { BackButton } from '../../components/BackButton'
 import { PRIORITY_SELECTION } from '../../App'
-import { useNavigate } from 'react-router-dom'
+import { SelectionHeading, FactionPriorityItem, SelectionFooter, BackButton } from '../../components'
+import { players } from '../../mock'
+
+interface PriorityState {
+  factionList: Faction[]
+  priorityArr: (number | string)[]
+  loop: number
+}
+
+export enum PriorityReducerActionTypes {
+  ASSIGN_PRIORITY = 'ASSIGN_PRIORITY',
+  REMOVE_PRIORITY = 'REMOVE_PRIORITY',
+  RESET_LOOP = 'RESET_LOOP',
+  INCREASE_LOOP = 'INCREASE_LOOP',
+}
+
+export type ValidPriorityReducerActionTypes =
+  | PriorityReducerActionTypes.ASSIGN_PRIORITY
+  | PriorityReducerActionTypes.REMOVE_PRIORITY
+  | PriorityReducerActionTypes.RESET_LOOP
+  | PriorityReducerActionTypes.INCREASE_LOOP
+
+export interface PriorityAction {
+  type: ValidPriorityReducerActionTypes
+  payload: { factionSuperId: string; playerId: number; newPriority?: number }
+}
+
+interface FactionFilterReducer {
+  currentPlayerSelection: Faction[]
+  otherFactions: Faction[]
+}
+
+export const priorityReducer = (state: PriorityState, action: PriorityAction): PriorityState => {
+  const { factionSuperId, playerId, newPriority } = action?.payload ?? {}
+  console.log('priorityReducer', factionSuperId, playerId, newPriority)
+
+  const { factionList, priorityArr } = state
+  // const { currentPlayerSelection, otherFactions } = factionList.reduce(
+  //   (acc: FactionFilterReducer, faction: Faction) => {
+  //     if (faction.playerOwnerId === playerId) {
+  //       acc.currentPlayerSelection.push(faction)
+  //     } else {
+  //       acc.otherFactions.push(faction)
+  //     }
+  //     return acc
+  //   },
+  //   { currentPlayerSelection: [], otherFactions: [] },
+  // )
+  // const foundIdx = currentPlayerSelection.findIndex((faction: Faction) => faction.superId === factionSuperId)
+  const foundIdx = factionList.findIndex((faction: Faction) => faction.superId === factionSuperId)
+  const findNextemptyPriorityIndex = priorityArr.findIndex((slot) => slot === 0)
+  // currentPlayerSelection.sort((a: Faction, b: Faction) => {
+  //   return a.priority - b.priority
+  // })
+  const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
+
+  switch (action.type) {
+    case PriorityReducerActionTypes.ASSIGN_PRIORITY:
+      console.log('case ASSIGN_PRIORITY, findNextemptyPriorityIndex: ', findNextemptyPriorityIndex)
+      if (foundIdx !== -1) {
+        console.log('here!')
+        factionList[foundIdx].priority = findNextemptyPriorityIndex ?? 99
+        // const newPriorityArr = [...priorityArr]
+        // newPriorityArr[findNextemptyPriorityIndex] = factionSuperId
+        return {
+          ...state,
+          // priorityArr: newPriorityArr,
+          factionList: [...factionList],
+        }
+      }
+      return state
+    case PriorityReducerActionTypes.REMOVE_PRIORITY:
+      console.log('case REMOVE_PRIORITY')
+      if (foundIdx !== -1) {
+        // currentPlayerSelection[foundIdx].priority = 99
+        // return {
+        //   ...state,
+        //   priorityArr: priorityArr.map((slot) => {
+        //     if (slot === factionId) {
+        //       return 0
+        //     }
+        //     return slot
+        //   }),
+        //   factionList: [...otherFactions, ...currentPlayerSelection],
+        // }
+      }
+      return state
+    case PriorityReducerActionTypes.RESET_LOOP:
+      return {
+        ...state,
+        priorityArr: emptyPriority,
+        loop: 0,
+      }
+    case PriorityReducerActionTypes.INCREASE_LOOP:
+      return {
+        ...state,
+        priorityArr: emptyPriority,
+        loop: state.loop + 1,
+      }
+    default:
+      throw new Error('unknown action!')
+  }
+}
+
+let initialPriorityList: PriorityState = {
+  factionList: [],
+  priorityArr: [],
+  loop: 0,
+}
 
 // Loop selection, passing the control to each player
 // Each player assign a priority number to each faction
 export function PrioritySelect() {
-  const navigate = useNavigate()
-  const {
-    playerList: players,
-    priorityCompleted,
-    setFilter: setSelection,
-    resetFilter,
-    resetResults,
-    derivePriorityResults,
-  } = useContext<RBGHStoreContent>(RBGHContext)
+  const { playerList, filter, setFilter, derivePriorityResults } = useContext<RBGHStoreContent>(RBGHContext)
+
+  // At the start I copy all the factions based on the playerList
+  const cleanFactions = allFactions.filter((faction: Faction) => {
+    return faction.name !== FactionNames.VAGABOND2
+  })
+
+  const megaFactionList = playerList.flatMap((player: Player, idx: number): Faction[] => {
+    return cleanFactions.map((faction: Faction) => {
+      return { ...faction, playerOwnerId: player.id, superId: player.id + '-' + (faction.id + 1) }
+    })
+  })
+
   const emptyPriority = Array(PRIORITY_SELECTION).fill(0)
 
-  useEffect(() => {
-    // on the first run reset everything
-    resetFilter()
-    resetResults()
-  }, [])
+  initialPriorityList.factionList = megaFactionList
+  initialPriorityList.priorityArr = emptyPriority
 
-  //const [players, setPlayers] = useState<Player[]>([...playerList])
-  const [currentPlayer, setCurrentPlayer] = useState<Player>(players[0])
-  const [availablefactions, setAvailableFactions] = useState<Faction[]>(
-    importedFactions.filter((faction: Faction) => {
-      return faction.name !== FactionNames.VAGABOND2
-    }),
-  )
-  const [priorityArr, setPriorityArr] = useState<number[]>([...emptyPriority])
-  const [loop, setLoop] = useState<number>(0)
-
-  useEffect(() => {
-    if (priorityCompleted === true) {
-      derivePriorityResults()
-      navigate(`/results?type=${Methods.PRIORITY}`, { replace: false })
-    }
-  }, [priorityCompleted])
+  const [priorityState, priorityDispatch] = useReducer<Reducer<PriorityState, PriorityAction>>(priorityReducer, {
+    ...initialPriorityList,
+  })
 
   const setupNextLoop = () => {
-    // Save current selection
-    setSelection((previousSelected: Faction[]) => {
-      if (availablefactions && availablefactions.length > 0 && currentPlayer) {
-        const attach: Faction[] = availablefactions
-          .filter((faction) => faction.priority !== 99)
-          .sort((a: Faction, b: Faction) => a.priority - b.priority)
-          .map((faction) => ({
-            ...faction,
-            playerOwnerId: currentPlayer.id,
-            priority: (loop + 1) * 10 + faction.priority,
-          }))
-        if (attach && attach.length > 0) {
-          return [...previousSelected].concat(attach)
-        }
-      }
-      return previousSelected
-    })
-    // Reset available factions
-    setAvailableFactions((oldSelection: Faction[]) => {
-      return oldSelection.map((faction: Faction) => ({
-        ...faction,
-        priority: 99,
-      }))
-    })
-    if (loop === players.length - 1) {
-      setLoop((loop) => {
-        const nextLoop = loop + 1
-        return nextLoop
-      })
-      return
-    }
-    // Increase the loop, set currentPlayer for next cycle
-    setLoop((loop) => {
-      const nextLoop = loop + 1
-      setCurrentPlayer(players[nextLoop])
-      return nextLoop
-    })
-    // Reset priority
-    setPriorityArr([...emptyPriority])
+    priorityDispatch({ type: PriorityReducerActionTypes.INCREASE_LOOP, payload: { factionSuperId: '', playerId: -1 } })
   }
 
   const selectFaction = (faction: Faction) => {
-    const savedPriority = faction.priority
-    const findNextemptySlotIdx = priorityArr.findIndex((slot) => slot === 0)
-
-    if (savedPriority !== 99) {
-      setPriorityArr((priorityArr) => {
-        let newPriorityArr = [...priorityArr]
-        newPriorityArr = priorityArr.map((slot) => {
-          if (slot === faction.id) {
-            return 0
-          }
-          return slot
-        })
-        return newPriorityArr
-      })
-      setAvailableFactions((oldSelection: Faction[]) => {
-        const foundIdx = oldSelection.findIndex((f: Faction) => f.id === faction.id)
-        if (oldSelection[foundIdx].priority !== 99) {
-          oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: 99 }
-        }
-        return [...oldSelection]
-      })
-    } else if (findNextemptySlotIdx !== -1) {
-      setPriorityArr((priorityArr) => {
-        let newPriorityArr = [...priorityArr]
-        newPriorityArr[findNextemptySlotIdx] = faction.id
-        return newPriorityArr
-      })
-      setAvailableFactions((oldSelection: Faction[]) => {
-        const foundIdx = oldSelection.findIndex((f: Faction) => f.id === faction.id)
-        if (oldSelection[foundIdx].priority === 99) {
-          oldSelection[foundIdx] = { ...oldSelection[foundIdx], priority: findNextemptySlotIdx }
-        }
-        return [...oldSelection]
+    console.log('selectFaction ', faction)
+    const factionSuperId: string = faction.superId || ''
+    const currentPlayer = playerList[priorityState.loop]
+    if (faction.priority !== 99) {
+      console.log('Remove priority')
+      priorityDispatch({
+        type: PriorityReducerActionTypes.REMOVE_PRIORITY,
+        payload: { factionSuperId, playerId: currentPlayer.id, newPriority: faction.priority },
       })
     } else {
-      // need to un-assing to have space!
+      console.log('assign priority')
+      priorityDispatch({
+        type: PriorityReducerActionTypes.ASSIGN_PRIORITY,
+        payload: { factionSuperId, playerId: currentPlayer.id, newPriority: faction.priority },
+      })
     }
   }
 
   const isValidPrioritySelection = (): true | React.ReactNode => {
-    const hasInvalidSelection = priorityArr.filter((val: number) => {
+    const hasInvalidSelection = priorityState.priorityArr.filter((val: number | string) => {
       return val === 0
     })
     if (hasInvalidSelection.length > 0) {
@@ -146,23 +179,44 @@ export function PrioritySelect() {
 
   return (
     <article className="priority-page">
-      {players.length > 0 && currentPlayer && (
+      {players.length > 0 && playerList[priorityState.loop] && (
         <>
           <SelectionHeading
-            playerName={currentPlayer.name}
-            loop={loop}
-            totalLoops={players.length}
+            playerName={playerList[priorityState.loop].name}
+            loop={priorityState.loop}
+            totalLoops={playerList.length}
             desc="select your priorities"
           />
           <ul className="faction-list">
-            {availablefactions.map((faction: Faction) => (
-              <FactionPriorityItem key={faction.id} faction={faction} selectFaction={selectFaction} />
-            ))}
+            {priorityState.factionList
+              .filter((faction: Faction) => {
+                return faction.playerOwnerId === playerList[priorityState.loop].id
+              })
+              .map((faction: Faction) => (
+                <FactionPriorityItem key={faction.superId} faction={faction} handleClick={selectFaction} />
+              ))}
           </ul>
+          <pre style={{ fontSize: '15px' }}>
+            {JSON.stringify(
+              {
+                priorityState: priorityState.factionList.map((faction) => ({
+                  sId: faction.superId,
+                  p: faction.priority,
+                })),
+              },
+              null,
+              2,
+            )}
+          </pre>
         </>
       )}
       {isValidPrioritySelection() === true ? (
-        <SelectionFooter loop={loop} players={players} setupNextLoop={setupNextLoop} method={Methods.PRIORITY} />
+        <SelectionFooter
+          loop={priorityState.loop}
+          players={playerList}
+          setupNextLoop={setupNextLoop}
+          method={Methods.PRIORITY}
+        />
       ) : (
         isValidPrioritySelection()
       )}

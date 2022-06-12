@@ -149,7 +149,7 @@ function App() {
           <main className="content">
             <AppRoutes />
 
-            {DEV_MODE && false && (
+            {DEV_MODE && (
               <small>
                 <pre>
                   {JSON.stringify(

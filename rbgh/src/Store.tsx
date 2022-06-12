@@ -1,13 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import {
-  Faction,
-  MethodOption,
-  Player,
-  PlayerAction,
-  PlayerReducerActionTypes,
-  PrioritySelection,
-  ResultEntries,
-} from './types'
+import { Faction, MethodOption, Player, PlayerAction, PlayerReducerActionTypes, ResultEntries } from './types'
 
 const initialValue = {
   playerList: [],
@@ -22,7 +14,7 @@ export type RBGHStoreContent = {
   playerDispatch: Dispatch<PlayerAction>
   methodList: MethodOption[]
   setMethodList: Dispatch<SetStateAction<MethodOption[]>>
-  filter: PrioritySelection[] | Faction[]
+  filter: Faction[]
   setFilter: Dispatch<SetStateAction<Faction[]>>
   result: ResultEntries[]
   setResult: Dispatch<SetStateAction<ResultEntries[]>>
