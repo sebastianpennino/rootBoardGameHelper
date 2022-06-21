@@ -1,4 +1,6 @@
 import React, { useContext } from 'react'
+import { IconContext } from 'react-icons'
+import { BsFillPlusCircleFill } from 'react-icons/bs'
 import { MAX_PLAYERS, MIN_PLAYABLE_PLAYERS } from '../App'
 import { RBGHContext, RBGHStoreContent } from '../Store'
 import { Player, PlayerReducerActionTypes } from '../types'
@@ -33,7 +35,9 @@ export const PlayerSelection = () => {
         tabIndex={0}
         title="add player"
       >
-        Add player
+        <IconContext.Provider value={{ size: '3em' }}>
+          <BsFillPlusCircleFill />
+        </IconContext.Provider>
       </button>
     </form>
   )

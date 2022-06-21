@@ -17,14 +17,11 @@ export const ResultRow = (props: Props) => {
       </div>
       <div className="column">
         <p>
-          {faction?.name}
-          {faction?.vagabondData ? ` - ${faction?.vagabondData}` : ''} (Reach: {faction?.reach}){' '}
+          {faction?.name} ({faction?.reach}) {faction?.vagabondData ? ` - ${faction?.vagabondData}` : ''}
         </p>
       </div>
       <div className="column">
-        <p>
-          {playerName} (Id: {playerId})
-        </p>
+        <p>{playerName}</p>
       </div>
     </li>
   )

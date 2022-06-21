@@ -4,6 +4,7 @@ import { Location } from 'history'
 import { NavLink, useLocation, useSearchParams } from 'react-router-dom'
 import ologo from '../assets/images/favicon-32x32.png'
 import React from 'react'
+import { IconContext } from 'react-icons'
 
 export const Header = () => {
   const location: Location = useLocation()
@@ -19,7 +20,9 @@ export const Header = () => {
         </NavLink>
         <h1>Root Board Game Helper</h1>
       </div>
-      <DynamicSubheader pathname={pathname} methodName={methodName} />
+      <IconContext.Provider value={{ color: '#ff4a56', size: '2em' }}>
+        <DynamicSubheader className="sub-header" pathname={pathname} methodName={methodName} />
+      </IconContext.Provider>
     </header>
   )
 }

@@ -19,3 +19,8 @@
   /* background-color: rgba(229, 175, 175, 0.5); */
   background: repeating-linear-gradient(-55deg, rgb(229, 175, 175), rgb(229, 175, 175) 15px, rgb(227, 155, 155) 15px, rgb(227, 155, 155) 30px);
 }
+
+.help-method-list {
+  padding: 0 0 0 12px;
+  font-size: 80%;
+}
