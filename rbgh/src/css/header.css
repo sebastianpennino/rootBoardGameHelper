@@ -27,3 +27,29 @@ header h2 {
   margin: 0;
   padding: 0;
 }
+.sub-header {
+  position: relative;
+}
+.sub-header .button-popover {
+  border: none;
+  padding: 0;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+#floating-ui-root {
+  position: absolute;
+  z-index: 1;
+}
+
+#floating-ui-root .Popover {
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  min-width: 200px;
+}
+
+#floating-ui-root .Popover .text {
+  margin: 10px;
+}

@@ -1,4 +1,5 @@
 import { CalculationResults, Player, ValidVagabonds, ResultEntries, FactionNames, Faction } from '../types'
+import { shuffle } from './Shuffle'
 
 export const calculatePriorityResults = (
   opts: Faction[],
@@ -7,13 +8,11 @@ export const calculatePriorityResults = (
   randomizedPlayers: Player[],
   randomizedVagabond: ValidVagabonds[],
 ): CalculationResults => {
-  const input = opts
-    .filter((faction: Faction) => {
-      return faction.priority !== 99
+  const input: Faction[] = randomizedPlayers.flatMap((player: Player) => {
+    return opts.filter((faction: Faction) => {
+      return faction.priority !== 99 && faction.playerOwnerId === player.id
     })
-    .sort((a: Faction, b: Faction) => {
-      return a.playerOwnerId - b.playerOwnerId
-    })
+  })
   const finalFactionList: Faction[] = input.reduce((acc: Faction[], current: Faction) => {
     if (acc.length === randomizedPlayers.length) return acc // We already finished but there's no break in reduce
     const check =

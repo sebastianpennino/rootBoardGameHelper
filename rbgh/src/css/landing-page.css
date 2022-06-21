@@ -13,12 +13,6 @@ form {
   border-radius: 10px;
   padding-bottom: 30px;
 }
-.add-player {
-  position: absolute;
-  bottom: -20px;
-  right: 10px;
-}
-
 .transition,
 form,
 form button,
@@ -31,10 +25,14 @@ form {
   position: relative;
 }
 form button.add-player {
-  background-color: white;
-  border: 1px solid #ff4a56;
+  background: bisque;
   border-radius: 60px;
+  border: none;
+  bottom: -20px;
   color: #ff4a56;
+  padding: 0;
+  position: absolute;
+  right: 10px;
 }
 form button.add-player:hover,
 form button.add-player:focus {
