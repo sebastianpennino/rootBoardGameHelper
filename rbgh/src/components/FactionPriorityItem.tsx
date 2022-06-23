@@ -20,9 +20,7 @@ export const FactionPriorityItem = (props: Props) => {
         }}
         disabled={faction.priority < 99 && false}
       >
-        <figure className="faction-item-column faction-item-pic">
-          <img src={faction.icon} alt={faction.name} />
-        </figure>
+        <figure className="faction-item-column faction-item-pic">{faction.img}</figure>
         <div className="faction-item-column faction-item-name">
           <h4>{faction.name}</h4>
           <span>(Reach: {faction.reach})</span>

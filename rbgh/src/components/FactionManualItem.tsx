@@ -16,9 +16,7 @@ export const FactionManualItem = (props: Props) => {
           selectFaction(faction, true)
         }}
       >
-        <figure className="faction-picture">
-          <img src={faction.icon} alt={faction.name} />
-        </figure>
+        <figure className="faction-picture">{faction.img}</figure>
       </button>
     </li>
   )

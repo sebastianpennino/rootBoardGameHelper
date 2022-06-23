@@ -26,9 +26,7 @@ export const FactionFilterItem = (props: Props) => {
   return (
     <li className={`faction-card faction-card--${classNameByStatus[selectionStatus]}`}>
       <button onClick={cycleIncludeStatus}>
-        <figure className="faction-card__image">
-          <img src={faction.icon} alt={faction.name} />
-        </figure>
+        <figure className="faction-card__image">{faction.img}</figure>
         <div className="faction-card__title">
           <h4>
             {faction.name} ({faction.reach})

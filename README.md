@@ -25,7 +25,7 @@ Root Boardgame Helper (PWA)
 
 ## Deployed version
 
-Project gets deployed with vercel [here](https://rbgh.vercel.app/)
+Project gets deployed with vercel [here](https://rbgh.vercel.app/) and [here](https://rbgh-sebastianpennino.vercel.app/)
 
 ## What is this?
 

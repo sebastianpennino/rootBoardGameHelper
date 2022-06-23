@@ -63,7 +63,7 @@ export const MyTooltip = ({ text }: TooltipProps) => {
         </div>
       )}
     >
-      <button className="button-popover">
+      <button className="button-popover" onClick={(e) => e.stopPropagation()}>
         <BsFillInfoSquareFill />
       </button>
     </Popover>

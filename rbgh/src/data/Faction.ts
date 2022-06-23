@@ -11,6 +11,7 @@ import vagabondPic from '../assets/images/faction-vagabond.png'
 import vagabond2Pic from '../assets/images/faction-vagabond-2.png'
 import warlordPic from '../assets/images/faction-warlord.png'
 import woodlandPic from '../assets/images/faction-woodland.png'
+import React from 'react'
 
 export const factionsReach: Record<ValidFactions, number> = {
   [FactionNames.MARQUISE_THE_CAT]: 10,
@@ -92,14 +93,16 @@ export const factionPicPosition: Record<ValidFactions, number> = {
 
 export const generateFactions = (allFactions: ValidFactions[]): Faction[] => {
   return allFactions.map((factionName: ValidFactions) => {
-    // Preloading image
-    const preloadedBBBimg = new Image()
-    preloadedBBBimg.src = factionsButtonIcon[factionName]
+    // This will hopefully cache the image, or at least make it load only once on memory
+    const preloadedImg = React.createElement('img', {
+      src: factionsButtonIcon[factionName],
+      alt: factionName,
+    })
 
     return {
       id: factionsIndex[factionName],
       name: factionName,
-      icon: factionsButtonIcon[factionName],
+      img: preloadedImg,
       reach: factionsReach[factionName],
       state: factionName === FactionNames.VAGABOND2 ? FactionStates.EXCLUDE : FactionStates.INCLUDE,
       priority: 99,
