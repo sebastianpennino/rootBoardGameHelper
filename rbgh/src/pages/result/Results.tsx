@@ -8,7 +8,7 @@ import { BackButton, ResultRow } from '../../components'
 import { minReachByPlayers } from '../../data'
 
 export function Results() {
-  const { playerList, result, deriveRandomResults, derivePriorityResults, deriveListResults } =
+  const { result, deriveRandomResults, derivePriorityResults, deriveListResults } =
     useContext<RBGHStoreContent>(RBGHContext)
   const seed = new Date().getTime()
 

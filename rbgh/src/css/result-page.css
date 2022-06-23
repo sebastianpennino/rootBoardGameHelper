@@ -3,6 +3,9 @@
   margin: 0;
   padding: 0;
 }
+.container > li {
+  margin-bottom: 5px;
+}
 .total-reach {
   margin-top: 10px;
 }
