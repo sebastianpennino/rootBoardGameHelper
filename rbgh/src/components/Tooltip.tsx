@@ -20,7 +20,9 @@ const renderSwitch = (text: ValidPopOvers) => {
     case InfoPopOvers.FILTER_FACTIONS:
       return (
         <>
-          <p>Filter the factions that could be assigned.</p>
+          <p>
+            Filter the factions that <em>could</em> be assigned.
+          </p>
           <p>
             A ❤️ means that a faction <em>must</em> be included if able.
           </p>
@@ -39,10 +41,18 @@ const renderSwitch = (text: ValidPopOvers) => {
         <>
           <p>Choose a method of selection:</p>
           <ul className="help-method-list">
-            <li>Manual Pick: Manually select factions</li>
-            <li>Truly Random: Randomly select assign factions to each player</li>
-            <li>Random List: Selects from a preselected list based on the number of players</li>
-            <li>Priority List: Each player chooses their favorites, the app does the rest</li>
+            <li>
+              <em>Manual Pick:</em> manually select factions
+            </li>
+            <li>
+              <em>Truly Random:</em> randomly assign factions to each player
+            </li>
+            <li>
+              <em>Random List:</em> selects a scenario from a pre-selected list and assigns to all players
+            </li>
+            <li>
+              <em>Priority List:</em> each player chooses their favorites, the app does the rest
+            </li>
           </ul>
         </>
       )

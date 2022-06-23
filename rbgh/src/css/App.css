@@ -21,3 +21,6 @@
   padding: 0 0 0 12px;
   font-size: 80%;
 }
+.help-method-list li {
+  margin-bottom: 3px;
+}
