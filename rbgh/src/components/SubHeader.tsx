@@ -1,6 +1,6 @@
 import React from 'react'
 import { Methods, ValidMethods } from '../types'
-import { InfoPopOvers, MyTooltip, ValidPopOvers } from './Tooltip'
+import { InfoPopOvers, MyTooltip } from './Tooltip'
 
 interface Props {
   pathname: string

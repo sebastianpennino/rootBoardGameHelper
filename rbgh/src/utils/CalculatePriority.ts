@@ -1,5 +1,4 @@
 import { CalculationResults, Player, ValidVagabonds, ResultEntries, FactionNames, Faction } from '../types'
-import { shuffle } from './Shuffle'
 
 export const calculatePriorityResults = (
   opts: Faction[],

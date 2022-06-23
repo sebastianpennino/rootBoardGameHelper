@@ -7,6 +7,7 @@ import { Faction, MethodOption, Methods, Player, PlayerAction, ResultEntries } f
 import { playerReducer, RBGHContext } from './Store'
 import React, { Reducer, useEffect, useReducer, useState } from 'react'
 import { calculateListResults, calculatePriorityResults, calculateRandomResults, seededShuffle } from './utils'
+import { usePersistReducer } from './hooks/.'
 
 export const DEV_MODE = process.env.NODE_ENV === 'development'
 export const MIN_PLAYABLE_PLAYERS = 3
@@ -14,10 +15,15 @@ export const MAX_PLAYERS = 6
 export const PRIORITY_SELECTION = 7
 
 function App() {
+  // TODO: Move all of this stuff to Store.tsx
+
   // Player list selection
-  const [playerList, playerDispatch] = useReducer<Reducer<Player[], PlayerAction>>(playerReducer, [
-    ...initialPlayerList,
-  ])
+  // const [playerList, playerDispatch] = useReducer<Reducer<Player[], PlayerAction>>(playerReducer, [
+  //   ...initialPlayerList,
+  // ])
+
+  // TODO: Improve typings
+  const [playerList, playerDispatch] = usePersistReducer(playerReducer, [...initialPlayerList])
 
   // Mark the selected method
   const [methodList, setMethodList] = useState<MethodOption[]>([...allMethods])
@@ -43,7 +49,7 @@ function App() {
 
   const deriveRandomResults = () => {
     resetSeed()
-    const randomizedPlayers = seededShuffle(playerList, seed)
+    const randomizedPlayers = seededShuffle(playerList as Player[], seed) // TODO: Improve typings
     const randomizedVagabond = seededShuffle(allVagabonds, seed)
     setResult((previousResults: ResultEntries[]) => {
       const { results } = calculateRandomResults(
@@ -68,7 +74,7 @@ function App() {
 
   const derivePriorityResults = () => {
     resetSeed()
-    const randomizedPlayers = seededShuffle(playerList, seed)
+    const randomizedPlayers = seededShuffle(playerList as Player[], seed) // TODO: Improve typings
     const randomizedVagabond = seededShuffle(allVagabonds, seed)
 
     setResult((previousResults: ResultEntries[]) => {
@@ -92,7 +98,7 @@ function App() {
 
   const deriveListResults = () => {
     resetSeed()
-    const randomizedPlayers = seededShuffle(playerList, seed)
+    const randomizedPlayers = seededShuffle(playerList as Player[], seed) // TODO: Improve typings
     const randomizedVagabond = seededShuffle(allVagabonds, seed)
 
     setResult((previousResults: ResultEntries[]) => {
@@ -117,12 +123,12 @@ function App() {
   const [priorityCompleted, setPriorityCompleted] = useState<boolean>(false)
 
   useEffect(() => {
-    if (filter.length === playerList.length * PRIORITY_SELECTION) {
+    if (filter.length === (playerList as Player[]).length * PRIORITY_SELECTION) {
       setPriorityCompleted(true)
     } else if (priorityCompleted) {
       setPriorityCompleted(false)
     }
-  }, [filter.length, playerList.length, priorityCompleted])
+  }, [filter.length, (playerList as Player[]).length, priorityCompleted]) // TODO: Improve typings
 
   const shareProps = {
     playerList,
@@ -142,6 +148,8 @@ function App() {
   }
 
   return (
+    // TODO: Improve typings
+    // @ts-ignore
     <RBGHContext.Provider value={shareProps}>
       <div className="app">
         <Router>

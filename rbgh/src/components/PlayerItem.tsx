@@ -5,7 +5,7 @@ import Fade from './Fade'
 import { RBGHContext } from '../Store'
 
 export const PlayerItem = ({ player, idx, disableRemove }: any) => {
-  const { playerDispatch: dispatch } = useContext<any>(RBGHContext)
+  const { playerDispatch: dispatch } = useContext<any>(RBGHContext) // TODO: Type this better in the future
 
   return (
     <Fade
@@ -14,7 +14,7 @@ export const PlayerItem = ({ player, idx, disableRemove }: any) => {
       except={idx === 0}
       callback={() => {
         if (player.show === false) {
-          dispatch({ type: PlayerReducerActionTypes.REMOVE_PLAYER, payload: { id: player.id } })
+          dispatch({ type: PlayerReducerActionTypes.REMOVE_PLAYER, payload: { id: player.id, name: player.name } })
         }
       }}
     >
@@ -23,6 +23,8 @@ export const PlayerItem = ({ player, idx, disableRemove }: any) => {
           <input
             type="text"
             required
+            aria-label={`player ${idx} name`}
+            name={`player-${idx}-name`}
             onChange={(e) => {
               dispatch({
                 type: PlayerReducerActionTypes.UPDATE_PLAYER,

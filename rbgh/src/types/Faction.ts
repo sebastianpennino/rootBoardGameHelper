@@ -18,7 +18,7 @@ export interface Faction {
   id: number
   superId?: string
   reach: number
-  icon: string
+  img: React.ReactElement
   state: ValidFactionStates
   frontColor: string
   backColor: string
