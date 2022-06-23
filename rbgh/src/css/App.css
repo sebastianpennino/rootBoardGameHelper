@@ -6,9 +6,6 @@
   padding: 0;
   margin: 0;
 }
-.app .content {
-  padding: 5px;
-}
 
 .error-msg {
   color: rgb(32, 19, 19);

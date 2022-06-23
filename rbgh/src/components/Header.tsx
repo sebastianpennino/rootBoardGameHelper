@@ -16,7 +16,11 @@ export const Header = () => {
     <header>
       <div className="app-header">
         <NavLink to="/">
-          <img src={ologo} alt="root board game helper logo: a capital H letter with a red background" />
+          <img
+            src={ologo}
+            alt="root board game helper logo: a capital H letter with a red background"
+            title="go back to the start"
+          />
         </NavLink>
         <h1>Root Board Game Helper</h1>
       </div>

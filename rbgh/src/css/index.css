@@ -1,8 +1,36 @@
 @import-normalize; /* bring in normalize.css styles */
 
+html,
+body {
+  height: 100%;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.content {
+  flex: 1 0 auto;
+  padding: 5px;
+}
+.footer {
+  margin-top: 110px;
+  flex-shrink: 0;
+}
+.footer {
+  background-color: rgba(75, 75, 75, 0.5);
+  color: white;
+  padding: 5px 0;
+  text-align: center;
+  font-size: 0.75em;
+}
+.footer a {
+  color: white;
+}
+
 body {
   margin: 0;
-  font-family: "Libre Baskerville", serif;
+  font-family: 'Libre Baskerville', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 16px;
@@ -10,7 +38,7 @@ body {
 }
 
 body * {
-  font-family: "Libre Baskerville", serif;
+  font-family: 'Libre Baskerville', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

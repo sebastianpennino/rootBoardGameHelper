@@ -151,32 +151,19 @@ function App() {
     // TODO: Improve typings
     // @ts-ignore
     <RBGHContext.Provider value={shareProps}>
-      <div className="app">
-        <Router>
-          <Header />
-          <main className="content">
-            <AppRoutes />
-            {/* 
-            {DEV_MODE && (
-              <small>
-                <pre>
-                  {JSON.stringify(
-                    {
-                      players: playerList.map((player) => player.name),
-                      method: methodList.find((method) => method.selected)?.name,
-                      filter,
-                      result,
-                    },
-                    null,
-                    2,
-                  )}
-                </pre>
-              </small>
-            )} 
-*/}
-          </main>
-        </Router>
-      </div>
+      <Router>
+        <Header />
+        <main className="content">
+          <AppRoutes />
+        </main>
+        <footer className="footer">
+          Root is copyright © 2018-{new Date().getFullYear()} Patrick Leder & Leder Games (
+          <a href="https://www.LederGames.com/root" rel="nofollow">
+            LederGames.com/root
+          </a>
+          )
+        </footer>
+      </Router>
     </RBGHContext.Provider>
   )
 }
