@@ -23,6 +23,8 @@ Root Boardgame Helper (PWA)
             /_/
 ```
 
+$${\color{red}(RBGH - TODO: update this project to use Vite)}$$
+
 ## Deployed version
 
 Project gets deployed with vercel [here](https://rbgh.vercel.app/) and [here](https://rbgh-sebastianpennino.vercel.app/)
