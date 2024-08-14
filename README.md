@@ -23,7 +23,11 @@ Root Boardgame Helper (PWA)
             /_/
 ```
 
-$${\color{red}(RBGH - TODO: update this project to use Vite)}$$
+> [!WARNING]  
+> This project was initially built using `create-react-app`. It is now considered outdated, and there are more modern and efficient alternatives available for creating React applications.
+
+> [!CAUTION]
+> Also, I never updated the types, proceed at your own risk.
 
 ## Deployed version
 
